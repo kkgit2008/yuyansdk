@@ -21,4 +21,10 @@ object DoublePinYinUtils {
         'i' to "ch",
         'u' to "sh",
     )
+
+    val doublePinyinMap = mapOf(
+        "double_pinyin_ziguang" to double_pinyin_abc,
+        "double_pinyin_ziguang" to double_pinyin_ziguang,
+        "double_pinyin_ls17" to double_pinyin_ls17,
+    )
 }
