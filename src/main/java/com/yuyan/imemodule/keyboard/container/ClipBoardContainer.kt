@@ -14,6 +14,7 @@ import com.yuyan.imemodule.R
 import com.yuyan.imemodule.adapter.ClipBoardAdapter
 import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.data.theme.ThemeManager
+import com.yuyan.imemodule.data.theme.ThemeManager.activeTheme
 import com.yuyan.imemodule.database.DataBaseKT
 import com.yuyan.imemodule.database.entry.Clipboard
 import com.yuyan.imemodule.libs.recyclerview.SwipeMenu
@@ -106,15 +107,14 @@ class ClipBoardContainer(context: Context, inputView: InputView) : BaseContainer
         mRVSymbolsView.setSwipeMenuCreator{ _: SwipeMenu, rightMenu: SwipeMenu, position: Int ->
             val topItem = SwipeMenuItem(mContext).apply {
                 setImage(if(itemMode == SkbMenuMode.ClipBoard) {
-                    val data: Clipboard = copyContents[position]
-                    if(data.isKeep == 1)R.drawable.ic_baseline_untop_circle_32
-                    else R.drawable.ic_baseline_top_circle_32
-                }
+                    if(copyContents[position].isKeep == 1)R.drawable.ic_baseline_untop_circle_32 else R.drawable.ic_baseline_top_circle_32 }
                 else R.drawable.ic_menu_edit)
+                image.setTint(activeTheme.keyTextColor)
             }
             rightMenu.addMenuItem(topItem)
             val deleteItem = SwipeMenuItem(mContext).apply {
                 setImage(R.drawable.ic_menu_delete)
+                image.setTint(activeTheme.keyTextColor)
             }
             rightMenu.addMenuItem(deleteItem)
         }
