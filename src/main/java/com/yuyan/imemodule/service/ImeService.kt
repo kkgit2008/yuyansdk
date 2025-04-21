@@ -64,6 +64,7 @@ class ImeService : InputMethodService() {
     }
 
     override fun onStartInputView(editorInfo: EditorInfo, restarting: Boolean) {
+        YuyanEmojiCompat.setEditorInfo(editorInfo)
         if (::mInputView.isInitialized)mInputView.onStartInputView(editorInfo, restarting)
     }
 
@@ -132,7 +133,7 @@ class ImeService : InputMethodService() {
 
     override fun onUpdateSelection(oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int, candidatesStart: Int, candidatesEnd: Int) {
         super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd)
-        if (oldSelStart == oldSelEnd && newSelStart == newSelEnd && ::mInputView.isInitialized) mInputView.onUpdateSelection()
+        if (::mInputView.isInitialized) mInputView.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd)
     }
 
     override fun onWindowShown() {
@@ -219,5 +220,9 @@ class ImeService : InputMethodService() {
 
     fun deleteSurroundingText(length:Int) {
         currentInputConnection.deleteSurroundingText(length, 0)
+    }
+
+    fun setSelection(start: Int, end: Int) {
+        currentInputConnection.setSelection(start, end)
     }
 }

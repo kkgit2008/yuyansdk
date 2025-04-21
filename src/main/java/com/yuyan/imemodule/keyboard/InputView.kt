@@ -23,7 +23,6 @@ import com.yuyan.imemodule.R
 import com.yuyan.imemodule.callback.CandidateViewListener
 import com.yuyan.imemodule.callback.IResponseKeyEvent
 import com.yuyan.imemodule.data.emojicon.EmojiconData.SymbolPreset
-import com.yuyan.imemodule.data.emojicon.YuyanEmojiCompat
 import com.yuyan.imemodule.data.theme.ThemeManager
 import com.yuyan.imemodule.database.DataBaseKT
 import com.yuyan.imemodule.entity.keyboard.SoftKey
@@ -57,6 +56,7 @@ import splitties.views.rightPadding
 import kotlin.math.absoluteValue
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
+import androidx.core.view.postDelayed
 
 /**
  * 输入法主界面。
@@ -293,10 +293,16 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
             } else if ( keyCode in InputModeSwitcherManager.USER_DEF_KEYCODE_PASTE .. InputModeSwitcherManager.USER_DEF_KEYCODE_CUT) {
                 commitTestEditMenu(textEditMenuPreset[keyCode])
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_MOVE_START) {
-                service.currentInputConnection.setSelection(0, 0)
+                service.setSelection(0, if(hasSelection) selEnd else 0)
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_MOVE_END) {
-                commitTestEditMenu(textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
-                service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
+                if(hasSelection) {
+                    val start =  selStart
+                    commitTestEditMenu(textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
+                    this.postDelayed(50) { service.setSelection(start, selEnd) }
+                } else {
+                    commitTestEditMenu(textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
+                    service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
+                }
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE) {
                 hasSelection = !hasSelection
                 if(!hasSelection)service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
@@ -748,7 +754,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         InputModeSwitcherManager.requestInputWithSkb(editorInfo)
         KeyboardManager.instance.switchKeyboard()
         if(!restarting) {
-            YuyanEmojiCompat.setEditorInfo(editorInfo)
             if (getInstance().clipboard.clipboardSuggestion.getValue()) {
                 val lastClipboardTime = getInstance().internal.clipboardUpdateTime.getValue()
                 if (System.currentTimeMillis() - lastClipboardTime <= clipboardItemTimeout * 1000) {
@@ -775,9 +780,12 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         if(mImeState != ImeState.STATE_IDLE) resetToIdleState()
     }
 
-    fun onUpdateSelection() {
-        if((chinesePrediction && InputModeSwitcherManager.isChinese && mImeState != ImeState.STATE_IDLE)
-            || InputModeSwitcherManager.isNumberSkb) {
+    private var selStart = 0
+    private var selEnd = 0
+    fun onUpdateSelection(oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int) {
+        selStart = newSelStart; selEnd = newSelEnd
+        if(oldSelStart != oldSelEnd || newSelStart != newSelEnd)return
+        if ((chinesePrediction && InputModeSwitcherManager.isChinese && mImeState != ImeState.STATE_IDLE) || InputModeSwitcherManager.isNumberSkb) {
             val textBeforeCursor = service.getTextBeforeCursor(100)
             if (textBeforeCursor.isNotBlank()) {
                 val expressionEnd = CustomEngine.parseExpressionAtEnd(textBeforeCursor)
