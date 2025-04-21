@@ -27,4 +27,17 @@ object DoublePinYinUtils {
         "double_pinyin_ziguang" to double_pinyin_ziguang,
         "double_pinyin_ls17" to double_pinyin_ls17,
     )
+
+    fun getDoublePinYinComposition(rimeSchema: String, composition: String, comment: String): String {
+        val compositionList = composition.filter { it.code <= 0xFF }.split("'".toRegex())
+        return buildSpannedString {
+            append(composition.filter { it.code > 0xFF })
+            comment.split("'").zip(compositionList).forEach { (pinyin, compo) ->
+                append(if (compo.length >= 2) pinyin else {
+                    doublePinyinMap.getOrElse(rimeSchema){double_pinyin}.getOrElse(compo[0]) { pinyin.first().toString() }
+                })
+                append("'")
+            }
+        }
+    }
 }

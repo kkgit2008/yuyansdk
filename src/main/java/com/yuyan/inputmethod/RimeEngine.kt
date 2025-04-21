@@ -8,8 +8,8 @@ import com.yuyan.imemodule.utils.StringUtils
 import com.yuyan.inputmethod.core.CandidateListItem
 import com.yuyan.inputmethod.core.Rime
 import com.yuyan.inputmethod.util.DoublePinYinUtils
+import com.yuyan.inputmethod.util.QwertyPinYinUtils
 import com.yuyan.inputmethod.util.T9PinYinUtils
-import com.yuyan.inputmethod.util.buildSpannedString
 import java.util.Locale
 
 object RimeEngine {
@@ -238,44 +238,22 @@ object RimeEngine {
 
     private fun getCurrentComposition(candidates: List<CandidateListItem>): String {
         val composition = Rime.compositionText
-        if(Rime.getCurrentRimeSchema() == CustomConstant.SCHEMA_EN) return ""
+        val rimeSchema = Rime.getCurrentRimeSchema()
+        if(rimeSchema == CustomConstant.SCHEMA_EN) return ""
         if(composition.isEmpty()) return ""
         if(candidates.isEmpty()) return composition
         val comment = candidates.first().comment
         val result =  when {
             comment.isBlank() || comment.contains("☯") || comment.startsWith("~")-> composition
-            Rime.getCurrentRimeSchema().startsWith(CustomConstant.SCHEMA_ZH_T9) -> {
-                val compositionList = composition.filter { it.code <= 0xFF }.split("'".toRegex())
-                buildSpannedString {
-                    append(composition.filter { it.code > 0xFF })
-                    comment.split("'").zip(compositionList).forEach { (pinyin, compo) ->
-                        append(if (compo.length >= pinyin.length) pinyin else pinyin.substring(0, compo.length))
-                        append("'")
-                    }
-                }
+            rimeSchema == CustomConstant.SCHEMA_ZH_T9 -> {
+                T9PinYinUtils.getT9Composition(composition, comment)
             }
-            Rime.getCurrentRimeSchema().startsWith(CustomConstant.SCHEMA_ZH_DOUBLE_FLYPY) && !AppPrefs.getInstance().keyboardSetting.keyboardDoubleInputKey.getValue() -> composition
+            rimeSchema.startsWith(CustomConstant.SCHEMA_ZH_DOUBLE_FLYPY) -> {
+                if(!AppPrefs.getInstance().keyboardSetting.keyboardDoubleInputKey.getValue()) composition
+                else DoublePinYinUtils.getDoublePinYinComposition(rimeSchema, composition, comment)
+            }
             else -> {
-                val compositionList = composition.filter { it.code <= 0xFF }.split("'".toRegex())
-                buildSpannedString {
-                    append(composition.filter { it.code > 0xFF })
-                    comment.split("'").zip(compositionList).forEach { (pinyin, compo) ->
-                        if(Rime.getCurrentRimeSchema().startsWith(CustomConstant.SCHEMA_ZH_DOUBLE_FLYPY)) {
-                            append(if (compo.length >= 2) pinyin else {
-                                DoublePinYinUtils.doublePinyinMap.getOrElse(Rime.getCurrentRimeSchema()){ DoublePinYinUtils.double_pinyin}.getOrElse(compo[0]) { pinyin.first().toString() }
-                            })
-                            append("'")
-                        } else {
-                            if(compo == pinyin)append(pinyin).append("'")
-                            else if(pinyin.startsWith(compo))append(pinyin.substring(0, compo.length)).append("'")
-                            else {
-                                val common = compo.zip(pinyin).takeWhile { (c, p) -> c == p }.joinToString("") { (c, _) -> c.toString() }
-                                append(common).append("'")
-                                append(compo.removePrefix(common))
-                            }
-                        }
-                    }
-                }
+                QwertyPinYinUtils.getQwertyComposition(composition, comment)
             }
         }
         return if (!composition.endsWith("'") && result.endsWith("'")) result.dropLast(1) else result

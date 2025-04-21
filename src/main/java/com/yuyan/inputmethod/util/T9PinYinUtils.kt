@@ -286,4 +286,15 @@ object T9PinYinUtils {
     }
 
     fun pinyin2T9Key(pinyin: Char): Char = t9KeyMap[pinyin]?:pinyin
+
+    fun getT9Composition(composition: String, comment: String): String {
+        val compositionList = composition.filter { it.code <= 0xFF }.split("'".toRegex())
+        return buildSpannedString {
+            append(composition.filter { it.code > 0xFF })
+            comment.split("'").zip(compositionList).forEach { (pinyin, compo) ->
+                append(if (compo.length >= pinyin.length) pinyin else pinyin.substring(0, compo.length))
+                append("'")
+            }
+        }
+    }
 }
