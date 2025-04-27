@@ -19,7 +19,7 @@ object CustomConstant {
     const val YUYAN_IME_REPO_GITEE = "https://gitee.com/gurecn/YuyanIme"
     const val YUYAN_SDK_REPO = "https://github.com/gurecn/yuyansdk"
     const val LICENSE_URL = "https://www.gnu.org/licenses/old-licenses/lgpl-2.1"
-    const val FEEDBACK_TXC_REPO = "https://txc.qq.com/products/668191"
+    const val FEEDBACK_TXC_REPO = "https://github.com/gurecn/YuyanIme/issues"
 
     // 花漾字状态
     var flowerTypeface = FlowerTypefaceMode.Disabled
