@@ -12,6 +12,7 @@ import com.yuyan.inputmethod.core.Rime
 import com.yuyan.inputmethod.data.InputKey
 import com.yuyan.inputmethod.data.KeyRecordStack
 import com.yuyan.inputmethod.util.DoublePinYinUtils
+import com.yuyan.inputmethod.util.LX17PinYinUtils
 import com.yuyan.inputmethod.util.QwertyPinYinUtils
 import com.yuyan.inputmethod.util.T9PinYinUtils
 import java.util.Locale
@@ -46,6 +47,7 @@ object RimeEngine {
             KeyEvent.KEYCODE_APOSTROPHE -> if(isFinish()) '/'.code else '\''.code
             else -> event.unicodeChar
         }
+        LogUtil.d("111111111111111", "  onNormalKey: keyChar:$keyChar  keyCode:$keyCode  ")
         if (keyRecordStack.pushKey(keyCode))Rime.processKey(keyChar, event.action)
         updateCandidatesOrCommitText()
     }
@@ -192,23 +194,31 @@ object RimeEngine {
             for (item in showCandidates) item.text = item.text.lowercase()
             composition = composition.lowercase()
         }
-        var count = compositionText.count { it in '1'..'9' }
+        val rimeSchema = Rime.getCurrentRimeSchema()
         pinyins =
-            if (count > 0) {
+            if (rimeSchema == CustomConstant.SCHEMA_ZH_T9) {
+                var count = compositionText.count { it in '1'..'9' }
                 val remainT9Keys = ArrayList<InputKey>(count)
                 keyRecordStack.forEachReversed { inputKey ->
                     if (inputKey is InputKey.T9Key) {
-                        inputKey.consumed = count-- <= 0
-                        if (!inputKey.consumed) {
-                            remainT9Keys.add(inputKey)
-                        }
+                        if (count-- > 0) remainT9Keys.add(inputKey)
                     }
                 }
-                val t9Input = remainT9Keys.joinToString("").reversed()
-                T9PinYinUtils.t9KeyToPinyin(t9Input)
+                T9PinYinUtils.t9KeyToPinyin(remainT9Keys.joinToString("").reversed())
+            } else if (rimeSchema == CustomConstant.SCHEMA_ZH_DOUBLE_LX17) {
+                var count = compositionText.count { it in 'a'..'z' }
+                val keys = ArrayList<InputKey>(count)
+                keyRecordStack.forEachReversed { inputKey ->
+                    if (inputKey is InputKey.QwertKey) {
+                        if (count-- > 0) keys.add(inputKey)
+                    }
+                }
+                LX17PinYinUtils.lx17KeyToPinyin(keys.joinToString("").reversed())
             } else {
                 emptyArray()
             }
+
+        LogUtil.d("111111111111111", "  updateCandidatesOrCommitText: pinyins:${pinyins.joinToString(",").reversed()}")
         showComposition = composition
         preCommitText = ""
         return null
@@ -218,24 +228,7 @@ object RimeEngine {
      * 拿到候选词拼音组合
      */
     fun getPrefixs(): Array<String> {
-        var count = Rime.compositionText.count { it in '1'..'9' }
-        val pyCandidates =
-            if (count > 0) {
-                val remainT9Keys = ArrayList<InputKey>(count)
-                keyRecordStack.forEachReversed { inputKey ->
-                    if (inputKey is InputKey.T9Key) {
-                        inputKey.consumed = count-- <= 0
-                        if (!inputKey.consumed) {
-                            remainT9Keys.add(inputKey)
-                        }
-                    }
-                }
-                val t9Input = remainT9Keys.joinToString("").reversed()
-                T9PinYinUtils.t9KeyToPinyin(t9Input)
-            } else {
-                emptyArray()
-            }
-        return pyCandidates
+        return pinyins
     }
 
     private fun getCurrentComposition(candidates: List<CandidateListItem>): String {

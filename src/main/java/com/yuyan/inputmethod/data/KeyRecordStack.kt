@@ -58,7 +58,7 @@ class KeyRecordStack {
         var firstT9KeyPos = -1
         var accLen = 0
         keyRecords.mapIndexedTo(records) { i, inputKey ->
-            if (firstT9KeyPos < 0 && inputKey is InputKey.T9Key && !inputKey.consumed) {
+            if (firstT9KeyPos < 0 && inputKey is InputKey.T9Key) {
                 firstT9KeyPos = i
             }
             when {
@@ -137,7 +137,7 @@ interface InputKey {
 
     object SelectPinyinAction : InputKey
 
-    class T9Key(val keyChar: String, var consumed: Boolean = false) : InputKey {
+    class T9Key(val keyChar: String) : InputKey {
         constructor(keyCode: Int) : this(String(intArrayOf(keyCode - KeyEvent.KEYCODE_0 + '0'.code), 0, 1))
 
         override fun toString(): String = keyChar
