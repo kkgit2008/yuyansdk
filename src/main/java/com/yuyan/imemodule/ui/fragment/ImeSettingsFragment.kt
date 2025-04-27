@@ -14,6 +14,7 @@ import com.yuyan.imemodule.R
 import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.utils.addCategory
 import com.yuyan.imemodule.utils.addPreference
+import androidx.core.net.toUri
 
 class ImeSettingsFragment : PreferenceFragmentCompat() {
 
@@ -81,7 +82,7 @@ class ImeSettingsFragment : PreferenceFragmentCompat() {
                 )
                 addPreference(R.string.feedback,"",
                     R.drawable.ic_menu_edit,) {
-                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(CustomConstant.FEEDBACK_TXC_REPO)))
+                    startActivity(Intent(Intent.ACTION_VIEW, CustomConstant.FEEDBACK_TXC_REPO.toUri()))
                 }
                 addDestinationPreference(
                     R.string.about,
