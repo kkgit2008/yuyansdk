@@ -5,6 +5,7 @@ import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.application.ImeSdkApplication
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
 import com.yuyan.imemodule.prefs.AppPrefs
+import com.yuyan.imemodule.utils.LogUtil
 import com.yuyan.imemodule.utils.StringUtils
 import com.yuyan.inputmethod.core.CandidateListItem
 import com.yuyan.inputmethod.core.Rime
@@ -245,7 +246,7 @@ object RimeEngine {
         if(candidates.isEmpty()) return composition
         val comment = candidates.first().comment
         val result =  when {
-            comment.isBlank() || comment.contains("☯") || comment.startsWith("~")-> composition
+            comment.isNotBlank() && (comment.contains("☯") || comment.startsWith("~")) -> composition
             rimeSchema == CustomConstant.SCHEMA_ZH_T9 -> {
                 T9PinYinUtils.getT9Composition(composition, comment)
             }
