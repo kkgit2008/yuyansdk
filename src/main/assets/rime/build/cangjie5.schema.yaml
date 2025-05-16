@@ -1,0 +1,63 @@
+__build_info:
+  rime_version: 1.11.2
+  timestamps:
+    cangjie5.custom: 0
+    cangjie5.schema: 1747311896
+    default: 1747310641
+    default.custom: 1747311905
+abc_segmentor:
+  extra_tags:
+    - reverse_lookup
+engine:
+  filters:
+    - simplifier
+    - uniquifier
+    - single_char_filter
+  processors:
+    - ascii_composer
+    - recognizer
+    - speller
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - reverse_lookup_translator
+    - table_translator
+menu:
+  page_size: 100
+recognizer:
+  import_preset: default
+  patterns:
+    email: "^[a-z][-_.0-9a-z]*@.*$"
+    reverse_lookup: "`[a-z]*'?$"
+    underscore: "^[A-Za-z]+_.*"
+    uppercase: "[A-Z][-_+.'0-9A-Za-z]*$"
+    url: "^(www[.]|https?:|ftp:|mailto:).*$|^[a-z]+[.].+$"
+schema:
+  name: "倉頡五代"
+  schema_id: cangjie5
+speller:
+  alphabet: zyxwvutsrqponmlkjihgfedcba
+  delimiter: " ;'"
+translator:
+  comment_format:
+    - "xlit|abcdefghijklmnopqrstuvwxyz~|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符～|"
+  dictionary: cangjie5
+  disable_user_dict_for_patterns:
+    - "^z.*$"
+    - "^yyy.*$"
+  enable_charset_filter: true
+  enable_encoder: true
+  enable_sentence: true
+  encode_commit_history: true
+  max_phrase_length: 5
+  preedit_format:
+    - "xform/^([a-z]*)$/$1\\t（\\U$1\\E）/"
+    - "xlit|ABCDEFGHIJKLMNOPQRSTUVWXYZ|日月金木水火土竹戈十大中一弓人心手口尸廿山女田難卜符|"

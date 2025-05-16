@@ -5,7 +5,6 @@ import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.application.ImeSdkApplication
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
 import com.yuyan.imemodule.prefs.AppPrefs
-import com.yuyan.imemodule.utils.LogUtil
 import com.yuyan.imemodule.utils.StringUtils
 import com.yuyan.inputmethod.core.CandidateListItem
 import com.yuyan.inputmethod.core.Rime
@@ -47,7 +46,6 @@ object RimeEngine {
             KeyEvent.KEYCODE_APOSTROPHE -> if(isFinish()) '/'.code else '\''.code
             else -> event.unicodeChar
         }
-        LogUtil.d("111111111111111", "  onNormalKey: keyChar:$keyChar  keyCode:$keyCode  ")
         if (keyRecordStack.pushKey(keyCode))Rime.processKey(keyChar, event.action)
         updateCandidatesOrCommitText()
     }
@@ -157,12 +155,14 @@ object RimeEngine {
         if (rimeCommit != null) {
             keyRecordStack.clear()
             preCommitText = rimeCommit.commitText
-            preCommitText = if (InputModeSwitcherManager.isEnglishUpperCase) {
-                preCommitText.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-            } else if (InputModeSwitcherManager.isEnglishUpperLockCase) {
-                preCommitText.uppercase()
-            } else {
-                preCommitText.lowercase()
+            if(Rime.getCurrentRimeSchema() == CustomConstant.SCHEMA_EN) {
+                preCommitText = if (InputModeSwitcherManager.isEnglishUpperCase) {
+                    preCommitText.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                } else if (InputModeSwitcherManager.isEnglishUpperLockCase) {
+                    preCommitText.uppercase()
+                } else {
+                    preCommitText.lowercase()
+                }
             }
             showComposition = ""
             showCandidates = emptyList()
@@ -184,19 +184,22 @@ object RimeEngine {
             else -> candidates
         }
         var composition = getCurrentComposition(candidates)
-        if (InputModeSwitcherManager.isEnglishUpperCase) {
-            for (item in showCandidates) item.text = item.text.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-            composition = composition.lowercase().replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
-        } else if (InputModeSwitcherManager.isEnglishUpperLockCase) {
-            for (item in showCandidates) item.text = item.text.uppercase()
-            composition = composition.uppercase()
-        } else {
-            for (item in showCandidates) item.text = item.text.lowercase()
-            composition = composition.lowercase()
+        if(Rime.getCurrentRimeSchema() == CustomConstant.SCHEMA_EN) {
+            if (InputModeSwitcherManager.isEnglishUpperCase) {
+                for (item in showCandidates) item.text = item.text.lowercase()
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+                composition = composition.lowercase()
+                    .replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
+            } else if (InputModeSwitcherManager.isEnglishUpperLockCase) {
+                for (item in showCandidates) item.text = item.text.uppercase()
+                composition = composition.uppercase()
+            } else {
+                for (item in showCandidates) item.text = item.text.lowercase()
+                composition = composition.lowercase()
+            }
         }
         val rimeSchema = Rime.getCurrentRimeSchema()
-        pinyins =
-            if (rimeSchema == CustomConstant.SCHEMA_ZH_T9) {
+        pinyins = if (rimeSchema == CustomConstant.SCHEMA_ZH_T9) {
                 var count = compositionText.count { it in '1'..'9' }
                 val remainT9Keys = ArrayList<InputKey>(count)
                 keyRecordStack.forEachReversed { inputKey ->
@@ -217,8 +220,6 @@ object RimeEngine {
             } else {
                 emptyArray()
             }
-
-        LogUtil.d("111111111111111", "  updateCandidatesOrCommitText: pinyins:${pinyins.joinToString(",").reversed()}")
         showComposition = composition
         preCommitText = ""
         return null

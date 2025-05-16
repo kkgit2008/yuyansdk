@@ -185,6 +185,13 @@ class SettingsContainer(context: Context, inputView: InputView) : BaseContainer(
                 SkbMenuMode.PinyinStroke
             )
         )
+        funItems.add(
+            SkbFunItem(
+                mContext.getString(R.string.keyboard_name_cangjie),
+                R.drawable.selece_input_mode_cangjie5,
+                SkbMenuMode.PinyinCangjie
+            )
+        )
         val adapter = MenuAdapter(context, funItems)
         adapter.setOnItemClickLitener { _: RecyclerView.Adapter<*>?, _: View?, position: Int ->
             onKeyboardMenuClick(funItems[position])
@@ -214,6 +221,10 @@ class SettingsContainer(context: Context, inputView: InputView) : BaseContainer(
             SkbMenuMode.Pinyin26Double -> {
                 keyboardValue = 0x1000
                 CustomConstant.SCHEMA_ZH_DOUBLE_FLYPY + AppPrefs.getInstance().input.doublePYSchemaMode.getValue()
+            }
+            SkbMenuMode.PinyinCangjie -> {
+                keyboardValue = 0x1000
+                CustomConstant.SCHEMA_ZH_CANGJIE5
             }
             else ->{
                 keyboardValue = 0x2000

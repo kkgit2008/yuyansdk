@@ -20,6 +20,7 @@ import com.yuyan.imemodule.keyboard.doubleZiguangMnemonicPreset
 import com.yuyan.imemodule.keyboard.lx17MnemonicPreset
 import com.yuyan.imemodule.keyboard.lx17PYKeyNumberPreset
 import com.yuyan.imemodule.keyboard.lx17PYKeyPreset
+import com.yuyan.imemodule.keyboard.qwertyCangjieKeyPreset
 import com.yuyan.imemodule.keyboard.qwertyKeyNumberPreset
 import com.yuyan.imemodule.keyboard.qwertyKeyPreset
 import com.yuyan.imemodule.keyboard.qwertyPYKeyNumberPreset
@@ -418,7 +419,7 @@ class KeyboardLoaderUtil private constructor() {
             else -> emptyMap()
         }
         val softKeys = mutableListOf<SoftKey>()
-        val keyPreset = if(numberLine)qwertyPYKeyPreset else qwertyPYKeyNumberPreset
+        val keyPreset = if(rimeValue == CustomConstant.SCHEMA_ZH_CANGJIE5) qwertyCangjieKeyPreset else if(numberLine)qwertyPYKeyPreset else qwertyPYKeyNumberPreset
         for(code in codes){
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", keyMnemonicPreset[code] ?: "").apply {
@@ -479,6 +480,18 @@ class KeyboardLoaderUtil private constructor() {
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "").apply {
                 widthF = 0.25f
+            })
+        }
+        return softKeys.toTypedArray()
+    }
+
+    private fun createCangjieKeys(codes: Array<Int>): Array<SoftKey> {
+        val softKeys = mutableListOf<SoftKey>()
+        for(code in codes){
+            val keyPreset = qwertyCangjieKeyPreset
+            val labels = keyPreset[code]
+            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", labels?.getOrNull(2) ?: "").apply {
+                widthF = 0.099f
             })
         }
         return softKeys.toTypedArray()
