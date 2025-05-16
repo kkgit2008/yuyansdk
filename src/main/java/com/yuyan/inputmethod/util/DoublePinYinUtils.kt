@@ -33,9 +33,9 @@ object DoublePinYinUtils {
         return buildSpannedString {
             append(composition.filter { it.code > 0xFF })
             comment.split("'").zip(compositionList).forEach { (pinyin, compo) ->
-                append(if (compo.length >= 2) pinyin else {
+                append(if (compo.length >= 2) pinyin else if(compo.isNotEmpty()){
                     doublePinyinMap.getOrElse(rimeSchema){double_pinyin}.getOrElse(compo[0]) { pinyin.first().toString() }
-                })
+                } else "")
                 append("'")
             }
         }
