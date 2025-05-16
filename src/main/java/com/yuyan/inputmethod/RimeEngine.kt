@@ -2,6 +2,7 @@ package com.yuyan.inputmethod
 
 import android.view.KeyEvent
 import com.yuyan.imemodule.application.CustomConstant
+import com.yuyan.imemodule.application.ImeSdkApplication
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
 import com.yuyan.imemodule.prefs.AppPrefs
 import com.yuyan.imemodule.utils.StringUtils
@@ -27,9 +28,7 @@ object RimeEngine {
 
     fun selectSchema(mod: String): Boolean {
         keyRecordStack.clear()
-        val shareDir = CustomConstant.RIME_DICT_PATH
-        val userDir = CustomConstant.RIME_DICT_PATH
-        Rime.startupRime(shareDir, userDir, true)
+        Rime.startup(ImeSdkApplication.context, false)
         return Rime.selectSchema(mod)
     }
 
