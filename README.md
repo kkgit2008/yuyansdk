@@ -93,7 +93,7 @@ git clone git@github.com:gurecn/yuyansdk.git
 | ![表情键盘](./images/emoji.jpg) | ![微信特效](./images/emoji_wechat.jpg) | ![数字行](./images/number_line.jpg) |
 
 | 深色主题 | 设置菜单 |
-| - | - | - |
+| - | - |
 | ![深色主题](./images/dark.jpg) | ![设置菜单](./images/setting.jpg) |
 
 ## 鸣谢：
