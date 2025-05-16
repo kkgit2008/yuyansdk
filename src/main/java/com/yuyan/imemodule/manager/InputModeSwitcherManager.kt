@@ -212,11 +212,6 @@ object InputModeSwitcherManager {
     private var mRecentLauageInputMode = MODE_UNSET
 
     /**
-     * 输入框模式：密码输入框时，不启动自动补全功能
-     */
-    var mInputTypePassword = false
-
-    /**
      * Used to indicate required toggling operations.
      * 控制当前输入法模式软键盘布局要显示的按键切换状态和要显示的行ID。比如当前软键盘布局中
      * ，有一个按键有默认状态、和两个切换状态，ToggleStates中的mKeyStates[]保存的就是当前要显示的切换状态
@@ -304,7 +299,6 @@ object InputModeSwitcherManager {
      */
     fun requestInputWithSkb(editorInfo: EditorInfo) {
         var newInputMode = MODE_UNSET
-        mInputTypePassword = false
         when (editorInfo.inputType and EditorInfo.TYPE_MASK_CLASS) {
             EditorInfo.TYPE_CLASS_NUMBER, EditorInfo.TYPE_CLASS_PHONE, EditorInfo.TYPE_CLASS_DATETIME -> newInputMode = MASK_SKB_LAYOUT_NUMBER
             else -> {
@@ -313,7 +307,6 @@ object InputModeSwitcherManager {
                     || v == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD
                     || v == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
                     || v == EditorInfo.TYPE_TEXT_VARIATION_WEB_PASSWORD) {
-                        mInputTypePassword = true
                         MODE_SKB_ENGLISH_LOWER
                     } else if(getInstance().keyboardSetting.keyboardLockEnglish.getValue()){
                         getInstance().internal.inputDefaultMode.getValue()

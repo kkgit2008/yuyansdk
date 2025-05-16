@@ -380,7 +380,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         val englishCellDisable = InputModeSwitcherManager.isEnglish && !getInstance().input.abcSearchEnglishCell.getValue()
         val result = if(englishCellDisable){
             processEnglishKey(event)
-        } else if (!InputModeSwitcherManager.mInputTypePassword &&(InputModeSwitcherManager.isEnglish || InputModeSwitcherManager.isChinese)) { // 中文、英语输入模式
+        } else if (InputModeSwitcherManager.isEnglish || InputModeSwitcherManager.isChinese) { // 中文、英语输入模式
             processInput(event)
         } else { // 数字、符号处理
             processEnglishKey(event)
@@ -453,10 +453,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 chooseAndUpdate()
             }
             return  true
-        }else if (keyCode == KeyEvent.KEYCODE_DEL && (InputModeSwitcherManager.mInputTypePassword || InputModeSwitcherManager.isNumberSkb)) {
-            sendKeyEvent(keyCode)
-            if(mImeState != ImeState.STATE_IDLE) resetToIdleState()
-            return true
         }
         return false
     }
