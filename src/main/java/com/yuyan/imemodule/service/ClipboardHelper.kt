@@ -21,17 +21,14 @@ object ClipboardHelper : OnPrimaryClipChangedListener {
         val isClipboardListening = AppPrefs.getInstance().clipboard.clipboardListening.getValue()
         if(isClipboardListening) {
            val item = ImeSdkApplication.context.clipboardManager.primaryClip?.getItemAt(0)
-            if(item != null) {
-                item.takeIf { it.text?.isNotBlank() == true }
-                    ?.let { b ->
-                        val data = b.text.toString()
-                        DataBaseKT.instance.clipboardDao().insert(Clipboard(content = data))
-                        if (AppPrefs.getInstance().clipboard.clipboardSuggestion.getValue()) {
-                            AppPrefs.getInstance().internal.clipboardUpdateTime.setValue(System.currentTimeMillis())
-                            AppPrefs.getInstance().internal.clipboardUpdateContent.setValue(data)
-                        }
+            item?.takeIf { it.text?.isNotBlank() == true }?.let {
+                    val data = it.text.toString().take(20000)
+                    DataBaseKT.instance.clipboardDao().insert(Clipboard(content = data))
+                    if (AppPrefs.getInstance().clipboard.clipboardSuggestion.getValue()) {
+                        AppPrefs.getInstance().internal.clipboardUpdateTime.setValue(System.currentTimeMillis())
+                        AppPrefs.getInstance().internal.clipboardUpdateContent.setValue(data)
                     }
-            }
+                }
         }
     }
 }
