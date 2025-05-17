@@ -64,7 +64,7 @@ object UserDataManager {
             val metadata = Metadata(
                 pkgInfo.packageName,
                 pkgInfo.versionCodeCompat,
-                BuildConfig.SdkCommitHead,
+                BuildConfig.versionName,
                 timestamp
             )
             json.encodeToStream(metadata, zipStream)
