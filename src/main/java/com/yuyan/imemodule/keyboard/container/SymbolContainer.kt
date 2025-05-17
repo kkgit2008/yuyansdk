@@ -179,7 +179,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
         } else {  //表情、颜文字
             if(!YuyanEmojiCompat.isWeChatInput || mVPSymbolsView.currentItem != 1 ) {
                 DataBaseKT.instance.usedSymbolDao().insert(UsedSymbol(symbol = result, type = "emoji"))
-                val num = max(DataBaseKT.instance.usedSymbolDao().getCount("symbol") - 50, 0)
+                val num = max(DataBaseKT.instance.usedSymbolDao().getCount("emoji") - 50, 0)
                 DataBaseKT.instance.usedSymbolDao().deleteOldest("emoji", num)
                 inputView.responseKeyEvent(softKey)
             } else {
