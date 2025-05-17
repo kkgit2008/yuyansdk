@@ -6,6 +6,7 @@ import com.yuyan.imemodule.database.DataBaseKT
 import com.yuyan.imemodule.database.entry.Clipboard
 import com.yuyan.imemodule.prefs.AppPrefs
 import com.yuyan.imemodule.utils.clipboardManager
+import kotlin.math.max
 
 /**
  * 剪切板监听
@@ -24,6 +25,8 @@ object ClipboardHelper : OnPrimaryClipChangedListener {
             item?.takeIf { it.text?.isNotBlank() == true }?.let {
                     val data = it.text.toString().take(20000)
                     DataBaseKT.instance.clipboardDao().insert(Clipboard(content = data))
+                    val num = max(DataBaseKT.instance.clipboardDao().getCount() - AppPrefs.getInstance().clipboard.clipboardHistoryLimit.getValue(), 0)
+                    DataBaseKT.instance.clipboardDao().deleteOldest(num)
                     if (AppPrefs.getInstance().clipboard.clipboardSuggestion.getValue()) {
                         AppPrefs.getInstance().internal.clipboardUpdateTime.setValue(System.currentTimeMillis())
                         AppPrefs.getInstance().internal.clipboardUpdateContent.setValue(data)

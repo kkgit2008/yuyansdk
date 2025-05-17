@@ -40,6 +40,7 @@ import splitties.views.dsl.constraintlayout.lParams
 import splitties.views.dsl.core.add
 import splitties.views.dsl.core.matchParent
 import splitties.views.dsl.core.wrapContent
+import kotlin.math.max
 import kotlin.random.Random
 
 
@@ -171,11 +172,15 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
         DevicesUtils.tryVibrate(this)
         if (mShowType == SymbolMode.Symbol) {  // 非表情键盘
             DataBaseKT.instance.usedSymbolDao().insert(UsedSymbol(symbol = result))
+            val num = max(DataBaseKT.instance.usedSymbolDao().getCount("symbol") - 50, 0)
+            DataBaseKT.instance.usedSymbolDao().deleteOldest("symbol", num)
             if(!isLockSymbol) KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
             inputView.responseKeyEvent(softKey)
         } else {  //表情、颜文字
             if(!YuyanEmojiCompat.isWeChatInput || mVPSymbolsView.currentItem != 1 ) {
                 DataBaseKT.instance.usedSymbolDao().insert(UsedSymbol(symbol = result, type = "emoji"))
+                val num = max(DataBaseKT.instance.usedSymbolDao().getCount("symbol") - 50, 0)
+                DataBaseKT.instance.usedSymbolDao().deleteOldest("emoji", num)
                 inputView.responseKeyEvent(softKey)
             } else {
                 val emojions = EmojiconData.wechatEmojiconData[value]

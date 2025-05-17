@@ -221,7 +221,7 @@ class AppPrefs(private val sharedPreferences: SharedPreferences) {
             "clipboard_limit",
             50,
             10,
-            500,
+            110,
             "条",
             10,
             defaultLabel = R.string.num_50
