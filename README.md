@@ -72,11 +72,11 @@ git clone git@github.com:gurecn/yuyansdk.git
 在Android Studio其他应用项目内，import Module操作导入项目后，在原应用`build.gradle`中添加项目依赖：`implementation project(':yuyansdk')`，然后更新项目即可。具体调用方式参考[语燕输入法](https://github.com/gurecn/YuyanIme)
 
 ## 键盘预览：
-| 九宫格拼音键盘 | 全键拼音键盘 | 乱序17拼音                        |
+| 九宫键盘 | 全拼键盘 | 乱序17 |
 | - | - | - |
 | ![九宫格拼音键盘](./images/t9_pinyin.jpg) | ![全键拼音键盘](./images/qwerty_pinyin.jpg) | ![乱序17拼音](./images/double_lx17.jpg) |
 
-| 双拼键盘 | 笔画键盘 | 手写键盘                         |
+| 双拼键盘 | 笔画键盘 | 手写键盘 |
 | - | - | - |
 | ![双拼键盘](./images/double_pinyin.jpg) | ![笔画键盘](./images/stroke_pinyin.jpg) | ![手写键盘](./images/writing-pinyin.jpg) |
 
@@ -84,7 +84,7 @@ git clone git@github.com:gurecn/yuyansdk.git
 | - | - | - |
 | ![英语键盘](./images/qwerty.jpg) |  ![数字键盘](./images/number.jpg) | ![编辑键盘](./images/textedit.jpg) |
 
-| 剪切板键盘 | 单手键盘 | 悬浮键盘 |
+| 剪切板 | 单手键盘 | 悬浮键盘 |
 | - | - | - |
 | ![剪切板](./images/clipboard.jpg) | ![单手键盘](./images/onehand.jpg) | ![悬浮键盘](./images/float.jpg) |
 
