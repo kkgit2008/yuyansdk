@@ -57,8 +57,7 @@ recognizer:
     url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
 schema:
   description: |
-    白霜拼音：语燕输入法-九键拼音
-    https://github.com/gaboolic/rime-frost
+    九键拼音
 
   name: "九键拼音"
   schema_id: t9_pinyin

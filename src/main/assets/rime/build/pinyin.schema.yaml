@@ -73,8 +73,7 @@ schema:
   dependencies:
     - english
   description: |
-    白霜拼音：语燕输入法-全键拼音
-    https://github.com/gaboolic/rime-frost
+    全键拼音
 
   name: "全键拼音"
   schema_id: pinyin

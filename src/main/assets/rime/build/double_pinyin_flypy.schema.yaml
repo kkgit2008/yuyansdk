@@ -75,8 +75,7 @@ schema:
   dependencies:
     - english
   description: |
-    白霜拼音:语燕输入法-小鹤双拼
-    https://github.com/gaboolic/rime-frost
+    小鹤双拼
 
   name: "小鹤双拼"
   schema_id: double_pinyin_flypy

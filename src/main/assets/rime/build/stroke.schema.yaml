@@ -57,9 +57,7 @@ reverse_lookup:
   suffix: "'"
 schema:
   description: |
-    五笔画：语燕输入法
-    https://github.com/rime/rime-stroke
-    h,s,p,n,z 代表橫、豎、撇、捺、折
+    五笔画
 
   name: "笔画输入"
   schema_id: stroke

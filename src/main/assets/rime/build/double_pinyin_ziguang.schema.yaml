@@ -75,8 +75,7 @@ schema:
   dependencies:
     - english
   description: |
-    白霜拼音：语燕输入法-紫光双拼
-    https://github.com/gaboolic/rime-frost
+    紫光双拼
 
   name: "紫光双拼"
   schema_id: double_pinyin_ziguang

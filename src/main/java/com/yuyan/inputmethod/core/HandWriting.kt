@@ -18,7 +18,7 @@ object HandWriting {
     private var isRecognitionState = false
     private val nativeMethods = NativeMethods()
     private var  nextDatas  =  Collections.synchronizedList(mutableListOf<Pair<MutableList<Short?>, IHandWritingCallBack>?>())
-    private lateinit var mHanyuPinyinOutputFormat: HanyuPinyinOutputFormat
+    private var mHanyuPinyinOutputFormat: HanyuPinyinOutputFormat
 
     init {
         nativeMethods.nativeHttpInit(ImeSdkApplication.Companion.context, 0)
