@@ -14,7 +14,6 @@ cn_en:
   enable_sentence: false
   initial_quality: 0.5
   user_dict: "en_dicts/cn_en_abc"
-corrector: "{comment}"
 emoji:
   inherit_comment: false
   opencc_config: emoji.json
@@ -27,11 +26,9 @@ engine:
   processors:
     - ascii_composer
     - recognizer
-    - key_binder
     - speller
     - punctuator
     - selector
-    - navigator
     - express_editor
   segmentors:
     - ascii_segmentor
@@ -50,82 +47,28 @@ english:
   enable_sentence: false
   enable_user_dict: false
   initial_quality: 1.1
-key_binder:
-  bindings:
-    - {accept: minus, send: Page_Up, when: has_menu}
-    - {accept: equal, send: Page_Down, when: has_menu}
-  import_preset: default
-  search: "`"
-  select_first_character: bracketleft
-  select_last_character: bracketright
 menu:
   page_size: 50
 punctuator:
-  import_preset: default
   symbols:
     "/": ["＠", "＃", "＊", "＋", "……", "〜", "（", "）", "、", "/"]
 recognizer:
-  import_preset: default
   patterns:
-    email: "^[A-Za-z][-_.0-9A-Za-z]*@.*$"
     punct: "^/([0-9]|10|[A-Za-z]*?)$"
-    underscore: "^[A-Za-z]+_.*"
-    url: "^(www[.]|https?:|ftp[.:]|mailto:|file:).*$|^[a-z]+[.].+$"
 schema:
   dependencies:
     - english
   description: |
     紫光双拼
-
   name: "紫光双拼"
   schema_id: double_pinyin_ziguang
   version: 1
 speller:
-  algebra:
-    - "erase/^xx$/"
-    - "derive/^([jqxy])u$/$1v/"
-    - "xform/^([aoe].*)$/Ⓞ$1/"
-    - "xform/en$/Ⓦ/"
-    - "xform/eng$/Ⓣ/"
-    - "xform/in$|uai$/Ⓨ/"
-    - "xform/^zh/Ⓤ/"
-    - "xform/^sh/Ⓘ/"
-    - "xform/uo$/Ⓞ/"
-    - "xform/ai$/Ⓟ/"
-    - "xform/^ch/Ⓐ/"
-    - "xform/[iu]ang$/Ⓖ/"
-    - "xform/ang$/Ⓢ/"
-    - "xform/ie$/Ⓓ/"
-    - "xform/ian$/Ⓕ/"
-    - "xform/(.)i?ong$/$1Ⓗ/"
-    - "xform/er$|iu$/Ⓙ/"
-    - "xform/ei$/Ⓚ/"
-    - "xform/uan$/Ⓛ/"
-    - "xform/ing$/;/"
-    - "xform/ou$/Ⓩ/"
-    - "xform/[iu]a$/Ⓧ/"
-    - "xform/iao$/Ⓑ/"
-    - "xform/ue$|ui$|ve$/Ⓝ/"
-    - "xform/un$/Ⓜ/"
-    - "xform/ao$/Ⓠ/"
-    - "xform/an$/Ⓡ/"
-    - "xlit/ⓌⓉⓎⓊⒾⓄⓅⒶⒼⓈⒹⒻⒽⒿⓀⓁⓏⓍⒷⓃⓂⓆⓇ/wtyuiopagsdfhjklzxbnmqr/"
   alphabet: "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA;`/"
   delimiter: "''"
-  initials: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA
-switches:
-  - name: traditionalization
-    states: ["简", "繁"]
-  - name: emoji
-    reset: 1
-    states: ["💀", "😄"]
 traditionalize:
   opencc_config: s2t.json
   option_name: traditionalization
-  tags:
-    - abc
-    - number
-  tips: none
 translator:
   always_show_comments: true
   dictionary: pinyin
