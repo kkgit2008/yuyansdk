@@ -462,7 +462,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      */
     private fun processInput(event: KeyEvent): Boolean {
         val keyCode = event.keyCode
-        val keyChar = event.unicodeChar
+        val keyChar = keyCode.toChar()
         val lable = keyChar.toChar().toString()
         if (Character.isLetterOrDigit(keyChar) || keyCode == KeyEvent.KEYCODE_APOSTROPHE || keyCode == KeyEvent.KEYCODE_SEMICOLON){
             DecodingInfo.inputAction(event)

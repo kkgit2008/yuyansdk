@@ -20,6 +20,7 @@ import com.yuyan.imemodule.keyboard.doubleZiguangMnemonicPreset
 import com.yuyan.imemodule.keyboard.lx17MnemonicPreset
 import com.yuyan.imemodule.keyboard.lx17PYKeyNumberPreset
 import com.yuyan.imemodule.keyboard.lx17PYKeyPreset
+import com.yuyan.imemodule.keyboard.qwertyBopomofoKeyPreset
 import com.yuyan.imemodule.keyboard.qwertyCangjieKeyPreset
 import com.yuyan.imemodule.keyboard.qwertyKeyNumberPreset
 import com.yuyan.imemodule.keyboard.qwertyKeyPreset
@@ -258,7 +259,7 @@ class KeyboardLoaderUtil private constructor() {
                 keyBeans = lastRows(skbValue)
                 rows.add(keyBeans)
             }
-            0x8000 -> {     // 6000 文本编辑键盘
+            0x8000 -> {     // 8000 文本编辑键盘
                 var keyBeans: MutableList<SoftKey> = LinkedList()
                 val keys = arrayListOf(
                     arrayOf(KeyEvent.KEYCODE_DPAD_LEFT, KeyEvent.KEYCODE_DPAD_UP, KeyEvent.KEYCODE_DPAD_RIGHT, InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL),
@@ -287,6 +288,43 @@ class KeyboardLoaderUtil private constructor() {
                 editKeys[0].widthF = 0.375f
                 editKeys[1].widthF = 0.375f
                 keyBeans.addAll(editKeys)
+                rows.add(keyBeans)
+                keyBeans = lastRows(skbValue)
+                rows.add(keyBeans)
+            }
+            0x9000 -> {  // 9000  注音键盘
+                var keyBeans = mutableListOf<SoftKey>()
+                val keys =  arrayListOf(
+                    arrayOf('b'.code, 'd'.code, '3'.code, '4'.code, 'Z'.code, '2'.code, '5'.code, 'a'.code, 'A'.code, 'M'.code, 'R'.code,),
+                    arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'C'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code,),
+                    arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code,),
+                    arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code, KeyEvent.KEYCODE_DEL),)
+                var qwertyKeys = createBopomofoPYKeys(keys[0])
+                keyBeans.addAll(qwertyKeys)
+                rows.add(keyBeans)
+                keyBeans = LinkedList()
+                qwertyKeys = createBopomofoPYKeys(keys[1])
+                qwertyKeys.first().apply {
+                    mLeftF = 0.06f
+                }
+                keyBeans.addAll(qwertyKeys)
+                rows.add(keyBeans)
+                keyBeans = LinkedList()
+                qwertyKeys = createBopomofoPYKeys(keys[2])
+                qwertyKeys.first().apply {
+                    mLeftF = 0.06f
+                }
+                keyBeans.addAll(qwertyKeys)
+                rows.add(keyBeans)
+                keyBeans = LinkedList()
+                qwertyKeys = createBopomofoPYKeys(keys[3])
+//                qwertyKeys.first().apply {
+//                    widthF = 0.147f
+//                }
+//                qwertyKeys.last().apply {
+//                    widthF = 0.147f
+//                }
+                keyBeans.addAll(qwertyKeys)
                 rows.add(keyBeans)
                 keyBeans = lastRows(skbValue)
                 rows.add(keyBeans)
@@ -320,6 +358,11 @@ class KeyboardLoaderUtil private constructor() {
             }
             0x6000 -> {
                 createLX17Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
+                    InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+            }
+            0x9000 -> {
+                softKeyToggle.heightF = 0.2f
+                createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
                     InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
             }
             else -> {  //0x1000
@@ -429,6 +472,19 @@ class KeyboardLoaderUtil private constructor() {
         return softKeys.toTypedArray()
     }
 
+    private fun createBopomofoPYKeys(codes: Array<Int>): Array<SoftKey> {
+        val keyMnemonicPreset = doubleZiguangMnemonicPreset
+        val softKeys = mutableListOf<SoftKey>()
+        for(code in codes){
+            val labels = qwertyBopomofoKeyPreset[code]
+            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", keyMnemonicPreset[code] ?: "").apply {
+                widthF = 0.09f
+                heightF = 0.2f
+            })
+        }
+        return softKeys.toTypedArray()
+    }
+
     private fun createQwertyKeys(codes: Array<Int>): Array<SoftKey> {
         val softKeys = mutableListOf<SoftKey>()
         for(code in codes){
@@ -480,18 +536,6 @@ class KeyboardLoaderUtil private constructor() {
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "").apply {
                 widthF = 0.25f
-            })
-        }
-        return softKeys.toTypedArray()
-    }
-
-    private fun createCangjieKeys(codes: Array<Int>): Array<SoftKey> {
-        val softKeys = mutableListOf<SoftKey>()
-        for(code in codes){
-            val keyPreset = qwertyCangjieKeyPreset
-            val labels = keyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", labels?.getOrNull(2) ?: "").apply {
-                widthF = 0.099f
             })
         }
         return softKeys.toTypedArray()

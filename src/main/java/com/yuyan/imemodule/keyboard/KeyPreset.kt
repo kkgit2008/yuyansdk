@@ -188,6 +188,64 @@ val qwertyCangjieKeyPreset: Map<Int, Array<String>> = hashMapOf(
     InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
 )
 
+
+//#    b   p  m f  d  t n l  g  k  h j  q x  Z  C S  r z  c  s i  u v  a o  e  E     A  I O  U  M N  K  G  R 2 3 4 5
+//#    ㄅ  ㄆ ㄇ ㄈ ㄉ ㄊ ㄋ ㄌ ㄍ ㄎ ㄏ ㄐ ㄑ ㄒ ㄓ ㄔ ㄕ ㄖ ㄗ ㄘ ㄙ ㄧ ㄨ ㄩ ㄚ ㄛ ㄜ ㄝ     ㄞ ㄟ ㄠ ㄡ ㄢ ㄣ  ㄤ ㄥ ㄦ ˊ ˇ ˋ ˙
+//#    1   q  a z  2  w s x  e  d  c r  f v  5  t g  b y  h  n u  j m  8 i  k  ，    9  o  l  。 0  p  : ?  - 6 3 4 7
+val qwertyBopomofoKeyPreset: Map<Int, Array<String>> = hashMapOf(
+    'b'.code to arrayOf("ㄅ", "1"),
+    'd'.code to arrayOf("ㄉ", "2"),
+    '3'.code to arrayOf("ˇ", "3"),
+    '4'.code to arrayOf("ˋ", "4"),
+    'Z'.code to arrayOf("ㄓ", "5"),
+    '2'.code to arrayOf("ˊ", "6"),
+    '5'.code to arrayOf("˙", "7"),
+    'a'.code to arrayOf("ㄚ", "8"),
+    'A'.code to arrayOf("ㄞ", "9"),
+    'M'.code to arrayOf("ㄢ", "0"),
+    'R'.code to arrayOf("ㄦ", "-"),
+
+    'p'.code to arrayOf("ㄆ", "q"),
+    't'.code to arrayOf("ㄊ", "w"),
+    'g'.code to arrayOf("ㄍ", "e"),
+    'j'.code to arrayOf("ㄐ", "r"),
+    'D'.code to arrayOf("ㄔ", "t"),
+    'z'.code to arrayOf("ㄗ", "y"),
+    'i'.code to arrayOf("ㄧ", "u"),
+    'o'.code to arrayOf("ㄛ", "i"),
+    'I'.code to arrayOf("ㄟ", "o"),
+    'N'.code to arrayOf("ㄣ", "p"),
+
+    'm'.code to arrayOf("ㄇ", "a"),
+    'n'.code to arrayOf("ㄋ", "s"),
+    'k'.code to arrayOf("ㄎ", "d"),
+    'q'.code to arrayOf("ㄑ", "f"),
+    'S'.code to arrayOf("ㄕ", "g"),
+    'c'.code to arrayOf("ㄘ", "h"),
+    'u'.code to arrayOf("ㄨ", "j"),
+    'e'.code to arrayOf("ㄜ", "k"),
+    'O'.code to arrayOf("ㄠ", "l"),
+    'K'.code to arrayOf("ㄤ", "；"),
+
+    'f'.code to arrayOf("ㄈ", "z"),
+    'l'.code to arrayOf("ㄌ", "x"),
+    'h'.code to arrayOf("ㄏ", "c"),
+    'x'.code to arrayOf("ㄒ", "v"),
+    'r'.code to arrayOf("ㄖ", "b"),
+    's'.code to arrayOf("ㄙ", "n"),
+    'v'.code to arrayOf("ㄩ", "m"),
+    'E'.code to arrayOf("ㄝ", "，"),
+    'U'.code to arrayOf("ㄡ", "。"),
+    'G'.code to arrayOf("ㄥ", "/"),
+
+    InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13 to arrayOf("", "，"),
+    InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 to arrayOf("", "。"),
+    62 to arrayOf("空格"),
+    InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
+    InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("123"),
+    InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
+)
+
 val lx17PYKeyPreset: Map<Int, Array<String>> = hashMapOf(
     36 to arrayOf( "HP", "-"),
     47 to arrayOf("Sh", "/"),

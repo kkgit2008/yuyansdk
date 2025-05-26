@@ -44,7 +44,10 @@ object RimeEngine {
         val keyCode = event.keyCode
         val keyChar = when (keyCode) {
             KeyEvent.KEYCODE_APOSTROPHE -> if(isFinish()) '/'.code else '\''.code
-            else -> event.unicodeChar
+            else -> {
+                if(event.unicodeChar != 0)event.unicodeChar
+                else keyCode.toChar().code
+            }
         }
         if (keyRecordStack.pushKey(keyCode))Rime.processKey(keyChar, event.action)
         updateCandidatesOrCommitText()

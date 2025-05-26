@@ -17,3 +17,4 @@ schema_list:
   - schema: stroke
   - schema: english
   - schema: cangjie5
+  - schema: bopomofo
