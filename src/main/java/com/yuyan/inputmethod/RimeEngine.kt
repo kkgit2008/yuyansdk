@@ -33,6 +33,10 @@ object RimeEngine {
         return Rime.selectSchema(mod)
     }
 
+    fun getCurrentRimeSchema(): String {
+        return Rime.getCurrentRimeSchema()
+    }
+
     /**
      * 是否输入完毕，等待上屏。
      */
@@ -42,13 +46,9 @@ object RimeEngine {
 
     fun onNormalKey(event: KeyEvent) {
         val keyCode = event.keyCode
-        val keyChar = when (keyCode) {
-            KeyEvent.KEYCODE_APOSTROPHE -> if(isFinish()) '/'.code else '\''.code
-            else -> {
-                if(event.unicodeChar != 0)event.unicodeChar
-                else keyCode.toChar().code
-            }
-        }
+        val keyChar = if(CustomConstant.SCHEMA_ZH_BOPOMOFO == Rime.getCurrentRimeSchema()) keyCode
+            else if(keyCode == KeyEvent.KEYCODE_APOSTROPHE) if(isFinish()) '/'.code else '\''.code
+            else event.unicodeChar
         if (keyRecordStack.pushKey(keyCode))Rime.processKey(keyChar, event.action)
         updateCandidatesOrCommitText()
     }

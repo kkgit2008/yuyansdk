@@ -57,6 +57,7 @@ import kotlin.math.absoluteValue
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
 import androidx.core.view.postDelayed
+import com.yuyan.imemodule.application.CustomConstant
 
 /**
  * 输入法主界面。
@@ -462,13 +463,9 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      */
     private fun processInput(event: KeyEvent): Boolean {
         val keyCode = event.keyCode
-        val keyChar = keyCode.toChar()
+        val keyChar = if(CustomConstant.SCHEMA_ZH_BOPOMOFO == DecodingInfo.getCurrentRimeSchema()) keyCode else event.unicodeChar
         val lable = keyChar.toChar().toString()
-        if (Character.isLetterOrDigit(keyChar) || keyCode == KeyEvent.KEYCODE_APOSTROPHE || keyCode == KeyEvent.KEYCODE_SEMICOLON){
-            DecodingInfo.inputAction(event)
-            updateCandidate()
-            return true
-        } else if (keyCode == KeyEvent.KEYCODE_DEL) {
+        if (keyCode == KeyEvent.KEYCODE_DEL) {
             if (DecodingInfo.isFinish || DecodingInfo.isAssociate) {
                 sendKeyEvent(keyCode)
                 if(mImeState != ImeState.STATE_IDLE) resetToIdleState()
@@ -476,6 +473,10 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 DecodingInfo.deleteAction()
                 updateCandidate()
             }
+            return true
+        } else if (Character.isLetterOrDigit(keyChar) || keyCode == KeyEvent.KEYCODE_APOSTROPHE || keyCode == KeyEvent.KEYCODE_SEMICOLON){
+            DecodingInfo.inputAction(event)
+            updateCandidate()
             return true
         } else if (keyCode != 0) {
             if (!DecodingInfo.isCandidatesListEmpty && !DecodingInfo.isAssociate) {

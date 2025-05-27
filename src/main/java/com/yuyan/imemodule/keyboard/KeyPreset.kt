@@ -188,10 +188,6 @@ val qwertyCangjieKeyPreset: Map<Int, Array<String>> = hashMapOf(
     InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
 )
 
-
-//#    b   p  m f  d  t n l  g  k  h j  q x  Z  C S  r z  c  s i  u v  a o  e  E     A  I O  U  M N  K  G  R 2 3 4 5
-//#    ㄅ  ㄆ ㄇ ㄈ ㄉ ㄊ ㄋ ㄌ ㄍ ㄎ ㄏ ㄐ ㄑ ㄒ ㄓ ㄔ ㄕ ㄖ ㄗ ㄘ ㄙ ㄧ ㄨ ㄩ ㄚ ㄛ ㄜ ㄝ     ㄞ ㄟ ㄠ ㄡ ㄢ ㄣ  ㄤ ㄥ ㄦ ˊ ˇ ˋ ˙
-//#    1   q  a z  2  w s x  e  d  c r  f v  5  t g  b y  h  n u  j m  8 i  k  ，    9  o  l  。 0  p  : ?  - 6 3 4 7
 val qwertyBopomofoKeyPreset: Map<Int, Array<String>> = hashMapOf(
     'b'.code to arrayOf("ㄅ", "1"),
     'd'.code to arrayOf("ㄉ", "2"),
@@ -237,7 +233,7 @@ val qwertyBopomofoKeyPreset: Map<Int, Array<String>> = hashMapOf(
     'E'.code to arrayOf("ㄝ", "，"),
     'U'.code to arrayOf("ㄡ", "。"),
     'G'.code to arrayOf("ㄥ", "/"),
-
+    '1'.code to arrayOf("ˉ", " "),
     InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13 to arrayOf("", "，"),
     InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 to arrayOf("", "。"),
     62 to arrayOf("空格"),

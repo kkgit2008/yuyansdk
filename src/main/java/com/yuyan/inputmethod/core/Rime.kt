@@ -3,6 +3,7 @@ package com.yuyan.inputmethod.core
 import android.content.Context
 import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.application.ImeSdkApplication
+import com.yuyan.imemodule.utils.LogUtil
 import kotlin.system.measureTimeMillis
 
 class Rime(fullCheck: Boolean) {

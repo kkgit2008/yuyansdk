@@ -296,7 +296,7 @@ class KeyboardLoaderUtil private constructor() {
                 var keyBeans = mutableListOf<SoftKey>()
                 val keys =  arrayListOf(
                     arrayOf('b'.code, 'd'.code, '3'.code, '4'.code, 'Z'.code, '2'.code, '5'.code, 'a'.code, 'A'.code, 'M'.code, 'R'.code,),
-                    arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'C'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code,),
+                    arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code,),
                     arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code,),
                     arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code, KeyEvent.KEYCODE_DEL),)
                 var qwertyKeys = createBopomofoPYKeys(keys[0])
