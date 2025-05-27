@@ -318,12 +318,6 @@ class KeyboardLoaderUtil private constructor() {
                 rows.add(keyBeans)
                 keyBeans = LinkedList()
                 qwertyKeys = createBopomofoPYKeys(keys[3])
-//                qwertyKeys.first().apply {
-//                    widthF = 0.147f
-//                }
-//                qwertyKeys.last().apply {
-//                    widthF = 0.147f
-//                }
                 keyBeans.addAll(qwertyKeys)
                 rows.add(keyBeans)
                 keyBeans = lastRows(skbValue)

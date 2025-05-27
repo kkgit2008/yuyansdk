@@ -194,8 +194,8 @@ class SettingsContainer(context: Context, inputView: InputView) : BaseContainer(
         )
         funItems.add(
             SkbFunItem(
-                mContext.getString(R.string.keyboard_name_cangjie),
-                R.drawable.selece_input_mode_cangjie5,
+                mContext.getString(R.string.keyboard_name_bopomofo),
+                R.drawable.selece_input_mode_bopomofo,
                 SkbMenuMode.PinyinBopomofo
             )
         )

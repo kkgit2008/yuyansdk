@@ -72,7 +72,8 @@ class PopupComponent private constructor(){
 
     fun showKeyboard(label: String, labelSmall: String, bounds: Rect) {
         showingEntryUi?.setText("") ?: showPopup("", bounds)
-        val labels =  (PopupSmallPreset[labelSmall] ?: emptyArray<String>()).plus(PopupPreset[label] ?: emptyArray())
+        var labels =  (PopupSmallPreset[labelSmall] ?: emptyArray<String>()).plus(PopupPreset[label] ?: emptyArray())
+        if(labels.isEmpty())labels = PopupPreset[labelSmall] ?: emptyArray()
         if(labels.isNotEmpty()) {
             reallyShowKeyboard(labels, bounds)
         } else {
