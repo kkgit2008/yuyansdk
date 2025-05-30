@@ -467,11 +467,10 @@ class KeyboardLoaderUtil private constructor() {
     }
 
     private fun createBopomofoPYKeys(codes: Array<Int>): Array<SoftKey> {
-        val keyMnemonicPreset = doubleZiguangMnemonicPreset
         val softKeys = mutableListOf<SoftKey>()
         for(code in codes){
             val labels = qwertyBopomofoKeyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", keyMnemonicPreset[code] ?: "").apply {
+            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", "").apply {
                 widthF = 0.09f
                 heightF = 0.2f
             })
