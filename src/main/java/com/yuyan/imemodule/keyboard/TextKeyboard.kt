@@ -25,6 +25,7 @@ import kotlin.math.max
 import kotlin.math.min
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
+import com.yuyan.imemodule.utils.StringUtils
 
 /**
  * 软件盘视图
@@ -242,10 +243,11 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         } else if (!TextUtils.isEmpty(keyLabel)) { //Label位于中间
             mPaint.color = textColor
             if(keyboardFontBold) mPaint.setTypeface(Typeface.DEFAULT_BOLD)
-            mPaint.textSize =  if(keyLabel.length == 1) mNormalKeyTextSize * 1.4f else mNormalKeyTextSize.toFloat()
+            mPaint.textSize =  if(keyLabel.length == 1 && (StringUtils.isLetter(keyLabel) || StringUtils.isNumber(keyLabel))) mNormalKeyTextSize * 1.4f
+            else mNormalKeyTextSize.toFloat()
             val x = softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabel)) / 2.0f
             val fontHeight = mFmi.bottom - mFmi.top
-            val y = (softKey.mTop + softKey.mBottom) / 2.0f + fontHeight
+            val y = (softKey.mTop + softKey.mBottom) / 2.0f + fontHeight *1.5f
             canvas.drawText(keyLabel, x, y, mPaint)
         }
         if (keyboardMnemonic && !TextUtils.isEmpty(keyMnemonic)) {  //助记符位于中下方
