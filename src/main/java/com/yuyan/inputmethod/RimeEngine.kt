@@ -246,7 +246,7 @@ object RimeEngine {
         if(candidates.isEmpty()) return composition
         val comment = candidates.first().comment
         val result =  when {
-            comment.isNotBlank() && (comment.contains("☯") || comment.startsWith("~")) -> composition
+            comment.isNotBlank() && comment.startsWith("~") -> composition
             rimeSchema == CustomConstant.SCHEMA_ZH_T9 -> {
                 T9PinYinUtils.getT9Composition(composition, comment)
             }
