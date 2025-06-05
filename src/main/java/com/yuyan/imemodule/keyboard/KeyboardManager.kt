@@ -50,7 +50,7 @@ class KeyboardManager {
             else -> KeyboardType.T9
         }
         switchKeyboard(keyboardName)
-        mInputView.updateCandidateBar()
+        if (::mInputView.isInitialized)mInputView.updateCandidateBar()
     }
 
     fun switchKeyboard(keyboardName: KeyboardType) {
