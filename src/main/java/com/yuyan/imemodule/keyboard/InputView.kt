@@ -749,6 +749,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
     fun onStartInputView(editorInfo: EditorInfo, restarting: Boolean) {
         InputModeSwitcherManager.requestInputWithSkb(editorInfo)
         KeyboardManager.instance.switchKeyboard()
+        resetToIdleState()
         if(!restarting) {
             if (getInstance().clipboard.clipboardSuggestion.getValue()) {
                 val lastClipboardTime = getInstance().internal.clipboardUpdateTime.getValue()
