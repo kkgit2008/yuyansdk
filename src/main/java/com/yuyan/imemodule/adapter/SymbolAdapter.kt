@@ -62,7 +62,7 @@ class SymbolAdapter(context: Context?, val viewType: SymbolMode, private val pag
         init {
             textView = view.findViewById(R.id.gv_item)
             textView.setTextColor(activeTheme.keyTextColor)
-            textView.textSize = DevicesUtils.px2dip(EnvironmentSingleton.instance.candidateTextSize) * 0.7f
+            textView.textSize = DevicesUtils.px2dip(EnvironmentSingleton.instance.candidateTextSize) * if(viewType != SymbolMode.Emojicon)1f else 0.9f
             tVSdb = view.findViewById(R.id.tv_Sdb)
             tVSdb.setTextColor(activeTheme.keyTextColor)
             if(viewType == SymbolMode.Emojicon && pagerIndex == 1 && YuyanEmojiCompat.isWeChatInput){
