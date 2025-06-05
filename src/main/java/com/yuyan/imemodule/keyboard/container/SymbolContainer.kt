@@ -129,7 +129,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
                     DevicesUtils.tryVibrate(this)
                 }
                 MotionEvent.ACTION_UP -> {
-                    KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
+                    KeyboardManager.instance.switchKeyboard()
                 }
             }
             true
