@@ -212,4 +212,9 @@
     <string name="confirm_import_user_data">导入用户数据会覆盖本地设置与输入历史，并且在重启应用后才能生效。继续吗？</string>
     <string name="restart_channel">应用重启</string>
     <string name="restart_notify_msg">应用已被重启，点击此处打开</string>
+
+    <string name="keyboard_style_mod">键盘风格</string>
+    <string name="keyboard_style_mod_yuyan">默认</string>
+    <string name="keyboard_style_mod_google">谷歌</string>
+    <string name="keyboard_style_mod_samsung">三星</string>
 </resources>
