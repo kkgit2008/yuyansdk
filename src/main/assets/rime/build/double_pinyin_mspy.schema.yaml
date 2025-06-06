@@ -58,11 +58,8 @@ recognizer:
 schema:
   dependencies:
     - english
-  description: |
-    微软双拼
   name: "微软双拼"
   schema_id: double_pinyin_mspy
-  version: 1
 speller:
   alphabet: "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA;`/"
   delimiter: "''"

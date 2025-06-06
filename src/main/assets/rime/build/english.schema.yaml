@@ -30,13 +30,12 @@ menu:
   page_size: 50
 punctuator:
   symbols:
-    "/": ["＠", "＃", "＊", "＋", "……", "〜", "（", "）", "、", "/"]
+    "/": ["@", "＃", "＊", "＋", "……", "〜", "（", "）", "、", "/"]
 schema:
   description: |
     英语输入
   name: "英语输入"
   schema_id: english
-  version: "2023-10-17"
 speller:
   alphabet: zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA
   delimiter: " '"

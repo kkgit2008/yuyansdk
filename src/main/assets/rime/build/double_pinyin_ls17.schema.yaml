@@ -60,11 +60,8 @@ schema:
     - Dvel
   dependencies:
     - english
-  description: |
-    乱序17双拼
   name: "乱序17双拼"
   schema_id: double_pinyin_ls17
-  version: 1
 speller:
   alphabet: "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`/"
   delimiter: "''"

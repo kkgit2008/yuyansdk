@@ -49,19 +49,15 @@ menu:
   page_size: 50
 punctuator:
   symbols:
-    "/": ["＠", "＃", "＊", "＋", "……", "〜", "（", "）", "、", "/"]
+    "/": ["@", "＃", "＊", "＋", "……", "〜", "（", "）", "、", "/"]
 recognizer:
   patterns:
     punct: "^/([0-9]|10|[A-Za-z]*?)$"
 schema:
   dependencies:
     - english
-  description: |
-    全键拼音
-
   name: "全键拼音"
   schema_id: pinyin
-  version: "2024-02-25"
 speller:
   alphabet: "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`/"
   delimiter: "''"

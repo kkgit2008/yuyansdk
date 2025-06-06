@@ -58,11 +58,8 @@ recognizer:
 schema:
   dependencies:
     - english
-  description: |
-    自然码双拼
   name: "自然码双拼"
   schema_id: double_pinyin_natural
-  version: 1
 speller:
   alphabet: "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA`/"
   delimiter: "''"

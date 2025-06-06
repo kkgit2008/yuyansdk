@@ -35,14 +35,13 @@ menu:
   page_size: 50
 punctuator:
   symbols:
-    "/": ["＠", "＃", "＊", "＋", "……", "〜", "（", "）", "、", "/"]
+    "/": ["@", "＃", "＊", "＋", "……", "〜", "（", "）", "、", "/"]
 recognizer:
   patterns:
     punct: "^/([0-9]|10|[A-Za-z]*?)$"
 schema:
   name: "九键拼音"
   schema_id: t9_pinyin
-  version: 1
 speller:
   alphabet: "zyxwvutsrqponmlkjihgfedcbaZYXWVUTSRQPONMLKJIHGFEDCBA987654321`/"
   delimiter: "''"

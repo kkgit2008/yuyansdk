@@ -32,13 +32,11 @@ engine:
 menu:
   page_size: 50
 schema:
-  name: "注音"
+  name: "注音输入"
   schema_id: bopomofo
-  version: 2.4
 speller:
   alphabet: "bpmfdtnlgkhjqxZDSrzcsiuvaoeERIOUMNKGA12345"
-  delimiter: "|"
-  initials: "bpmfdtnlgkhjqxZDSrzcsiuvaoeERIOUMNKGA12345"
+  delimiter: "''"
 translator:
   always_show_comments: ture
   dictionary: bopomofo
