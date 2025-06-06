@@ -25,6 +25,8 @@ import kotlin.math.max
 import kotlin.math.min
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
+import com.yuyan.imemodule.data.theme.ThemeManager
+import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
 import com.yuyan.imemodule.utils.StringUtils
 
 /**
@@ -222,7 +224,12 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             mPaint.color = textColor
             mPaint.setTypeface(Typeface.DEFAULT)
             mPaint.textSize = mNormalKeyTextSizeSmall.toFloat()
-            val x = softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
+            val x = when(prefs.skbStyleMode.getValue()){
+                SkbStyleMode.Yuyan -> softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
+                SkbStyleMode.Samsung -> softKey.mLeft + softKey.width() - mPaint.measureText(keyLabelSmall) * 2.5f
+                SkbStyleMode.Google -> softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
+            }
+                softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
             val y = softKey.mTop + weightHeigth
             canvas.drawText(keyLabelSmall, x, y, mPaint)
         }

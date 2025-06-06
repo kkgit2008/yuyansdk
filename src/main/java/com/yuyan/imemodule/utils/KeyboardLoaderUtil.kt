@@ -3,6 +3,7 @@ package com.yuyan.imemodule.utils
 import android.view.KeyEvent
 import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.data.theme.ThemeManager
+import com.yuyan.imemodule.data.theme.ThemePrefs
 import com.yuyan.imemodule.entity.keyboard.SoftKey
 import com.yuyan.imemodule.entity.keyboard.SoftKeyToggle
 import com.yuyan.imemodule.entity.keyboard.SoftKeyboard
@@ -30,6 +31,7 @@ import com.yuyan.imemodule.keyboard.strokeKeyPreset
 import com.yuyan.imemodule.keyboard.t9NumberKeyPreset
 import com.yuyan.imemodule.keyboard.t9PYKeyPreset
 import com.yuyan.imemodule.keyboard.textEditKeyPreset
+import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
 import java.util.LinkedList
 
 /**
@@ -39,11 +41,13 @@ class KeyboardLoaderUtil private constructor() {
     private var rimeValue: String? = null
     private var mSkbValue: Int = 0
     private var numberLine: Boolean = false
+    private var skbStyleMode: SkbStyleMode = SkbStyleMode.Yuyan
     fun clearKeyboardMap() {
         mSoftKeyboardMap.clear()
     }
 
     private fun loadBaseSkb(skbValue: Int): SoftKeyboard {
+        skbStyleMode = ThemeManager.prefs.skbStyleMode.getValue()
         mSkbValue = skbValue
         // shift键状态
         // 直输状态
@@ -59,7 +63,7 @@ class KeyboardLoaderUtil private constructor() {
         val softKeyboard: SoftKeyboard?
         numberLine = AppPrefs.getInstance().keyboardSetting.abcNumberLine.getValue()
         val rows: MutableList<List<SoftKey>> = LinkedList()
-        if (numberLine) {
+        if (numberLine && skbStyleMode == SkbStyleMode.Yuyan) {
             val qwertyKeys = createNumberLineKeys(arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 0))
             rows.add(qwertyKeys.asList())
         }
@@ -78,6 +82,10 @@ class KeyboardLoaderUtil private constructor() {
                         arrayOf(45, 51, 33, 46, 48, 53, 49, 37, 43, 44),
                         arrayOf(29, 47, 32, 34, 35, 36, 38, 39, 40),
                         arrayOf(75, 54, 52, 31, 50, 30, 42, 41, KeyEvent.KEYCODE_DEL),)
+                }
+                if (numberLine && skbStyleMode == SkbStyleMode.Samsung) {
+                    val qwertyKeys = createNumberLineKeys(arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 0))
+                    rows.add(qwertyKeys.asList())
                 }
                 var qwertyKeys = createQwertyPYKeys(keys[0])
                 keyBeans.addAll(qwertyKeys)
@@ -104,7 +112,12 @@ class KeyboardLoaderUtil private constructor() {
             }
             0x2000 -> {  // 2000  T9键键
                 var keyBeans: MutableList<SoftKey> = LinkedList()
-                val keyDeleteOrder = if(ThemeManager.prefs.deleteLocationTop.getValue())Pair(KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_AT) else Pair(KeyEvent.KEYCODE_AT, KeyEvent.KEYCODE_DEL)
+                val keyDeleteOrder =
+                    if(skbStyleMode == SkbStyleMode.Samsung){
+                        if(ThemeManager.prefs.deleteLocationTop.getValue())Pair(KeyEvent.KEYCODE_DEL, 7) else Pair(7, KeyEvent.KEYCODE_DEL)
+                    } else {
+                        if(ThemeManager.prefs.deleteLocationTop.getValue())Pair(KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_AT) else Pair(KeyEvent.KEYCODE_AT, KeyEvent.KEYCODE_DEL)
+                    }
                 val keys = arrayListOf(
                     arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12, 75, 9, 10, keyDeleteOrder.first),
                     arrayOf(11, 12, 13, KeyEvent.KEYCODE_CLEAR),
@@ -153,6 +166,10 @@ class KeyboardLoaderUtil private constructor() {
                     arrayOf(45, 51, 33, 46, 48, 53, 49, 37, 43, 44),
                     arrayOf(29, 47, 32, 34, 35, 36, 38, 39, 40),
                     arrayOf(54, 52, 31, 50, 30, 42, 41, KeyEvent.KEYCODE_DEL),)
+                if (numberLine && skbStyleMode == SkbStyleMode.Samsung) {
+                    val qwertyKeys = createNumberLineKeys(arrayOf(1, 2, 3, 4, 5, 6, 7, 8, 9, 0))
+                    rows.add(qwertyKeys.asList())
+                }
                 var qwertyKeys = createQwertyKeys(keys[0])
                 keyBeans.addAll(qwertyKeys)
                 rows.add(keyBeans)
@@ -324,7 +341,12 @@ class KeyboardLoaderUtil private constructor() {
                 rows.add(keyBeans)
             }
         }
-        softKeyboard = getSoftKeyboard(rows, numberLine)
+        val numberLineSkb = when(skbStyleMode){
+            SkbStyleMode.Yuyan -> numberLine
+            SkbStyleMode.Samsung -> numberLine && (0x4000 == skbValue || 0x1000 == skbValue)
+            SkbStyleMode.Google -> numberLine
+        }
+        softKeyboard = getSoftKeyboard(rows, numberLineSkb)
         mSoftKeyboardMap[skbValue] = softKeyboard
         return softKeyboard
     }
@@ -340,38 +362,97 @@ class KeyboardLoaderUtil private constructor() {
         val keyBeans = mutableListOf<SoftKey>()
         val t9Keys = when(skbValue){
             0x2000, 0x3000, 0x7000  ->{
-                createT9Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
-                    KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                if(skbStyleMode == SkbStyleMode.Samsung){
+                    createT9Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                        KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
+                } else {
+                    createT9Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
+                            KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                }
             }
             0x4000 -> {
-                createQwertyKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
-                    InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                if (skbStyleMode == SkbStyleMode.Samsung) {
+                    createQwertyKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
+                } else {
+                    createQwertyKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
+                            InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                }
             }
             0x5000 -> {
                 createT9NumberKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6, 7, KeyEvent.KEYCODE_SPACE))
             }
             0x6000 -> {
-                createLX17Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
-                    InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                if (skbStyleMode == SkbStyleMode.Samsung) {
+                    createLX17Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
+                } else {
+                    createLX17Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
+                            InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                }
             }
             0x9000 -> {
                 softKeyToggle.heightF = 0.2f
-                createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
-                    InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                if (skbStyleMode == SkbStyleMode.Samsung) {
+                    createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
+                } else {
+                    createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
+                            InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                }
             }
             else -> {  //0x1000
-                createQwertyPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
-                    InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                if (skbStyleMode == SkbStyleMode.Samsung) {
+                    createQwertyKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
+                } else {
+                    createQwertyPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
+                            InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
+                }
             }
         }
-        if(t9Keys.size == 5){
-            softKeyToggle.widthF = 0.147f
-            t9Keys[0].widthF = 0.147f;t9Keys[1].widthF = 0.099f
-            t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.396f
-            t9Keys[4].widthF = 0.099f
-        } else{
-            t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.147f
-            t9Keys[2].widthF = 0.336f;t9Keys[3].widthF = 0.147f
+        if (skbStyleMode == SkbStyleMode.Google) {
+            if(skbValue == 0x4000)t9Keys[1].stateId = 1
+            if(t9Keys.size == 6){
+                t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
+                t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.2f
+                t9Keys[4].widthF = 0.1f;t9Keys[5].widthF = 0.1457f
+                softKeyToggle.widthF = 0.1457f
+            } else if(t9Keys.size == 5){
+                t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1f
+                t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.4086f
+                t9Keys[4].widthF = 0.1f;softKeyToggle.widthF = 0.1457f
+            } else {
+                softKeyToggle.widthF = 0.18f
+                t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.21f
+                t9Keys[2].widthF = 0.21f;t9Keys[3].widthF = 0.21f
+            }
+        } else if (skbStyleMode == SkbStyleMode.Samsung) {
+            if(skbValue == 0x4000)t9Keys[1].stateId = 1
+            if(t9Keys.size == 6){
+                t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
+                t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.2f
+                t9Keys[4].widthF = 0.1f;t9Keys[5].widthF = 0.1457f
+                softKeyToggle.widthF = 0.1457f
+            } else if(t9Keys.size == 5){
+                t9Keys[0].widthF = 0.16f;t9Keys[1].widthF = 0.099f
+                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.38f
+                t9Keys[4].widthF = 0.099f;softKeyToggle.widthF = 0.16f
+            } else {
+                softKeyToggle.widthF = 0.18f
+                t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.21f
+                t9Keys[2].widthF = 0.21f;t9Keys[3].widthF = 0.21f
+            }
+        } else {
+            if (t9Keys.size == 5) {
+                softKeyToggle.widthF = 0.147f
+                t9Keys[0].widthF = 0.147f;t9Keys[1].widthF = 0.099f
+                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.396f
+                t9Keys[4].widthF = 0.099f
+            } else {
+                t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.147f
+                t9Keys[2].widthF = 0.336f;t9Keys[3].widthF = 0.147f
+            }
         }
         keyBeans.addAll(t9Keys)
         keyBeans.add(softKeyToggle)

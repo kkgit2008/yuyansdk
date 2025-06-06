@@ -474,7 +474,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 updateCandidate()
             }
             return true
-        } else if (Character.isLetterOrDigit(keyChar) || keyCode == KeyEvent.KEYCODE_APOSTROPHE || keyCode == KeyEvent.KEYCODE_SEMICOLON){
+        } else if ((Character.isLetterOrDigit(keyChar) && keyCode != KeyEvent.KEYCODE_0) || keyCode == KeyEvent.KEYCODE_APOSTROPHE || keyCode == KeyEvent.KEYCODE_SEMICOLON){
             DecodingInfo.inputAction(event)
             updateCandidate()
             return true
