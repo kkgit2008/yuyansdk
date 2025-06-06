@@ -52,9 +52,9 @@ class CandidatesAdapter(context: Context?) :
     }
 
     inner class SymbolHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var textView: EmojiTextView
+        var textView: EmojiTextView = view.findViewById(R.id.gv_candidates_item)
+
         init {
-            textView = view.findViewById(R.id.gv_item)
             textView.setTextColor(textColor)
             textView.textSize = DevicesUtils.px2dip(mCandidateTextSize)
         }

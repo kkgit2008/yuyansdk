@@ -57,13 +57,12 @@ class SymbolAdapter(context: Context?, val viewType: SymbolMode, private val pag
     }
 
     inner class SymbolHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var textView: EmojiTextView
+        var textView: EmojiTextView = view.findViewById(R.id.gv_symbols_item)
         var tVSdb: TextView
         init {
-            textView = view.findViewById(R.id.gv_item)
             textView.setTextColor(activeTheme.keyTextColor)
             textView.textSize = DevicesUtils.px2dip(EnvironmentSingleton.instance.candidateTextSize) * if(viewType != SymbolMode.Emojicon)1f else 0.9f
-            tVSdb = view.findViewById(R.id.tv_Sdb)
+            tVSdb = view.findViewById(R.id.tv_sdb_symbols_item)
             tVSdb.setTextColor(activeTheme.keyTextColor)
             if(viewType == SymbolMode.Emojicon && pagerIndex == 1 && YuyanEmojiCompat.isWeChatInput){
                 (view.layoutParams as FlexboxLayoutManager.LayoutParams) .apply {
@@ -74,6 +73,18 @@ class SymbolAdapter(context: Context?, val viewType: SymbolMode, private val pag
                val paddingTop =  view.dp(10)
                 textView.setPadding(paddingStart, paddingTop, paddingStart, paddingTop)
                 view.setBackgroundResource(R.drawable.shape_emojicon_background)
+//            } else if(viewType == SymbolMode.Emojicon){
+//                (view.layoutParams as FlexboxLayoutManager.LayoutParams) .apply {
+//                    minWidth = (EnvironmentSingleton.instance.skbWidth - view.dp(18)) / 8
+//                    setMargins(view.dp(2))
+//                }
+//                val paddingStart =  view.dp(1)
+//                val paddingTop =  view.dp(6)
+//                textView.setPadding(paddingStart, paddingTop, paddingStart, paddingTop)
+//            } else {
+//                val paddingStart =  view.dp(5)
+//                val paddingTop =  view.dp(10)
+//                textView.setPadding(paddingStart, paddingTop, paddingStart, paddingTop)
             }
 
         }
