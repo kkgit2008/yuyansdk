@@ -28,6 +28,7 @@ import com.yuyan.imemodule.view.popup.PopupComponent.Companion.get
 import java.util.LinkedList
 import java.util.Queue
 import kotlin.math.abs
+import kotlin.math.absoluteValue
 
 /**
  * 键盘根布局
@@ -108,7 +109,7 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
         if(mCurrentKey != null) {
             val softKey = mCurrentKey!!
             val keyboardSymbol = ThemeManager.prefs.keyboardSymbol.getValue()
-            if (softKey.getkeyLabel().isNotBlank()) {
+            if (softKey.getkeyLabel().isNotBlank() && softKey.keyCode != InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 ) {
                 val keyLabel = if (InputModeSwitcherManager.isEnglishLower || (InputModeSwitcherManager.isEnglishUpperCase && !DecodingInfo.isCandidatesListEmpty))
                     softKey.keyLabel.lowercase()  else softKey.keyLabel
                 val designPreset = setOf("，", "。", ",", ".")
@@ -117,7 +118,9 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
                 popupComponent.showKeyboard(keyLabel, smallLabel, bounds)
                 mLongPressKey = true
             } else if (softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2 ||
+                softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 ||
                     softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1 ||
+                softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9 ||
                 softKey.keyCode == KeyEvent.KEYCODE_DEL || softKey.keyCode == KeyEvent.KEYCODE_ENTER){
                 val bounds = Rect(softKey.mLeft, softKey.mTop, softKey.mRight, softKey.mBottom)
                 popupComponent.showKeyboardMenu(softKey, bounds, currentDistanceY)
@@ -173,9 +176,9 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
     }
 
     private fun onModifiedTouchEvent(me: MotionEvent): Boolean {
-        mCurrentKey = getKeyIndices(me.x.toInt(), me.y.toInt())
         when (me.action) {
             MotionEvent.ACTION_DOWN -> {
+                mCurrentKey = getKeyIndices(me.x.toInt(), me.y.toInt())
                 mAbortKey = false
                 mLongPressKey = false
                 if(mCurrentKey != null){
@@ -203,12 +206,14 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
     private var lastEventX:Float = -1f
     private var lastEventY:Float = -1f
     private var currentDistanceY:Float = 0f
+    private var currentDistanceX:Float = 0f
     private var lastEventActionIndex:Int = 0
     // 处理手势滑动
     private fun dispatchGestureEvent(downEvent: MotionEvent?, currentEvent: MotionEvent, distanceX: Float, distanceY: Float) : Boolean {
         var result = false
         val currentX = currentEvent.x
         val currentY = currentEvent.y
+        currentDistanceX = distanceX
         currentDistanceY = distanceY
         val keyLableSmall = mCurrentKey?.getmKeyLabelSmall()
         if(currentEvent.pointerCount > 1) return false    // 避免多指触控导致上屏
@@ -264,7 +269,14 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
 
     private fun repeatKey(): Boolean {
         if (mCurrentKey != null && mCurrentKey!!.repeatable()) {
-            mService?.responseKeyEvent(mCurrentKey!!)
+            mService?.responseKeyEvent(
+                if(mCurrentKey!!.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9){
+                    SoftKey(if(currentDistanceX.absoluteValue >= currentDistanceY.absoluteValue){
+                        if(currentDistanceX > 0)  KeyEvent.KEYCODE_DPAD_LEFT else KeyEvent.KEYCODE_DPAD_RIGHT
+                    } else{
+                        if(currentDistanceY < 0)  KeyEvent.KEYCODE_DPAD_DOWN else KeyEvent.KEYCODE_DPAD_UP
+                    })
+                } else mCurrentKey!!)
         }
         return true
     }

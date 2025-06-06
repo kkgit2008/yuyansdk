@@ -48,6 +48,16 @@ object InputModeSwitcherManager {
     const val USER_DEF_KEYCODE_TEXTEDIT_7 = -7
 
     /**
+     * User defined key code, used by soft keyboard. 表情逗号。
+     */
+    const val USER_DEF_KEYCODE_EMOJI_8 = -8
+
+    /**
+     * User defined key code, used by soft keyboard. 方向控制。
+     */
+    const val USER_DEF_KEYCODE_CURSOR_DIRECTION_9 = -9
+
+    /**
      * User defined key code, used by soft keyboard. 语言键的code,九宫格、手写符号侧栏占位符。
      */
     const val USER_DEF_KEYCODE_LEFT_SYMBOL_12 = -12

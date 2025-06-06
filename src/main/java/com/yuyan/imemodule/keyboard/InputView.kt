@@ -273,6 +273,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      * 响应软键盘按键的处理函数。在软键盘集装箱SkbContainer中responseKeyEvent（）的调用。
      * 软键盘集装箱SkbContainer的responseKeyEvent（）在自身类中调用。
      */
+    var isT94Number = false
     override fun responseKeyEvent(sKey: SoftKey) {
         val keyCode = sKey.keyCode
         if (sKey.isKeyCodeKey) {  // 系统的keycode,单独处理
@@ -289,19 +290,27 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 (KeyboardManager.instance.currentContainer as? SymbolContainer)?.setSymbolsView()
             } else  if (InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 == keyCode) {  // 点击表情按钮
                 onSettingsMenuClick(SkbMenuMode.Emojicon)
+            } else  if (InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1 == keyCode) {
+                if(InputModeSwitcherManager.isChineseT9){
+                    InputModeSwitcherManager.switchModeForUserKey(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5)
+                } else  if(InputModeSwitcherManager.isNumberSkb){
+                    InputModeSwitcherManager.switchModeForUserKey(InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6)
+                } else {
+                    InputModeSwitcherManager.switchModeForUserKey(keyCode)
+                }
             } else if ( keyCode in InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6 .. InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1) {
                 InputModeSwitcherManager.switchModeForUserKey(keyCode)
             } else if ( keyCode in InputModeSwitcherManager.USER_DEF_KEYCODE_PASTE .. InputModeSwitcherManager.USER_DEF_KEYCODE_CUT) {
-                commitTestEditMenu(textEditMenuPreset[keyCode])
+                commitTestEditMenu(KeyPreset.textEditMenuPreset[keyCode])
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_MOVE_START) {
                 service.setSelection(0, if(hasSelection) selEnd else 0)
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_MOVE_END) {
                 if(hasSelection) {
                     val start =  selStart
-                    commitTestEditMenu(textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
+                    commitTestEditMenu(KeyPreset.textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
                     this.postDelayed(50) { service.setSelection(start, selEnd) }
                 } else {
-                    commitTestEditMenu(textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
+                    commitTestEditMenu(KeyPreset.textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
                     service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
                 }
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE) {
@@ -310,7 +319,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL) {
                 hasSelectionAll = !hasSelectionAll
                 if(!hasSelectionAll) service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
-                else commitTestEditMenu(textEditMenuPreset[keyCode])
+                else commitTestEditMenu(KeyPreset.textEditMenuPreset[keyCode])
             }else if(sKey.keyLabel.isNotBlank()){
                 if(SymbolPreset.containsKey(sKey.keyLabel))commitPairSymbol(sKey.keyLabel)
                 else commitText(sKey.keyLabel)
@@ -340,6 +349,9 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 else commitText(result.second)
             }
             PopupMenuMode.SwitchIME -> InputMethodUtil.showPicker()
+            PopupMenuMode.EMOJI -> {
+                onSettingsMenuClick(SkbMenuMode.Emojicon)
+            }
             PopupMenuMode.EnglishCell -> {
                 getInstance().input.abcSearchEnglishCell.setValue(!getInstance().input.abcSearchEnglishCell.getValue())
                 KeyboardManager.instance.switchKeyboard()

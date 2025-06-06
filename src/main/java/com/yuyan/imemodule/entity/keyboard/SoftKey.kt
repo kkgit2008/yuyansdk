@@ -3,6 +3,7 @@ package com.yuyan.imemodule.entity.keyboard
 import android.graphics.drawable.Drawable
 import android.view.KeyEvent
 import com.yuyan.imemodule.keyboard.keyIconRecords
+import com.yuyan.imemodule.manager.InputModeSwitcherManager
 import java.util.Objects
 
 /**
@@ -121,7 +122,8 @@ open class SoftKey {
      * 是否有重复按下功能，即连长按这个按键是否执行重复的操作。
      */
     fun repeatable(): Boolean {
-        return keyCode == KeyEvent.KEYCODE_DEL || keyCode in KeyEvent.KEYCODE_DPAD_UP .. KeyEvent.KEYCODE_DPAD_RIGHT
+        return keyCode == KeyEvent.KEYCODE_DEL || keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9
+                || keyCode in KeyEvent.KEYCODE_DPAD_UP .. KeyEvent.KEYCODE_DPAD_RIGHT
     }
 
     fun width(): Int {
