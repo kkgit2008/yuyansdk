@@ -10,7 +10,11 @@
         android:layout_centerInParent="true"
         android:singleLine="true"
         android:ellipsize="none"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"/>
     <TextView
         android:id="@+id/tv_sdb_symbols_item"
         android:layout_width="wrap_content"
