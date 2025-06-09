@@ -379,7 +379,7 @@ class KeyboardLoaderUtil private constructor() {
         val t9Keys = when(skbValue){
             0x2000, 0x3000, 0x7000  ->{
                 if(skbStyleMode == SkbStyleMode.Google){
-                    createQwertyKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5, InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                    createT9Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5, InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
                         KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14))
                 } else if(skbStyleMode == SkbStyleMode.Samsung){
                     createT9Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
@@ -415,7 +415,10 @@ class KeyboardLoaderUtil private constructor() {
             }
             0x9000 -> {
                 softKeyToggle.heightF = 0.2f
-                if (skbStyleMode == SkbStyleMode.Samsung) {
+                if(skbStyleMode == SkbStyleMode.Google){
+                    createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5, InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                        KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14))
+                } else if (skbStyleMode == SkbStyleMode.Samsung) {
                     createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
                         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
                 } else {
@@ -428,7 +431,7 @@ class KeyboardLoaderUtil private constructor() {
                     createQwertyPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5, InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
                         KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14))
                 } else if (skbStyleMode == SkbStyleMode.Samsung) {
-                    createQwertyKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                    createQwertyPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
                         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
                 } else {
                     createQwertyPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
@@ -437,7 +440,7 @@ class KeyboardLoaderUtil private constructor() {
             }
         }
         if (skbStyleMode == SkbStyleMode.Google) {
-            if(skbValue == 0x4000)t9Keys[1].stateId = 1
+            t9Keys[2].stateId = 2
             if(t9Keys.size == 6){
                 t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
                 t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.2f
@@ -661,27 +664,29 @@ class KeyboardLoaderUtil private constructor() {
        val result =  when(skbStyleMode){
            SkbStyleMode.Samsung ->{
                if (key == "qwertyKeyNumberPreset"){
-                   KeyPreset.qwertyKeyNumberPreset
+                   KeyPresetSamsung.qwertyKeyNumberPreset
                } else if (key == "qwertyPYKeyPreset"){
-                   KeyPreset.qwertyPYKeyPreset
+                   KeyPresetSamsung.qwertyPYKeyPreset
                } else if (key == "qwertyPYKeyNumberPreset"){
-                   KeyPreset.qwertyPYKeyNumberPreset
+                   KeyPresetSamsung.qwertyPYKeyNumberPreset
                } else if (key == "qwertyCangjieKeyPreset"){
-                   KeyPreset.qwertyCangjieKeyPreset
+                   KeyPresetSamsung.qwertyCangjieKeyPreset
                } else if (key == "qwertyBopomofoKeyPreset"){
-                   KeyPreset.qwertyBopomofoKeyPreset
+                   KeyPresetSamsung.qwertyBopomofoKeyPreset
                } else if (key == "lx17PYKeyPreset"){
-                   KeyPreset.lx17PYKeyPreset
+                   KeyPresetSamsung.lx17PYKeyPreset
                } else  if (key == "lx17PYKeyNumberPreset"){
-                   KeyPreset.lx17PYKeyNumberPreset
+                   KeyPresetSamsung.lx17PYKeyNumberPreset
                } else  if (key == "t9PYKeyPreset"){
-                   KeyPreset.t9PYKeyPreset
+                   KeyPresetSamsung.t9PYKeyPreset
                } else  if (key == "t9NumberKeyPreset"){
-                   KeyPreset.t9NumberKeyPreset
+                   KeyPresetSamsung.t9NumberKeyPreset
+               } else  if (key == "strokeKeyPreset"){
+                   KeyPresetSamsung.strokeKeyPreset
                } else  if (key == "textEditKeyPreset"){
-                   KeyPreset.textEditKeyPreset
+                   KeyPresetSamsung.textEditKeyPreset
                } else {
-                   KeyPreset.qwertyKeyPreset
+                   KeyPresetSamsung.qwertyKeyPreset
                }
            }
            SkbStyleMode.Google ->{
@@ -703,6 +708,8 @@ class KeyboardLoaderUtil private constructor() {
                    KeyPresetGoogle.t9PYKeyPreset
                } else  if (key == "t9NumberKeyPreset"){
                    KeyPresetGoogle.t9NumberKeyPreset
+               } else  if (key == "strokeKeyPreset"){
+                   KeyPresetGoogle.strokeKeyPreset
                } else  if (key == "textEditKeyPreset"){
                    KeyPresetGoogle.textEditKeyPreset
                } else {
@@ -711,27 +718,29 @@ class KeyboardLoaderUtil private constructor() {
            }
            else -> {
                if (key == "qwertyKeyNumberPreset"){
-                   KeyPresetSamsung.qwertyKeyNumberPreset
+                   KeyPreset.qwertyKeyNumberPreset
                } else if (key == "qwertyPYKeyPreset"){
-                   KeyPresetSamsung.qwertyPYKeyPreset
+                   KeyPreset.qwertyPYKeyPreset
                } else if (key == "qwertyPYKeyNumberPreset"){
-                   KeyPresetSamsung.qwertyPYKeyNumberPreset
+                   KeyPreset.qwertyPYKeyNumberPreset
                } else if (key == "qwertyCangjieKeyPreset"){
-                   KeyPresetSamsung.qwertyCangjieKeyPreset
+                   KeyPreset.qwertyCangjieKeyPreset
                } else if (key == "qwertyBopomofoKeyPreset"){
-                   KeyPresetSamsung.qwertyBopomofoKeyPreset
+                   KeyPreset.qwertyBopomofoKeyPreset
                } else if (key == "lx17PYKeyPreset"){
-                   KeyPresetSamsung.lx17PYKeyPreset
+                   KeyPreset.lx17PYKeyPreset
                } else  if (key == "lx17PYKeyNumberPreset"){
-                   KeyPresetSamsung.lx17PYKeyNumberPreset
+                   KeyPreset.lx17PYKeyNumberPreset
                } else  if (key == "t9PYKeyPreset"){
-                   KeyPresetSamsung.t9PYKeyPreset
+                   KeyPreset.t9PYKeyPreset
                } else  if (key == "t9NumberKeyPreset"){
-                   KeyPresetSamsung.t9NumberKeyPreset
+                   KeyPreset.t9NumberKeyPreset
+               } else  if (key == "strokeKeyPreset"){
+                   KeyPreset.strokeKeyPreset
                } else  if (key == "textEditKeyPreset"){
-                   KeyPresetSamsung.textEditKeyPreset
+                   KeyPreset.textEditKeyPreset
                } else {
-                   KeyPresetSamsung.qwertyKeyPreset
+                   KeyPreset.qwertyKeyPreset
                }
            }
        }
