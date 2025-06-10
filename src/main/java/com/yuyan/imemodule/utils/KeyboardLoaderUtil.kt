@@ -327,34 +327,60 @@ class KeyboardLoaderUtil private constructor() {
             }
             0x9000 -> {  // 9000  注音键盘
                 var keyBeans = mutableListOf<SoftKey>()
-                val keys =  arrayListOf(
-                    arrayOf('b'.code, 'd'.code, '3'.code, '4'.code, 'Z'.code, '2'.code, '5'.code, 'a'.code, 'A'.code, 'M'.code, 'R'.code,),
-                    arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code,),
-                    arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code,),
-                    arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code, KeyEvent.KEYCODE_DEL),)
-                var qwertyKeys = createBopomofoPYKeys(keys[0])
-                keyBeans.addAll(qwertyKeys)
-                rows.add(keyBeans)
-                keyBeans = LinkedList()
-                qwertyKeys = createBopomofoPYKeys(keys[1])
-                qwertyKeys.first().apply {
-                    mLeftF = 0.06f
+                if(skbStyleMode == SkbStyleMode.Google) {
+                    val keys = arrayListOf(
+                        arrayOf('b'.code,'d'.code, '3'.code, '4'.code,  'Z'.code, '2'.code,'5'.code, 'a'.code, 'A'.code, 'M'.code,),
+                        arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code,),
+                        arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code,),
+                        arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code,))
+                    var qwertyKeys = createBopomofoPYKeys(keys[0])
+                    keyBeans.addAll(qwertyKeys)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    qwertyKeys = createBopomofoPYKeys(keys[1])
+                    keyBeans.addAll(qwertyKeys)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    qwertyKeys = createBopomofoPYKeys(keys[2])
+                    keyBeans.addAll(qwertyKeys)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    qwertyKeys = createBopomofoPYKeys(keys[3])
+                    keyBeans.addAll(qwertyKeys)
+                    rows.add(keyBeans)
+                    keyBeans = lastRows(skbValue)
+                    rows.add(keyBeans)
+                } else {
+                    val keys = arrayListOf(
+                        arrayOf('b'.code, 'd'.code, '3'.code, '4'.code, 'Z'.code, '2'.code, '5'.code, 'a'.code, 'A'.code, 'M'.code, 'R'.code,),
+                        arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code,),
+                        arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code,),
+                        arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code, KeyEvent.KEYCODE_DEL),
+                    )
+                    var qwertyKeys = createBopomofoPYKeys(keys[0])
+                    keyBeans.addAll(qwertyKeys)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    qwertyKeys = createBopomofoPYKeys(keys[1])
+                    qwertyKeys.first().apply {
+                        mLeftF = 0.06f
+                    }
+                    keyBeans.addAll(qwertyKeys)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    qwertyKeys = createBopomofoPYKeys(keys[2])
+                    qwertyKeys.first().apply {
+                        mLeftF = 0.06f
+                    }
+                    keyBeans.addAll(qwertyKeys)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    qwertyKeys = createBopomofoPYKeys(keys[3])
+                    keyBeans.addAll(qwertyKeys)
+                    rows.add(keyBeans)
+                    keyBeans = lastRows(skbValue)
+                    rows.add(keyBeans)
                 }
-                keyBeans.addAll(qwertyKeys)
-                rows.add(keyBeans)
-                keyBeans = LinkedList()
-                qwertyKeys = createBopomofoPYKeys(keys[2])
-                qwertyKeys.first().apply {
-                    mLeftF = 0.06f
-                }
-                keyBeans.addAll(qwertyKeys)
-                rows.add(keyBeans)
-                keyBeans = LinkedList()
-                qwertyKeys = createBopomofoPYKeys(keys[3])
-                keyBeans.addAll(qwertyKeys)
-                rows.add(keyBeans)
-                keyBeans = lastRows(skbValue)
-                rows.add(keyBeans)
             }
         }
         val numberLineSkb = when(skbStyleMode){
@@ -419,8 +445,8 @@ class KeyboardLoaderUtil private constructor() {
             0x9000 -> {
                 softKeyToggle.heightF = 0.2f
                 if(skbStyleMode == SkbStyleMode.Google){
-                    createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5, InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
-                        KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14))
+                    createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                        KeyEvent.KEYCODE_SPACE, 'R'.code, KeyEvent.KEYCODE_DEL))
                 } else if (skbStyleMode == SkbStyleMode.Samsung) {
                     createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
                         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
@@ -446,10 +472,10 @@ class KeyboardLoaderUtil private constructor() {
             t9Keys[2].stateId = 2
             when (t9Keys.size) {
                 6 -> {
-                    t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
-                    t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.2f
-                    t9Keys[4].widthF = 0.099f;t9Keys[5].widthF = 0.1457f
-                    softKeyToggle.widthF = 0.1457f
+                    t9Keys[0].widthF = 0.185f;t9Keys[1].widthF = 0.1f
+                    t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.23f
+                    t9Keys[4].widthF = 0.1f;t9Keys[5].widthF = 0.1f
+                    softKeyToggle.widthF = 0.185f
                 }
                 5 -> {
                     t9Keys[0].widthF = 0.185f;t9Keys[1].widthF = 0.1f
@@ -595,7 +621,7 @@ class KeyboardLoaderUtil private constructor() {
         for(code in codes){
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", "").apply {
-                widthF = 0.09f
+                widthF = if (skbStyleMode == SkbStyleMode.Google)0.099f else 0.09f
                 heightF = 0.2f
             })
         }

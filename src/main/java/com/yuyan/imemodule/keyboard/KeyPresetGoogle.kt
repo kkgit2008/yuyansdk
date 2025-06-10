@@ -240,7 +240,7 @@ object KeyPresetGoogle{
         'U'.code to arrayOf("ㄡ", "!"),
         'G'.code to arrayOf("ㄥ", "?"),
         '1'.code to arrayOf("ˉ", " "),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13 to arrayOf("，"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13 to arrayOf("，", "。"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 to arrayOf("。"),
         62 to arrayOf("注音"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
