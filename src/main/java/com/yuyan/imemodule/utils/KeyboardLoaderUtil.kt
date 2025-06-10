@@ -482,6 +482,8 @@ class KeyboardLoaderUtil private constructor() {
                 t9Keys[2].widthF = 0.336f;t9Keys[3].widthF = 0.147f
             }
         }
+        keyBeans.addAll(t9Keys)
+        keyBeans.add(softKeyToggle)
         return keyBeans
     }
 

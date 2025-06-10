@@ -163,7 +163,8 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             val env = instance
             mNormalKeyTextSize = env.keyTextSize
             mNormalKeyTextSizeSmall = env.keyTextSmallSize
-            val keyXMargin = mSoftKeyboard!!.keyXMargin
+            val keyXMargin = if(skbStyleMode == SkbStyleMode.Google && !InputModeSwitcherManager.isChineseT9)mSoftKeyboard!!.keyXMargin/2
+                else mSoftKeyboard!!.keyXMargin
             val keyYMargin = mSoftKeyboard!!.keyYMargin
             for (softKeys in mSoftKeyboard!!.mKeyRows) {
                 for (softKey in softKeys) {
@@ -269,8 +270,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         } else if (!TextUtils.isEmpty(keyLabel)) { //Label位于中间
             mPaint.color = textColor
             if(keyboardFontBold) mPaint.setTypeface(Typeface.DEFAULT_BOLD)
-            mPaint.textSize =  if(keyLabel.length == 1 && (StringUtils.isLetter(keyLabel) || StringUtils.isNumber(keyLabel))) mNormalKeyTextSize * 1.4f
-            else mNormalKeyTextSize.toFloat()
+            mPaint.textSize =  mNormalKeyTextSize * 1.4f
             val x = softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabel)) / 2.0f
             val fontHeight = mFmi.bottom - mFmi.top
             val y = if(keyLabelSmall.isEmpty()) (softKey.mTop + softKey.mBottom) / 2.0f + fontHeight
