@@ -267,11 +267,8 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         val textColor = mActiveTheme.keyTextColor
         if (keyboardSymbol && !TextUtils.isEmpty(keyLabelSmall)) {
             mPaint.color = textColor
-            if(skbStyleMode == SkbStyleMode.Google){
-                mPaint.setTypeface(Typeface.DEFAULT_BOLD)
-            } else {
-                mPaint.setTypeface(Typeface.DEFAULT)
-            }
+            mPaint.setTypeface(if(skbStyleMode == SkbStyleMode.Google)Typeface.DEFAULT_BOLD else Typeface.DEFAULT)
+            if(skbStyleMode == SkbStyleMode.Samsung)mPaint.alpha = 128
             mPaint.textSize = mNormalKeyTextSizeSmall.toFloat()
             val x = when(prefs.skbStyleMode.getValue()){
                 SkbStyleMode.Yuyan -> softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
