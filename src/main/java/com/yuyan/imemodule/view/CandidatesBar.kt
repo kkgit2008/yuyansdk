@@ -35,6 +35,7 @@ import com.yuyan.imemodule.keyboard.container.CandidatesContainer
 import com.yuyan.imemodule.keyboard.container.ClipBoardContainer
 import com.yuyan.imemodule.keyboard.container.InputBaseContainer
 import com.yuyan.imemodule.manager.layout.CustomLinearLayoutManager
+import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
 import splitties.dimensions.dp
 
 /**
@@ -140,7 +141,11 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
                 gravity = Gravity.CENTER_VERTICAL
             }
             mIvMenuSetting = ImageView(context).apply {
-                setImageResource(R.drawable.sdk_level_candidates_menu_left)
+                setImageResource(when(ThemeManager.prefs.skbStyleMode.getValue()){
+                        SkbStyleMode.Samsung -> R.drawable.sdk_level_candidates_menu_left_samsung
+                        SkbStyleMode.Google -> R.drawable.sdk_level_candidates_menu_left_google
+                        else -> R.drawable.sdk_level_candidates_menu_left
+                    })
                 isClickable = true
                 isEnabled = true
                 setPadding(mMenuPadding, 0,mMenuPadding/2,0)
@@ -344,6 +349,11 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
 
     // 刷新主题
     fun updateTheme(textColor: Int) {
+        mIvMenuSetting.setImageResource(when(ThemeManager.prefs.skbStyleMode.getValue()){
+                SkbStyleMode.Samsung -> R.drawable.sdk_level_candidates_menu_left_samsung
+                SkbStyleMode.Google -> R.drawable.sdk_level_candidates_menu_left_google
+                else -> R.drawable.sdk_level_candidates_menu_left
+            })
         mRightArrowBtn.drawable.setTint(textColor)
         mMenuRightArrowBtn.drawable.setTint(textColor)
         mIvMenuSetting.drawable.setTint(textColor)

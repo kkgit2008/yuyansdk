@@ -211,7 +211,8 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             val background = when (softKey.keyCode) {
                 InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 -> {
                     if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.keyBackgroundColor
-                    else mActiveTheme.functionKeyBackgroundColor
+                    else if(skbStyleMode == SkbStyleMode.Google) mActiveTheme.functionKeyBackgroundColor
+                    else mActiveTheme.keyBackgroundColor
                 }
                 KeyEvent.KEYCODE_ENTER -> {
                     if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.functionKeyBackgroundColor
