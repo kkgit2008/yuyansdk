@@ -25,6 +25,7 @@ import kotlin.math.max
 import kotlin.math.min
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
+import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.data.theme.ThemeManager
 import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
 import com.yuyan.imemodule.utils.StringUtils
@@ -198,23 +199,46 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
                 bg.cornerRadius = bgHeight/2f
                 bg.draw(canvas)
             }
+        } else if(skbStyleMode == SkbStyleMode.Samsung){
+            if(InputModeSwitcherManager.isChineseT9){
+
+            }
         }
         if (softKey.pressed || (mService?.hasSelection == true && softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE)) {
             bg.setColor(mActiveTheme.keyPressHighlightColor)
             bg.draw(canvas)
         } else if (isKeyBorder) {
             val background = when (softKey.keyCode) {
-                KeyEvent.KEYCODE_ENTER ->  if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.functionKeyBackgroundColor
-                else mActiveTheme.accentKeyBackgroundColor
+                InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 -> {
+                    if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.keyBackgroundColor
+                    else mActiveTheme.functionKeyBackgroundColor
+                }
+                KeyEvent.KEYCODE_ENTER -> {
+                    if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.functionKeyBackgroundColor
+                    else mActiveTheme.accentKeyBackgroundColor
+                }
+                InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2->{
+                    if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.functionKeyBackgroundColor
+                    else mActiveTheme.keyBackgroundColor
+                }
+                InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13->{
+                    if(skbStyleMode == SkbStyleMode.Google) mActiveTheme.functionKeyBackgroundColor
+                    else mActiveTheme.keyBackgroundColor
+                }
                 InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1,
-                InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
                 InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3,
                 InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
                 InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8,
-                InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14,
                 InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9,
                 InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12,
-                KeyEvent.KEYCODE_CLEAR,KeyEvent.KEYCODE_DEL,7 ->  mActiveTheme.functionKeyBackgroundColor
+                KeyEvent.KEYCODE_CLEAR,KeyEvent.KEYCODE_DEL,7 ->  {
+                    if(skbStyleMode == SkbStyleMode.Samsung || skbStyleMode == SkbStyleMode.Google) mActiveTheme.functionKeyBackgroundColor
+                    else mActiveTheme.keyBackgroundColor
+                }
+                0 -> {
+                    if(skbStyleMode == SkbStyleMode.Samsung && DecodingInfo.getCurrentRimeSchema() == CustomConstant.SCHEMA_ZH_T9) mActiveTheme.functionKeyBackgroundColor
+                    else mActiveTheme.keyBackgroundColor
+                }
                 else ->  mActiveTheme.keyBackgroundColor
             }
             bg.setColor(background)

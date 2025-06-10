@@ -113,47 +113,76 @@ class KeyboardLoaderUtil private constructor() {
             }
             0x2000 -> {  // 2000  T9键键
                 var keyBeans: MutableList<SoftKey> = LinkedList()
-                val keys = if(skbStyleMode == SkbStyleMode.Google){
-                    val keyDeleteOrder = if(ThemeManager.prefs.deleteLocationTop.getValue())Pair(KeyEvent.KEYCODE_DEL, InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1)
-                    else Pair(InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1, KeyEvent.KEYCODE_DEL)
-                    arrayListOf(
-                        arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12, 75, 9, 10, keyDeleteOrder.first),
-                        arrayOf(11, 12, 13, InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9),
-                        arrayOf(14, 15, 16, keyDeleteOrder.second),)
-                } else {
-                    val keyDeleteOrder = if (skbStyleMode == SkbStyleMode.Samsung) {
-                            if (ThemeManager.prefs.deleteLocationTop.getValue()) Pair(KeyEvent.KEYCODE_DEL, 7) else Pair(7, KeyEvent.KEYCODE_DEL)
-                        } else {
-                            if (ThemeManager.prefs.deleteLocationTop.getValue()) Pair(KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_AT) else Pair(KeyEvent.KEYCODE_AT, KeyEvent.KEYCODE_DEL)
-                        }
-                    arrayListOf(
-                        arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12, 75, 9, 10, keyDeleteOrder.first),
+                if(skbStyleMode == SkbStyleMode.Samsung){
+                    val keyDeleteOrder = if (ThemeManager.prefs.deleteLocationTop.getValue()) Pair(KeyEvent.KEYCODE_DEL, 7) else Pair(7, KeyEvent.KEYCODE_DEL)
+                    val keys =   arrayListOf(
+                        arrayOf(75, 9, 10, keyDeleteOrder.first),
                         arrayOf(11, 12, 13, KeyEvent.KEYCODE_CLEAR),
                         arrayOf(14, 15, 16, keyDeleteOrder.second),
                     )
+                    val firstKeys = createT9Keys(arrayOf("，", "。", "？"))
+                    firstKeys.forEach {
+                        it.widthF = 0.18f
+                    }
+                    var t9Key = createT9Keys(keys[0])
+                    t9Key.last().widthF = 0.18f
+                    keyBeans.add(firstKeys[0])
+                    keyBeans.addAll(t9Key)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    t9Key = createT9Keys(keys[1])
+                    t9Key.last().widthF = 0.18f
+                    keyBeans.add(firstKeys[1])
+                    keyBeans.addAll(t9Key)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    t9Key = createT9Keys(keys[2])
+                    t9Key.last().widthF = 0.18f
+                    keyBeans.add(firstKeys[2])
+                    keyBeans.addAll(t9Key)
+                    rows.add(keyBeans)
+                    keyBeans = lastRows(skbValue)
+                    rows.add(keyBeans)
+                } else {
+                    val keys = if (skbStyleMode == SkbStyleMode.Google) {
+                        val keyDeleteOrder = if (ThemeManager.prefs.deleteLocationTop.getValue()) Pair(KeyEvent.KEYCODE_DEL, InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1)
+                            else Pair(InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1, KeyEvent.KEYCODE_DEL)
+                        arrayListOf(
+                            arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12, 75, 9, 10, keyDeleteOrder.first),
+                            arrayOf(11, 12, 13, InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9),
+                            arrayOf(14, 15, 16, keyDeleteOrder.second),
+                        )
+                    } else {
+                        val keyDeleteOrder = if (ThemeManager.prefs.deleteLocationTop.getValue()) Pair(KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_AT) else Pair(KeyEvent.KEYCODE_AT, KeyEvent.KEYCODE_DEL)
+                        arrayListOf(
+                            arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12, 75, 9, 10, keyDeleteOrder.first),
+                            arrayOf(11, 12, 13, KeyEvent.KEYCODE_CLEAR),
+                            arrayOf(14, 15, 16, keyDeleteOrder.second),
+                        )
+                    }
+                    var t9Key = createT9Keys(keys[0])
+                    t9Key.first().apply {
+                        widthF = 0.18f
+                        heightF = 0.75f
+                    }
+                    t9Key.last().widthF = 0.18f
+                    keyBeans.addAll(t9Key)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    t9Key = createT9Keys(keys[1])
+                    t9Key.first().mLeftF = 0.185f
+                    t9Key.last().widthF = 0.18f
+                    keyBeans.addAll(t9Key)
+                    rows.add(keyBeans)
+                    keyBeans = LinkedList()
+                    t9Key = createT9Keys(keys[2])
+                    t9Key.first().mLeftF = 0.185f
+                    t9Key.last().widthF = 0.18f
+                    keyBeans.addAll(t9Key)
+                    rows.add(keyBeans)
+                    keyBeans = lastRows(skbValue)
+                    rows.add(keyBeans)
                 }
-                var t9Key = createT9Keys(keys[0])
-                t9Key.first().apply {
-                    widthF = 0.18f
-                    heightF = 0.75f
-                }
-                t9Key.last().widthF = 0.18f
-                keyBeans.addAll(t9Key)
-                rows.add(keyBeans)
-                keyBeans = LinkedList()
-                t9Key = createT9Keys(keys[1])
-                t9Key.first().mLeftF = 0.185f
-                t9Key.last().widthF = 0.18f
-                keyBeans.addAll(t9Key)
-                rows.add(keyBeans)
-                keyBeans = LinkedList()
-                t9Key = createT9Keys(keys[2])
-                t9Key.first().mLeftF = 0.185f
-                t9Key.last().widthF = 0.18f
-                keyBeans.addAll(t9Key)
-                rows.add(keyBeans)
-                keyBeans = lastRows(skbValue)
-                rows.add(keyBeans)
             }
             0x3000 -> {// 3000 手写键盘
                 var keyBeans: MutableList<SoftKey> = LinkedList()
@@ -267,8 +296,8 @@ class KeyboardLoaderUtil private constructor() {
                 val keyDeleteOrder = if(ThemeManager.prefs.deleteLocationTop.getValue())Pair(KeyEvent.KEYCODE_DEL, KeyEvent.KEYCODE_AT) else Pair(KeyEvent.KEYCODE_AT, KeyEvent.KEYCODE_DEL)
                 val keys = arrayListOf(
                     arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12, 36, 47, 44, keyDeleteOrder.first),
-                    arrayOf(42, 54, InputModeSwitcherManager.USER_DEF_KEYCODE_STAR_17, KeyEvent.KEYCODE_CLEAR),
-                    arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, 75, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, keyDeleteOrder.second),)
+                    arrayOf(42, 54, 17, KeyEvent.KEYCODE_CLEAR),
+                    arrayOf(69, 75, 70, keyDeleteOrder.second),)
                 var t9Key = createT9Keys(keys[0])
                 t9Key.first().apply {
                     widthF = 0.18f
@@ -567,6 +596,16 @@ class KeyboardLoaderUtil private constructor() {
             }
         }
         return SoftKeyboard(rows)
+    }
+
+    private fun createT9Keys(chars: Array<String>): Array<SoftKey> {
+        val softKeys = mutableListOf<SoftKey>()
+        for(char in chars){
+            softKeys.add(SoftKey(0, char, "").apply {
+                widthF = 0.21f
+            })
+        }
+        return softKeys.toTypedArray()
     }
 
     private fun createT9Keys(codes: Array<Int>): Array<SoftKey> {
