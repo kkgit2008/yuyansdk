@@ -269,26 +269,31 @@ object InputModeSwitcherManager {
 
     // 记录SHIFT点击时间，作为双击判断
     private var lsatClickTime = 0L
+
+    // 中文模式，临时切换为英文
+    private var isChineseMode = true
     /**
      * 通过我们定义的软键盘的按键，切换输入法模式。
      */
     fun switchModeForUserKey(userKey: Int) {
         var newInputMode = MODE_UNSET
         if (USER_DEF_KEYCODE_SHIFT_1 == userKey) {
-            // shift键：显示“，” 或者 大小写图标的按键。
             newInputMode = if(System.currentTimeMillis() - lsatClickTime < 300){
                 MODE_SKB_ENGLISH_UPPER_LOCK
             } else if (MODE_SKB_ENGLISH_LOWER == mInputMode) {
                 MODE_SKB_ENGLISH_UPPER
+            } else if (MODE_SKB_ENGLISH_UPPER == mInputMode || MODE_SKB_ENGLISH_UPPER_LOCK == mInputMode){
+                if(isChineseMode) getInstance().internal.inputMethodPinyinMode.getValue() else MODE_SKB_ENGLISH_LOWER
             } else {
                 MODE_SKB_ENGLISH_LOWER
             }
             lsatClickTime = System.currentTimeMillis()
         } else if (USER_DEF_KEYCODE_LANG_2 == userKey) {
-            // 语言键：显示中文或者英文、中符、英符的键
             newInputMode = if (isChinese) {
+                isChineseMode = false
                 MODE_SKB_ENGLISH_LOWER
             } else {
+                isChineseMode = true
                 getInstance().internal.inputMethodPinyinMode.getValue()
             }
         } else if (USER_DEF_KEYCODE_NUMBER_5 == userKey) {
