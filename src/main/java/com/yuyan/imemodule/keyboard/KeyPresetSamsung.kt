@@ -369,11 +369,31 @@ object KeyPresetSamsung{
         InputModeSwitcherManager.USER_DEF_KEYCODE_PASTE to arrayOf("粘贴"),
     )
 
-    val textEditMenuPreset: Map<Int, Int> = hashMapOf(
-        InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL to android.R.id.selectAll,
-        InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE to android.R.id.edit,
-        InputModeSwitcherManager.USER_DEF_KEYCODE_COPY to android.R.id.copy,
-        InputModeSwitcherManager.USER_DEF_KEYCODE_CUT to android.R.id.cut,
-        InputModeSwitcherManager.USER_DEF_KEYCODE_PASTE to android.R.id.paste,
-    )
+    fun getKeyPreset(key:String):Map<Int, Array<String>> {
+        return if (key == "qwertyKeyNumberPreset") {
+            qwertyKeyNumberPreset
+        } else if (key == "qwertyPYKeyPreset") {
+            qwertyPYKeyPreset
+        } else if (key == "qwertyPYKeyNumberPreset") {
+            qwertyPYKeyNumberPreset
+        } else if (key == "qwertyCangjieKeyPreset") {
+            qwertyCangjieKeyPreset
+        } else if (key == "qwertyBopomofoKeyPreset") {
+            qwertyBopomofoKeyPreset
+        } else if (key == "lx17PYKeyPreset") {
+            lx17PYKeyPreset
+        } else if (key == "lx17PYKeyNumberPreset") {
+            lx17PYKeyNumberPreset
+        } else if (key == "t9PYKeyPreset") {
+            t9PYKeyPreset
+        } else if (key == "t9NumberKeyPreset") {
+            t9NumberKeyPreset
+        } else if (key == "strokeKeyPreset") {
+            strokeKeyPreset
+        } else if (key == "textEditKeyPreset") {
+            textEditKeyPreset
+        } else {
+            qwertyKeyPreset
+        }
+    }
 }

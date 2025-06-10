@@ -2,6 +2,8 @@ package com.yuyan.imemodule.keyboard
 
 import android.view.KeyEvent
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
+import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
+
 object KeyPreset {
     val qwertyKeyPreset: Map<Int, Array<String>> = hashMapOf(
         45 to arrayOf("Q", "["),
@@ -374,4 +376,33 @@ object KeyPreset {
         InputModeSwitcherManager.USER_DEF_KEYCODE_CUT to android.R.id.cut,
         InputModeSwitcherManager.USER_DEF_KEYCODE_PASTE to android.R.id.paste,
     )
+
+
+    fun getKeyPreset(key:String):Map<Int, Array<String>> {
+        return if (key == "qwertyKeyNumberPreset") {
+            qwertyKeyNumberPreset
+        } else if (key == "qwertyPYKeyPreset") {
+            qwertyPYKeyPreset
+        } else if (key == "qwertyPYKeyNumberPreset") {
+            qwertyPYKeyNumberPreset
+        } else if (key == "qwertyCangjieKeyPreset") {
+            qwertyCangjieKeyPreset
+        } else if (key == "qwertyBopomofoKeyPreset") {
+            qwertyBopomofoKeyPreset
+        } else if (key == "lx17PYKeyPreset") {
+            lx17PYKeyPreset
+        } else if (key == "lx17PYKeyNumberPreset") {
+            lx17PYKeyNumberPreset
+        } else if (key == "t9PYKeyPreset") {
+            t9PYKeyPreset
+        } else if (key == "t9NumberKeyPreset") {
+            t9NumberKeyPreset
+        } else if (key == "strokeKeyPreset") {
+            strokeKeyPreset
+        } else if (key == "textEditKeyPreset") {
+            textEditKeyPreset
+        } else {
+            qwertyKeyPreset
+        }
+    }
 }

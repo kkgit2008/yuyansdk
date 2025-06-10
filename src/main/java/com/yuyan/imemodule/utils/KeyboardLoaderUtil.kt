@@ -482,8 +482,6 @@ class KeyboardLoaderUtil private constructor() {
                 t9Keys[2].widthF = 0.336f;t9Keys[3].widthF = 0.147f
             }
         }
-        keyBeans.addAll(t9Keys)
-        keyBeans.add(softKeyToggle)
         return keyBeans
     }
 
@@ -534,8 +532,9 @@ class KeyboardLoaderUtil private constructor() {
 
     private fun createT9Keys(codes: Array<Int>): Array<SoftKey> {
         val softKeys = mutableListOf<SoftKey>()
+        val keyPreset =  if(mSkbValue == 0x7000) getKeyPreset("strokeKeyPreset") else getKeyPreset("t9PYKeyPreset")
         for(code in codes){
-            val labels = if(mSkbValue == 0x7000) getKeyPreset("strokeKeyPreset")[code] else getKeyPreset("t9PYKeyPreset")[code]
+            val labels = keyPreset[code]
             softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1)?: "").apply {
                 widthF = 0.21f
             })
@@ -545,8 +544,9 @@ class KeyboardLoaderUtil private constructor() {
 
     private fun createT9NumberKeys(codes: Array<Int>): Array<SoftKey> {
         val softKeys = mutableListOf<SoftKey>()
+        val keyPreset = getKeyPreset("t9NumberKeyPreset")
         for(code in codes){
-            val labels = getKeyPreset("t9NumberKeyPreset")[code]
+            val labels = keyPreset[code]
             softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "").apply {
                 widthF = 0.21f
             })
@@ -578,8 +578,9 @@ class KeyboardLoaderUtil private constructor() {
 
     private fun createBopomofoPYKeys(codes: Array<Int>): Array<SoftKey> {
         val softKeys = mutableListOf<SoftKey>()
+        val keyPreset = getKeyPreset("qwertyBopomofoKeyPreset")
         for(code in codes){
-            val labels = getKeyPreset("qwertyBopomofoKeyPreset")[code]
+            val labels = keyPreset[code]
             softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", "").apply {
                 widthF = 0.09f
                 heightF = 0.2f
@@ -590,8 +591,8 @@ class KeyboardLoaderUtil private constructor() {
 
     private fun createQwertyKeys(codes: Array<Int>): Array<SoftKey> {
         val softKeys = mutableListOf<SoftKey>()
+        val keyPreset = if(numberLine)getKeyPreset("qwertyKeyPreset") else getKeyPreset("qwertyKeyNumberPreset")
         for(code in codes){
-            val keyPreset = if(numberLine)getKeyPreset("qwertyKeyPreset") else getKeyPreset("qwertyKeyNumberPreset")
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", labels?.getOrNull(2) ?: "").apply {
                 widthF = 0.099f
@@ -659,91 +660,11 @@ class KeyboardLoaderUtil private constructor() {
             }
     }
 
-
     fun getKeyPreset(key:String):Map<Int, Array<String>>{
-       val result =  when(skbStyleMode){
-           SkbStyleMode.Samsung ->{
-               if (key == "qwertyKeyNumberPreset"){
-                   KeyPresetSamsung.qwertyKeyNumberPreset
-               } else if (key == "qwertyPYKeyPreset"){
-                   KeyPresetSamsung.qwertyPYKeyPreset
-               } else if (key == "qwertyPYKeyNumberPreset"){
-                   KeyPresetSamsung.qwertyPYKeyNumberPreset
-               } else if (key == "qwertyCangjieKeyPreset"){
-                   KeyPresetSamsung.qwertyCangjieKeyPreset
-               } else if (key == "qwertyBopomofoKeyPreset"){
-                   KeyPresetSamsung.qwertyBopomofoKeyPreset
-               } else if (key == "lx17PYKeyPreset"){
-                   KeyPresetSamsung.lx17PYKeyPreset
-               } else  if (key == "lx17PYKeyNumberPreset"){
-                   KeyPresetSamsung.lx17PYKeyNumberPreset
-               } else  if (key == "t9PYKeyPreset"){
-                   KeyPresetSamsung.t9PYKeyPreset
-               } else  if (key == "t9NumberKeyPreset"){
-                   KeyPresetSamsung.t9NumberKeyPreset
-               } else  if (key == "strokeKeyPreset"){
-                   KeyPresetSamsung.strokeKeyPreset
-               } else  if (key == "textEditKeyPreset"){
-                   KeyPresetSamsung.textEditKeyPreset
-               } else {
-                   KeyPresetSamsung.qwertyKeyPreset
-               }
-           }
-           SkbStyleMode.Google ->{
-               if (key == "qwertyKeyNumberPreset"){
-                   KeyPresetGoogle.qwertyKeyNumberPreset
-               } else if (key == "qwertyPYKeyPreset"){
-                   KeyPresetGoogle.qwertyPYKeyPreset
-               } else if (key == "qwertyPYKeyNumberPreset"){
-                   KeyPresetGoogle.qwertyPYKeyNumberPreset
-               } else if (key == "qwertyCangjieKeyPreset"){
-                   KeyPresetGoogle.qwertyCangjieKeyPreset
-               } else if (key == "qwertyBopomofoKeyPreset"){
-                   KeyPresetGoogle.qwertyBopomofoKeyPreset
-               } else if (key == "lx17PYKeyPreset"){
-                   KeyPresetGoogle.lx17PYKeyPreset
-               } else  if (key == "lx17PYKeyNumberPreset"){
-                   KeyPresetGoogle.lx17PYKeyNumberPreset
-               } else  if (key == "t9PYKeyPreset"){
-                   KeyPresetGoogle.t9PYKeyPreset
-               } else  if (key == "t9NumberKeyPreset"){
-                   KeyPresetGoogle.t9NumberKeyPreset
-               } else  if (key == "strokeKeyPreset"){
-                   KeyPresetGoogle.strokeKeyPreset
-               } else  if (key == "textEditKeyPreset"){
-                   KeyPresetGoogle.textEditKeyPreset
-               } else {
-                   KeyPresetGoogle.qwertyKeyPreset
-               }
-           }
-           else -> {
-               if (key == "qwertyKeyNumberPreset"){
-                   KeyPreset.qwertyKeyNumberPreset
-               } else if (key == "qwertyPYKeyPreset"){
-                   KeyPreset.qwertyPYKeyPreset
-               } else if (key == "qwertyPYKeyNumberPreset"){
-                   KeyPreset.qwertyPYKeyNumberPreset
-               } else if (key == "qwertyCangjieKeyPreset"){
-                   KeyPreset.qwertyCangjieKeyPreset
-               } else if (key == "qwertyBopomofoKeyPreset"){
-                   KeyPreset.qwertyBopomofoKeyPreset
-               } else if (key == "lx17PYKeyPreset"){
-                   KeyPreset.lx17PYKeyPreset
-               } else  if (key == "lx17PYKeyNumberPreset"){
-                   KeyPreset.lx17PYKeyNumberPreset
-               } else  if (key == "t9PYKeyPreset"){
-                   KeyPreset.t9PYKeyPreset
-               } else  if (key == "t9NumberKeyPreset"){
-                   KeyPreset.t9NumberKeyPreset
-               } else  if (key == "strokeKeyPreset"){
-                   KeyPreset.strokeKeyPreset
-               } else  if (key == "textEditKeyPreset"){
-                   KeyPreset.textEditKeyPreset
-               } else {
-                   KeyPreset.qwertyKeyPreset
-               }
-           }
+        return  when(skbStyleMode){
+           SkbStyleMode.Samsung ->  KeyPresetSamsung.getKeyPreset(key)
+           SkbStyleMode.Google ->  KeyPresetGoogle.getKeyPreset(key)
+           else -> KeyPreset.getKeyPreset(key)
        }
-        return result
     }
 }
