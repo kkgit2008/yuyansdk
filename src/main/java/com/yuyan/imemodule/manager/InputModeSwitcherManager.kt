@@ -278,6 +278,7 @@ object InputModeSwitcherManager {
     fun switchModeForUserKey(userKey: Int) {
         var newInputMode = MODE_UNSET
         if (USER_DEF_KEYCODE_SHIFT_1 == userKey) {
+            if(isChinese && !isChineseMode)isChineseMode = true
             newInputMode = if(System.currentTimeMillis() - lsatClickTime < 300){
                 MODE_SKB_ENGLISH_UPPER_LOCK
             } else if (MODE_SKB_ENGLISH_LOWER == mInputMode) {
@@ -293,7 +294,6 @@ object InputModeSwitcherManager {
                 isChineseMode = false
                 MODE_SKB_ENGLISH_LOWER
             } else {
-                isChineseMode = true
                 getInstance().internal.inputMethodPinyinMode.getValue()
             }
         } else if (USER_DEF_KEYCODE_NUMBER_5 == userKey) {
@@ -368,6 +368,12 @@ object InputModeSwitcherManager {
          * 是否的9宫格中文语言
          */
         get() = mInputMode and (MASK_SKB_LAYOUT or MASK_LANGUAGE) == MODE_T9_CHINESE
+
+    val isQwert: Boolean
+        /**
+         * 是否的全键中文语言
+         */
+        get() = mInputMode and MASK_SKB_LAYOUT == MASK_SKB_LAYOUT_QWERTY_PINYIN || mInputMode and MASK_SKB_LAYOUT == MASK_SKB_LAYOUT_QWERTY_ABC
 
     val isChineseHandWriting: Boolean
         /**

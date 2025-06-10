@@ -163,13 +163,13 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             val env = instance
             mNormalKeyTextSize = env.keyTextSize
             mNormalKeyTextSizeSmall = env.keyTextSmallSize
-            val keyXMargin = if(skbStyleMode == SkbStyleMode.Google && !InputModeSwitcherManager.isChineseT9)mSoftKeyboard!!.keyXMargin/2
-                else mSoftKeyboard!!.keyXMargin
-            val keyYMargin = mSoftKeyboard!!.keyYMargin
+            val keyXMargin = mSoftKeyboard!!.keyXMargin
+            val keyYMargin = if(skbStyleMode == SkbStyleMode.Google && InputModeSwitcherManager.isQwert) mSoftKeyboard!!.keyYMargin * 1.5
+                else mSoftKeyboard!!.keyYMargin
             for (softKeys in mSoftKeyboard!!.mKeyRows) {
                 for (softKey in softKeys) {
                     if (drawSingleKey && invalidatedKey !== softKey) continue
-                    canvas?.let { drawSoftKey(it, softKey, keyXMargin, keyYMargin) }
+                    canvas?.let { drawSoftKey(it, softKey, keyXMargin, keyYMargin.toInt()) }
                 }
             }
             mCanvas!!
@@ -243,7 +243,11 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         val textColor = mActiveTheme.keyTextColor
         if (keyboardSymbol && !TextUtils.isEmpty(keyLabelSmall)) {
             mPaint.color = textColor
-            mPaint.setTypeface(Typeface.DEFAULT)
+            if(skbStyleMode == SkbStyleMode.Google){
+                mPaint.setTypeface(Typeface.DEFAULT_BOLD)
+            } else {
+                mPaint.setTypeface(Typeface.DEFAULT)
+            }
             mPaint.textSize = mNormalKeyTextSizeSmall.toFloat()
             val x = when(prefs.skbStyleMode.getValue()){
                 SkbStyleMode.Yuyan -> softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f

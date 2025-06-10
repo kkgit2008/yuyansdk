@@ -39,7 +39,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf(",", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf(","),
     )
 
     val qwertyKeyNumberPreset: Map<Int, Array<String>> = hashMapOf(
@@ -63,7 +63,7 @@ object KeyPresetGoogle{
         39 to arrayOf("K"),
         40 to arrayOf("L"),
         74 to arrayOf(";"),
-        75 to arrayOf("’词"),
+        75 to arrayOf("'词"),
         54 to arrayOf("Z"),
         52 to arrayOf("X"),
         31 to arrayOf("C"),
@@ -77,7 +77,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf(",", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf(","),
     )
 
     val qwertyPYKeyPreset: Map<Int, Array<String>> = hashMapOf(
@@ -115,7 +115,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
     val qwertyPYKeyNumberPreset: Map<Int, Array<String>> = hashMapOf(
@@ -139,7 +139,7 @@ object KeyPresetGoogle{
         39 to arrayOf("k"),
         40 to arrayOf("l"),
         74 to arrayOf("ing"),
-        75 to arrayOf("’词"),
+        75 to arrayOf("'词"),
         54 to arrayOf("z"),
         52 to arrayOf("x"),
         31 to arrayOf("c"),
@@ -153,7 +153,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
     val qwertyCangjieKeyPreset: Map<Int, Array<String>> = hashMapOf(
@@ -177,7 +177,7 @@ object KeyPresetGoogle{
         39 to arrayOf("大", "k"),
         40 to arrayOf("中", "l"),
         74 to arrayOf( ":"),
-        75 to arrayOf("’词"),
+        75 to arrayOf("'词"),
         54 to arrayOf("符", "z"),
         52 to arrayOf("難", "x"),
         31 to arrayOf("金", "c"),
@@ -191,7 +191,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
     val qwertyBopomofoKeyPreset: Map<Int, Array<String>> = hashMapOf(
@@ -205,7 +205,7 @@ object KeyPresetGoogle{
         'a'.code to arrayOf("ㄚ", "8"),
         'A'.code to arrayOf("ㄞ", "9"),
         'M'.code to arrayOf("ㄢ", "0"),
-        'R'.code to arrayOf("ㄦ", "-"),
+        'R'.code to arrayOf("ㄦ"),
 
         'p'.code to arrayOf("ㄆ", "q"),
         't'.code to arrayOf("ㄊ", "w"),
@@ -227,7 +227,7 @@ object KeyPresetGoogle{
         'u'.code to arrayOf("ㄨ", "j"),
         'e'.code to arrayOf("ㄜ", "k"),
         'O'.code to arrayOf("ㄠ", "l"),
-        'K'.code to arrayOf("ㄤ", "；"),
+        'K'.code to arrayOf("ㄤ", ":"),
 
         'f'.code to arrayOf("ㄈ", "z"),
         'l'.code to arrayOf("ㄌ", "x"),
@@ -236,9 +236,9 @@ object KeyPresetGoogle{
         'r'.code to arrayOf("ㄖ", "b"),
         's'.code to arrayOf("ㄙ", "n"),
         'v'.code to arrayOf("ㄩ", "m"),
-        'E'.code to arrayOf("ㄝ", "，"),
-        'U'.code to arrayOf("ㄡ", "。"),
-        'G'.code to arrayOf("ㄥ", "/"),
+        'E'.code to arrayOf("ㄝ", "..."),
+        'U'.code to arrayOf("ㄡ", "!"),
+        'G'.code to arrayOf("ㄥ", "?"),
         '1'.code to arrayOf("ˉ", " "),
         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13 to arrayOf("，"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 to arrayOf("。"),
@@ -246,7 +246,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
     val lx17PYKeyPreset: Map<Int, Array<String>> = hashMapOf(
@@ -273,7 +273,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
     val lx17PYKeyNumberPreset: Map<Int, Array<String>> = hashMapOf(
@@ -300,7 +300,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
     val t9PYKeyPreset: Map<Int, Array<String>> = hashMapOf(
@@ -314,7 +314,7 @@ object KeyPresetGoogle{
         15 to arrayOf("tuv", "8"),
         16 to arrayOf("wxyz", "9"),
         28 to arrayOf("重输"),
-        75 to arrayOf("’词", "1"),
+        75 to arrayOf("'词", "1"),
         77 to arrayOf("@"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13 to arrayOf("，"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 to arrayOf("。"),
@@ -323,7 +323,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6 to arrayOf("返回"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
     val strokeKeyPreset: Map<Int, Array<String>> = hashMapOf(
@@ -340,7 +340,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         77 to arrayOf("@"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
     val t9NumberKeyPreset: Map<Int, Array<String>> = hashMapOf(
@@ -363,7 +363,7 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6 to arrayOf("返回"),
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf(",", "☺"),
+        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf(","),
     )
 
     val textEditKeyPreset: Map<Int, Array<String>> = hashMapOf(

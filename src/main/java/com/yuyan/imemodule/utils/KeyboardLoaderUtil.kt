@@ -405,7 +405,10 @@ class KeyboardLoaderUtil private constructor() {
                 createT9NumberKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6, 7, KeyEvent.KEYCODE_SPACE))
             }
             0x6000 -> {
-                if (skbStyleMode == SkbStyleMode.Samsung) {
+                if(skbStyleMode == SkbStyleMode.Google){
+                    createT9Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5, InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
+                        KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14))
+                } else if (skbStyleMode == SkbStyleMode.Samsung) {
                     createLX17Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
                         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
                 } else {
@@ -441,35 +444,43 @@ class KeyboardLoaderUtil private constructor() {
         }
         if (skbStyleMode == SkbStyleMode.Google) {
             t9Keys[2].stateId = 2
-            if(t9Keys.size == 6){
-                t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
-                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.2f
-                t9Keys[4].widthF = 0.099f;t9Keys[5].widthF = 0.1457f
-                softKeyToggle.widthF = 0.1457f
-            } else if(t9Keys.size == 5){
-                t9Keys[0].widthF = 0.1557f;t9Keys[1].widthF = 0.099f
-                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.38f
-                t9Keys[4].widthF = 0.099f;softKeyToggle.widthF = 0.1557f
-            } else {
-                softKeyToggle.widthF = 0.18f
-                t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.21f
-                t9Keys[2].widthF = 0.21f;t9Keys[3].widthF = 0.21f
+            when (t9Keys.size) {
+                6 -> {
+                    t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
+                    t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.2f
+                    t9Keys[4].widthF = 0.099f;t9Keys[5].widthF = 0.1457f
+                    softKeyToggle.widthF = 0.1457f
+                }
+                5 -> {
+                    t9Keys[0].widthF = 0.185f;t9Keys[1].widthF = 0.1f
+                    t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.33f
+                    t9Keys[4].widthF = 0.1f;softKeyToggle.widthF = 0.185f
+                }
+                else -> {
+                    softKeyToggle.widthF = 0.18f
+                    t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.21f
+                    t9Keys[2].widthF = 0.21f;t9Keys[3].widthF = 0.21f
+                }
             }
         } else if (skbStyleMode == SkbStyleMode.Samsung) {
             if(skbValue == 0x4000)t9Keys[1].stateId = 1
-            if(t9Keys.size == 6){
-                t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
-                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.2f
-                t9Keys[4].widthF = 0.099f;t9Keys[5].widthF = 0.1457f
-                softKeyToggle.widthF = 0.1457f
-            } else if(t9Keys.size == 5){
-                t9Keys[0].widthF = 0.16f;t9Keys[1].widthF = 0.099f
-                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.38f
-                t9Keys[4].widthF = 0.099f;softKeyToggle.widthF = 0.16f
-            } else {
-                softKeyToggle.widthF = 0.18f
-                t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.21f
-                t9Keys[2].widthF = 0.21f;t9Keys[3].widthF = 0.21f
+            when (t9Keys.size) {
+                6 -> {
+                    t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
+                    t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.2f
+                    t9Keys[4].widthF = 0.099f;t9Keys[5].widthF = 0.1457f
+                    softKeyToggle.widthF = 0.1457f
+                }
+                5 -> {
+                    t9Keys[0].widthF = 0.16f;t9Keys[1].widthF = 0.099f
+                    t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.38f
+                    t9Keys[4].widthF = 0.099f;softKeyToggle.widthF = 0.16f
+                }
+                else -> {
+                    softKeyToggle.widthF = 0.18f
+                    t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.21f
+                    t9Keys[2].widthF = 0.21f;t9Keys[3].widthF = 0.21f
+                }
             }
         } else {
             if (t9Keys.size == 5) {

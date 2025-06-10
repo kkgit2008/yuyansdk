@@ -91,7 +91,7 @@ class PopupComponent private constructor(){
             KeyEvent.KEYCODE_DEL -> {
                 if(distanceY < 0)  Pair(PopupMenuMode.Revertl,  "🔄 下滑还原") else Pair(PopupMenuMode.Clear,  "🔙 上滑清空")
             }
-            InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9 -> Pair(PopupMenuMode.Move,  "方向")
+            InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9 -> Pair(PopupMenuMode.Move,  "")
             else ->  Pair(PopupMenuMode.Enter,  "↩️ 换行")
         }
         showingEntryUi?.setText("") ?: showPopup("", bounds)
