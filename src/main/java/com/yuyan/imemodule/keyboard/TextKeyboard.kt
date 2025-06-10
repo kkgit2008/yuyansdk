@@ -193,13 +193,8 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         if(skbStyleMode == SkbStyleMode.Google){
             if(softKey.keyCode == KeyEvent.KEYCODE_ENTER || softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5) {
                 bg.setColor(mActiveTheme.accentKeyBackgroundColor)
-                bg.shape = GradientDrawable.OVAL
-                val bgWidth = softKey.width() - (3f * keyXMargin).toInt()
                 val bgHeight = softKey.height() - 2 * keyYMargin
-                val radius = min(bgWidth, bgHeight)*2/3
-                val keyMarginX = (bgWidth - radius)/2
-                val keyMarginY = (bgHeight - radius)/2
-                bg.setBounds(softKey.mLeft + keyMarginX, softKey.mTop + keyMarginY, softKey.mRight - keyMarginX, softKey.mBottom - keyMarginY)
+                bg.cornerRadius = bgHeight/2f
                 bg.draw(canvas)
             }
         }
@@ -251,11 +246,10 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             mPaint.textSize = mNormalKeyTextSizeSmall.toFloat()
             val x = when(prefs.skbStyleMode.getValue()){
                 SkbStyleMode.Yuyan -> softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
-                SkbStyleMode.Samsung -> softKey.mLeft + softKey.width() - mPaint.measureText(keyLabelSmall) * 2.5f
-                SkbStyleMode.Google -> softKey.mLeft + softKey.width() - mPaint.measureText(keyLabelSmall) * 2.5f
+                SkbStyleMode.Samsung -> softKey.mLeft + softKey.width() - mPaint.measureText(keyLabelSmall) * 2.8f
+                SkbStyleMode.Google -> softKey.mLeft + softKey.width() - mPaint.measureText(keyLabelSmall) * 2.8f
             }
-                softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
-            val y = softKey.mTop + weightHeigth
+            val y = softKey.mTop + weightHeigth * 1.1f
             canvas.drawText(keyLabelSmall, x, y, mPaint)
         }
         if (null != keyIcon) {

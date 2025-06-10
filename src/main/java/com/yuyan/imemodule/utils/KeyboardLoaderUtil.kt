@@ -443,13 +443,13 @@ class KeyboardLoaderUtil private constructor() {
             t9Keys[2].stateId = 2
             if(t9Keys.size == 6){
                 t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
-                t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.2f
-                t9Keys[4].widthF = 0.1f;t9Keys[5].widthF = 0.1457f
+                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.2f
+                t9Keys[4].widthF = 0.099f;t9Keys[5].widthF = 0.1457f
                 softKeyToggle.widthF = 0.1457f
             } else if(t9Keys.size == 5){
-                t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1f
-                t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.4086f
-                t9Keys[4].widthF = 0.1f;softKeyToggle.widthF = 0.1457f
+                t9Keys[0].widthF = 0.1557f;t9Keys[1].widthF = 0.099f
+                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.38f
+                t9Keys[4].widthF = 0.099f;softKeyToggle.widthF = 0.1557f
             } else {
                 softKeyToggle.widthF = 0.18f
                 t9Keys[0].widthF = 0.18f;t9Keys[1].widthF = 0.21f
@@ -459,8 +459,8 @@ class KeyboardLoaderUtil private constructor() {
             if(skbValue == 0x4000)t9Keys[1].stateId = 1
             if(t9Keys.size == 6){
                 t9Keys[0].widthF = 0.1457f;t9Keys[1].widthF = 0.1457f
-                t9Keys[2].widthF = 0.1f;t9Keys[3].widthF = 0.2f
-                t9Keys[4].widthF = 0.1f;t9Keys[5].widthF = 0.1457f
+                t9Keys[2].widthF = 0.099f;t9Keys[3].widthF = 0.2f
+                t9Keys[4].widthF = 0.099f;t9Keys[5].widthF = 0.1457f
                 softKeyToggle.widthF = 0.1457f
             } else if(t9Keys.size == 5){
                 t9Keys[0].widthF = 0.16f;t9Keys[1].widthF = 0.099f
