@@ -15,6 +15,7 @@ val keyIconRecords: Map<Int, Drawable?> = mapOf(
     Objects.hash(InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1, 3) to ContextCompat.getDrawable(ImeSdkApplication.context, R.drawable.shift_off_0_icon),
     Objects.hash(InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1, 4) to ContextCompat.getDrawable(ImeSdkApplication.context, R.drawable.shift_on_1_icon),
     Objects.hash(InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1, 5) to ContextCompat.getDrawable(ImeSdkApplication.context, R.drawable.shift_lock_2_icon),
+    Objects.hash(InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1, 7) to ContextCompat.getDrawable(ImeSdkApplication.context, R.drawable.shift_on_7_icon),
     Objects.hash(InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2, 0) to ContextCompat.getDrawable(ImeSdkApplication.context, R.drawable.sdk_skb_key_input_mode_cn_icon),
     Objects.hash(InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2, 1) to ContextCompat.getDrawable(ImeSdkApplication.context, R.drawable.sdk_skb_key_input_mode_en_icon),
     Objects.hash(InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2, 2) to ContextCompat.getDrawable(ImeSdkApplication.context, R.drawable.sdk_skb_key_input_mode_language),

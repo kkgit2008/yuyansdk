@@ -3,6 +3,7 @@ package com.yuyan.imemodule.keyboard
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Paint.FontMetricsInt
 import android.graphics.PorterDuff
@@ -290,7 +291,11 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             val marginRight = softKey.width() - intrinsicWidth - marginLeft
             val marginTop = (softKey.height() - intrinsicHeight) / 2
             val marginBottom = softKey.height() - intrinsicHeight - marginTop
-            keyIcon.setTint(mActiveTheme.keyTextColor)
+            if(skbStyleMode == SkbStyleMode.Google && softKey.keyCode == KeyEvent.KEYCODE_ENTER){
+                keyIcon.setTint(Color.WHITE)
+            } else {
+                keyIcon.setTint(mActiveTheme.keyTextColor)
+            }
             keyIcon.setBounds(softKey.mLeft + marginLeft, softKey.mTop + marginTop, softKey.mRight - marginRight, softKey.mBottom - marginBottom)
             keyIcon.draw(canvas)
         } else if (!TextUtils.isEmpty(keyLabel)) { //Label位于中间

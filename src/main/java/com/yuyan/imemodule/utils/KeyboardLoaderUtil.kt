@@ -177,7 +177,10 @@ class KeyboardLoaderUtil private constructor() {
                     keyBeans = LinkedList()
                     t9Key = createT9Keys(keys[2])
                     t9Key.first().mLeftF = 0.185f
-                    t9Key.last().widthF = 0.18f
+                    t9Key.last().apply {
+                        widthF = 0.18f
+                        stateId = 7
+                    }
                     keyBeans.addAll(t9Key)
                     rows.add(keyBeans)
                     keyBeans = lastRows(skbValue)
