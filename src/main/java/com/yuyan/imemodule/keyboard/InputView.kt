@@ -301,16 +301,16 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
             } else if ( keyCode in InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6 .. InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1) {
                 InputModeSwitcherManager.switchModeForUserKey(keyCode)
             } else if ( keyCode in InputModeSwitcherManager.USER_DEF_KEYCODE_PASTE .. InputModeSwitcherManager.USER_DEF_KEYCODE_CUT) {
-                commitTestEditMenu(KeyPreset.textEditMenuPreset[keyCode])
+                commitTextEditMenu(KeyPreset.textEditMenuPreset[keyCode])
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_MOVE_START) {
                 service.setSelection(0, if(hasSelection) selEnd else 0)
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_MOVE_END) {
                 if(hasSelection) {
                     val start =  selStart
-                    commitTestEditMenu(KeyPreset.textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
+                    commitTextEditMenu(KeyPreset.textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
                     this.postDelayed(50) { service.setSelection(start, selEnd) }
                 } else {
-                    commitTestEditMenu(KeyPreset.textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
+                    commitTextEditMenu(KeyPreset.textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
                     service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
                 }
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE) {
@@ -319,7 +319,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL) {
                 hasSelectionAll = !hasSelectionAll
                 if(!hasSelectionAll) service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
-                else commitTestEditMenu(KeyPreset.textEditMenuPreset[keyCode])
+                else commitTextEditMenu(KeyPreset.textEditMenuPreset[keyCode])
             }else if(sKey.keyLabel.isNotBlank()){
                 if(SymbolPreset.containsKey(sKey.keyLabel))commitPairSymbol(sKey.keyLabel)
                 else commitText(sKey.keyLabel)
@@ -722,8 +722,15 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
     /**
      * 发送成对符号给编辑框
      */
-    private fun commitTestEditMenu(id:Int?) {
-        if(id != null)service.commitTestEditMenu(id)
+    private fun commitTextEditMenu(id:Int?) {
+        if(id != null)service.commitTextEditMenu(id)
+    }
+
+    /**
+     * 发送指令给编辑框
+     */
+    fun performEditorAction(editorAction:Int) {
+        service.performEditorAction(editorAction)
     }
 
 

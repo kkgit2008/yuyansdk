@@ -9,6 +9,7 @@ import android.os.Message
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.MotionEvent
+import android.view.inputmethod.EditorInfo
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
@@ -188,7 +189,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
                     CoroutineScope(Dispatchers.Main).launch {
                         emojions[Random.nextInt(emojions.size)].forEach {
                             inputView.responseKeyEvent(SoftKey(it))
-                            inputView.responseKeyEvent(SoftKey(KeyEvent.KEYCODE_ENTER))
+                            inputView.performEditorAction(EditorInfo.IME_ACTION_SEND)
                             delay(100)
                         }
                     }
