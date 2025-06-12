@@ -1,7 +1,7 @@
 package com.yuyan.inputmethod.core
 
 import android.util.Base64
-import com.yuyan.imemodule.application.ImeSdkApplication
+import com.yuyan.imemodule.application.Launcher
 import com.yuyan.imemodule.callback.IHandWritingCallBack
 import com.yuyan.imemodule.libs.pinyin4j.PinyinHelper
 import com.yuyan.imemodule.libs.pinyin4j.format.HanyuPinyinCaseType
@@ -21,7 +21,7 @@ object HandWriting {
     private var mHanyuPinyinOutputFormat: HanyuPinyinOutputFormat
 
     init {
-        nativeMethods.nativeHttpInit(ImeSdkApplication.Companion.context, 0)
+        nativeMethods.nativeHttpInit(Launcher.instance.context, 0)
         mHanyuPinyinOutputFormat = HanyuPinyinOutputFormat()
         mHanyuPinyinOutputFormat.caseType = HanyuPinyinCaseType.LOWERCASE
         mHanyuPinyinOutputFormat.toneType = HanyuPinyinToneType.WITH_TONE_MARK

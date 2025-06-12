@@ -4,7 +4,7 @@ package com.yuyan.imemodule.view.popup
 import android.graphics.Rect
 import android.view.KeyEvent
 import android.view.View
-import com.yuyan.imemodule.application.ImeSdkApplication
+import com.yuyan.imemodule.application.Launcher
 import com.yuyan.imemodule.data.theme.ThemeManager
 import com.yuyan.imemodule.entity.keyboard.SoftKey
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
@@ -27,7 +27,7 @@ class PopupComponent private constructor(){
     }
 
     val root by lazy {
-        ImeSdkApplication.context.frameLayout {
+        Launcher.instance.context.frameLayout {
             layoutDirection = View.LAYOUT_DIRECTION_LTR
             isClickable = false
             isFocusable = false
@@ -52,7 +52,7 @@ class PopupComponent private constructor(){
             return
         }
         val popup = (freeEntryUi.poll()
-            ?: PopupEntryUi(ImeSdkApplication.context)).apply {
+            ?: PopupEntryUi(Launcher.instance.context)).apply {
             lastShowTime = System.currentTimeMillis()
             setBackground(ThemeManager.activeTheme, popupRadius)
             setText(content)

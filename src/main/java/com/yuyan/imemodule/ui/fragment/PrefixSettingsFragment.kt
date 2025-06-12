@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.yuyan.imemodule.R
 import com.yuyan.imemodule.adapter.PrefixSettingsAdapter
-import com.yuyan.imemodule.application.ImeSdkApplication
+import com.yuyan.imemodule.application.Launcher
 import com.yuyan.imemodule.database.DataBaseKT
 import com.yuyan.imemodule.database.entry.SideSymbol
 import com.yuyan.imemodule.utils.DevicesUtils
@@ -38,7 +38,7 @@ class PrefixSettingsFragment(type:String) : Fragment(){
         (activity as AppCompatActivity).supportActionBar?.setTitle(R.string.setting_ime_prefixs)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View = with(requireContext()) {
-        val header = LinearLayout(ImeSdkApplication.context).apply {
+        val header = LinearLayout(Launcher.instance.context).apply {
             gravity = Gravity.CENTER_VERTICAL
             add(textView {
                 gravity = Gravity.CENTER

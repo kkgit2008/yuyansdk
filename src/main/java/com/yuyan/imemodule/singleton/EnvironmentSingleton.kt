@@ -1,6 +1,6 @@
 package com.yuyan.imemodule.singleton
 
-import com.yuyan.imemodule.application.ImeSdkApplication
+import com.yuyan.imemodule.application.Launcher
 import com.yuyan.imemodule.data.theme.ThemeManager
 import com.yuyan.imemodule.prefs.AppPrefs
 import kotlin.math.max
@@ -44,7 +44,7 @@ class EnvironmentSingleton private constructor() {
     }
 
     fun initData() {
-        val resources = ImeSdkApplication.context.resources
+        val resources = Launcher.instance.context.resources
         val dm = resources.displayMetrics
         mScreenWidth = dm.widthPixels
         mScreenHeight = dm.heightPixels

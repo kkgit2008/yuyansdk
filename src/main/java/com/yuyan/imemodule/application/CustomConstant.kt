@@ -6,7 +6,7 @@ import com.yuyan.imemodule.data.flower.FlowerTypefaceMode
  * 用户自定义常量类
  */
 object CustomConstant {
-    var RIME_DICT_PATH = ImeSdkApplication.context.getExternalFilesDir("rime").toString()
+    var RIME_DICT_PATH = Launcher.instance.context.getExternalFilesDir("rime").toString()
     const val SCHEMA_ZH_T9 = "t9_pinyin" // 拼音九键
     const val SCHEMA_ZH_QWERTY = "pinyin" // 拼音全键
     const val SCHEMA_EN = "english"         // 英语方案

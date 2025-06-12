@@ -1,7 +1,7 @@
 package com.yuyan.imemodule.service
 
 import android.content.ClipboardManager.OnPrimaryClipChangedListener
-import com.yuyan.imemodule.application.ImeSdkApplication
+import com.yuyan.imemodule.application.Launcher
 import com.yuyan.imemodule.database.DataBaseKT
 import com.yuyan.imemodule.database.entry.Clipboard
 import com.yuyan.imemodule.prefs.AppPrefs
@@ -15,13 +15,13 @@ import kotlin.math.max
 object ClipboardHelper : OnPrimaryClipChangedListener {
 
     fun init() {
-        ImeSdkApplication.context.clipboardManager.addPrimaryClipChangedListener(this)
+        Launcher.instance.context.clipboardManager.addPrimaryClipChangedListener(this)
     }
 
     override fun onPrimaryClipChanged() {
         val isClipboardListening = AppPrefs.getInstance().clipboard.clipboardListening.getValue()
         if(isClipboardListening) {
-           val item = ImeSdkApplication.context.clipboardManager.primaryClip?.getItemAt(0)
+           val item = Launcher.instance.context.clipboardManager.primaryClip?.getItemAt(0)
             item?.takeIf { it.text?.isNotBlank() == true }?.let {
                     val data = it.text.toString().take(20000)
                     DataBaseKT.instance.clipboardDao().insert(Clipboard(content = data))
