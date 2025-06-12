@@ -122,8 +122,7 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
             }
             else -> return false
         }
-        invalidate((mRect.left - mMaxWidth).toInt(), (mRect.top - mMaxWidth).toInt(),
-            (mRect.right + mMaxWidth).toInt(), (mRect.bottom + mMaxWidth).toInt())
+        invalidate()
         return true
     }
 

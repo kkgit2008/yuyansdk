@@ -17,7 +17,6 @@ import com.yuyan.imemodule.database.DataBaseKT
 import com.yuyan.imemodule.database.entry.SideSymbol
 import com.yuyan.imemodule.utils.DevicesUtils
 import com.yuyan.imemodule.keyboard.KeyboardManager
-import com.yuyan.imemodule.view.widget.CustomLinearLayout
 import splitties.dimensions.dp
 import splitties.views.dsl.core.add
 import splitties.views.dsl.core.lParams
@@ -103,7 +102,7 @@ class PrefixSettingsFragment(type:String) : Fragment(){
             }
         }
         mRVSymbolsView.setAdapter(adapter)
-        CustomLinearLayout(context).apply {
+        LinearLayout(context).apply {
             orientation = LinearLayout.VERTICAL
             fitsSystemWindows = true
             add(header, lParams(width = matchParent, height = wrapContent) {
