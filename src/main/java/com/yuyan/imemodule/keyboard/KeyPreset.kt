@@ -2,7 +2,6 @@ package com.yuyan.imemodule.keyboard
 
 import android.view.KeyEvent
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
-import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
 
 object KeyPreset {
     val qwertyKeyPreset: Map<Int, Array<String>> = hashMapOf(

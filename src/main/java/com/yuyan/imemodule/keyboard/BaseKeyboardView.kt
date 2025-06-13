@@ -22,7 +22,6 @@ import com.yuyan.imemodule.prefs.behavior.PopupMenuMode
 import com.yuyan.imemodule.service.DecodingInfo
 import com.yuyan.imemodule.singleton.EnvironmentSingleton
 import com.yuyan.imemodule.utils.DevicesUtils
-import com.yuyan.imemodule.utils.TimeUtils
 import com.yuyan.imemodule.view.popup.PopupComponent
 import com.yuyan.imemodule.view.popup.PopupComponent.Companion.get
 import java.util.LinkedList
@@ -44,7 +43,6 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
     private var mAbortKey = false
     private var mHandler: Handler? = null
     protected var mDrawPending = false
-    protected var mDirtyRect = Rect()
     protected var mService: InputView? = null
     fun setResponseKeyEvent(service: InputView) {
         mService = service
@@ -91,20 +89,12 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
         }
     }
 
-    fun invalidateAllKeys() {
-        mDirtyRect.union(0, 0, width, height)
+    fun invalidateKey() {
         mDrawPending = true
         invalidate()
     }
 
-    fun invalidateKey(key: SoftKey?) {
-        if (key == null) return
-        mDirtyRect.union(key.mLeft, key.mTop, key.mRight, key.mBottom)
-        onBufferDraw(key)
-        invalidate()
-    }
-
-    open fun onBufferDraw(invalidatedKey: SoftKey?) {}
+    open fun onBufferDraw() {}
     private fun openPopupIfRequired() {
         if(mCurrentKey != null) {
             val softKey = mCurrentKey!!
@@ -298,17 +288,14 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
      * 显示短按气泡
      */
     private fun showPreview(key: SoftKey?) {
-        if (mCurrentKey != null) {
-            mCurrentKey!!.onReleased()
-            invalidateKey(mCurrentKey)
-        }
+        mCurrentKey?.onReleased()
         if (key != null) {
             key.onPressed()
-            invalidateKey(key)
             showBalloonText(key)
         } else {
             popupComponent.dismissPopup()
         }
+        invalidateKey()
     }
 
     /**
@@ -322,11 +309,7 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
         if (mCurrentKey != null) {
             mCurrentKey!!.onReleased()
             if(mService == null) return
-            if (InputModeSwitcherManager.isEnglish && (DecodingInfo.composingStrForCommit.isBlank() || DecodingInfo.composingStrForCommit.length == 1)) {
-                invalidateAllKeys()
-            } else {
-                invalidateKey(mCurrentKey)
-            }
+            invalidateKey()
         }
         popupComponent.dismissPopup()
         lastEventX = -1f

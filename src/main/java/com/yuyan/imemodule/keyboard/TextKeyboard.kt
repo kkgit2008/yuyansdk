@@ -27,9 +27,7 @@ import kotlin.math.min
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
 import com.yuyan.imemodule.application.CustomConstant
-import com.yuyan.imemodule.data.theme.ThemeManager
 import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
-import com.yuyan.imemodule.utils.StringUtils
 
 /**
  * 软件盘视图
@@ -48,7 +46,8 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
     private var keyboardFontBold = false
     private var keyboardSymbol = false
     private var keyboardMnemonic = false
-    private var skbStyleMode: SkbStyleMode = SkbStyleMode.Yuyan
+    protected var mDirtyRect = Rect()
+    private var skbStyleMode: SkbStyleMode = prefs.skbStyleMode.getValue()
 
     /**
      * 构造方法
@@ -59,7 +58,6 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         keyboardFontBold = prefs.keyboardFontBold.getValue()
         keyboardSymbol = prefs.keyboardSymbol.getValue()
         keyboardMnemonic = prefs.keyboardMnemonic.getValue()
-        skbStyleMode = ThemeManager.prefs.skbStyleMode.getValue()
     }
 
     /**
@@ -94,7 +92,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         } else {
             val softKey = mSoftKeyboard?.getKeyByCode(KeyEvent.KEYCODE_ENTER) as SoftKeyToggle??: return
             if (softKey.enableToggleState(if(mService!!.isAddPhrases)4 else InputModeSwitcherManager.mToggleStates.mStateEnter)) {
-                invalidateKey(softKey)
+                invalidateKey()
             }
         }
     }
@@ -122,7 +120,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
 
     private fun invalidateView() {
         requestLayout()
-        invalidateAllKeys()
+        invalidateKey()
     }
 
     public override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -132,13 +130,14 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        mDirtyRect.union(0, 0, width, height)
         if (mDrawPending || mBuffer == null || mKeyboardChanged) {
-            onBufferDraw(null)
+            onBufferDraw()
         }
         canvas.drawBitmap(mBuffer!!, 0f, 0f, null)
     }
 
-    override fun onBufferDraw(invalidatedKey: SoftKey?) {
+    override fun onBufferDraw() {
         if (mBuffer == null || mKeyboardChanged) {
             if (mBuffer == null || mBuffer!!.width != width || mBuffer!!.height != height) {
                 val width = max(1.0, width.toDouble()).toInt()
@@ -146,21 +145,13 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
                 mBuffer = createBitmap(width, height)
                 mCanvas = Canvas(mBuffer!!)
             }
-            invalidateAllKeys()
+            invalidateKey()
             mKeyboardChanged = false
         }
         if (mSoftKeyboard == null) return
         mCanvas!!.withSave {
             val canvas = mCanvas
             canvas?.clipRect(mDirtyRect)
-            val clipRegion = Rect(0, 0, 0, 0)
-            var drawSingleKey = false
-            if (invalidatedKey != null && canvas!!.getClipBounds(clipRegion)) {
-                if (invalidatedKey.mLeft <= clipRegion.left && invalidatedKey.mTop <= clipRegion.top
-                    && invalidatedKey.mRight >= clipRegion.right && invalidatedKey.mBottom >= clipRegion.bottom) {
-                    drawSingleKey = true
-                }
-            }
             canvas?.drawColor(0x00000000, PorterDuff.Mode.CLEAR)
             val env = instance
             mNormalKeyTextSize = env.keyTextSize
@@ -170,7 +161,6 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
                 else mSoftKeyboard!!.keyYMargin
             for (softKeys in mSoftKeyboard!!.mKeyRows) {
                 for (softKey in softKeys) {
-                    if (drawSingleKey && invalidatedKey !== softKey) continue
                     canvas?.let { drawSoftKey(it, softKey, keyXMargin, keyYMargin.toInt()) }
                 }
             }
@@ -199,10 +189,6 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
                 val bgHeight = softKey.height() - 2 * keyYMargin
                 bg.cornerRadius = bgHeight/2f
                 bg.draw(canvas)
-            }
-        } else if(skbStyleMode == SkbStyleMode.Samsung){
-            if(InputModeSwitcherManager.isChineseT9){
-
             }
         }
         if (softKey.pressed || (mService?.hasSelection == true && softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE)) {
