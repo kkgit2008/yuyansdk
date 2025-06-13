@@ -10,6 +10,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowInsets
+import android.view.WindowInsetsController
 import android.view.inputmethod.EditorInfo
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -733,7 +735,13 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
     private fun initNavbarBackground(service: ImeService) {
         service.window.window!!.also {
             WindowCompat.setDecorFitsSystemWindows(it, false)
-            it.navigationBarColor = Color.TRANSPARENT
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R){
+                @Suppress("DEPRECATION")
+                it.navigationBarColor = Color.TRANSPARENT
+            } else {
+                it.insetsController?.hide(WindowInsets.Type.navigationBars())
+                it.insetsController?.systemBarsBehavior = WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) it.isNavigationBarContrastEnforced = false
         }
         ViewCompat.setOnApplyWindowInsetsListener(this) { _, insets ->
