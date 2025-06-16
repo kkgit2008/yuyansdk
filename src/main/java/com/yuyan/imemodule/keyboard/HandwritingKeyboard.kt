@@ -38,7 +38,7 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
     private var mLastWidth = 0f
     private val mRect: RectF
     private var mMaxWidth: Int
-    private var mMinWidth = convertDpToPx(6.0f)
+    private var mMinWidth: Int
     private var mVelocityFilterWeight = 0.7f
     private val mPaint = Paint()
     private val mPath = Path()
@@ -52,8 +52,9 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
         mPaint.setStyle(Paint.Style.STROKE)
         mPaint.setStrokeCap(Paint.Cap.ROUND)
         mPaint.setStrokeJoin(Paint.Join.ROUND)
-        val paintWidth = getInstance().handwriting.handWritingWidth.getValue()
-        mMaxWidth = convertDpToPx(40f * paintWidth / 100f)
+        val paintWidthMax = getInstance().handwriting.handWritingWidth.getValue() * 4 / 10f
+        mMaxWidth = convertDpToPx(paintWidthMax)
+        mMinWidth = convertDpToPx(paintWidthMax/2f)
         mRect = RectF()
         clear()
     }
@@ -67,7 +68,7 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
     fun clear() {
         mPoints.clear()
         mLastVelocity = 0f
-        mLastWidth = ((mMinWidth + mMaxWidth) / 2).toFloat()
+        mLastWidth = mMinWidth.toFloat()
         mPath.reset()
         if (mSignatureBitmap != null) {
             mSignatureBitmap = null
