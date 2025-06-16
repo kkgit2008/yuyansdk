@@ -123,7 +123,7 @@ open class T9TextContainer(context: Context?, inputView: InputView) : InputBaseC
         mRVLeftPrefix.setOnItemClickListener{ _: View?, position: Int ->
             if (!isPrefixs) {
                 val symbol = mSideSymbolsPinyin.map { it.symbolValue }[position]
-                val softKey = SoftKey(symbol)
+                val softKey = SoftKey(label = symbol)
                 // 播放按键声音和震动
                 DevicesUtils.tryPlayKeyDown(softKey)
                 DevicesUtils.tryVibrate(this)

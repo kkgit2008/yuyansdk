@@ -3,7 +3,6 @@ package com.yuyan.imemodule.utils
 import android.view.KeyEvent
 import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.data.theme.ThemeManager
-import com.yuyan.imemodule.data.theme.ThemePrefs
 import com.yuyan.imemodule.entity.keyboard.SoftKey
 import com.yuyan.imemodule.entity.keyboard.SoftKeyToggle
 import com.yuyan.imemodule.entity.keyboard.SoftKeyboard
@@ -120,7 +119,7 @@ class KeyboardLoaderUtil private constructor() {
                         arrayOf(11, 12, 13, KeyEvent.KEYCODE_CLEAR),
                         arrayOf(14, 15, 16, keyDeleteOrder.second),
                     )
-                    val firstKeys = createT9Keys(arrayOf("，", "。", "？"))
+                    val firstKeys = createT9SymbolKeys(arrayOf("，", "。", "？"))
                     firstKeys.forEach {
                         it.widthF = 0.18f
                     }
@@ -361,10 +360,10 @@ class KeyboardLoaderUtil private constructor() {
                 var keyBeans = mutableListOf<SoftKey>()
                 if(skbStyleMode == SkbStyleMode.Google) {
                     val keys = arrayListOf(
-                        arrayOf('b'.code,'d'.code, '3'.code, '4'.code,  'Z'.code, '2'.code,'5'.code, 'a'.code, 'A'.code, 'M'.code,),
-                        arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code,),
-                        arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code,),
-                        arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code,))
+                        arrayOf('b'.code,'d'.code, '3'.code, '4'.code,  'Z'.code, '2'.code,'5'.code, 'a'.code, 'A'.code, 'M'.code),
+                        arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code),
+                        arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code),
+                        arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code))
                     var qwertyKeys = createBopomofoPYKeys(keys[0])
                     keyBeans.addAll(qwertyKeys)
                     rows.add(keyBeans)
@@ -384,9 +383,9 @@ class KeyboardLoaderUtil private constructor() {
                     rows.add(keyBeans)
                 } else {
                     val keys = arrayListOf(
-                        arrayOf('b'.code, 'd'.code, '3'.code, '4'.code, 'Z'.code, '2'.code, '5'.code, 'a'.code, 'A'.code, 'M'.code, 'R'.code,),
-                        arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code,),
-                        arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code,),
+                        arrayOf('b'.code, 'd'.code, '3'.code, '4'.code, 'Z'.code, '2'.code, '5'.code, 'a'.code, 'A'.code, 'M'.code, 'R'.code),
+                        arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code),
+                        arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code),
                         arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code, KeyEvent.KEYCODE_DEL),
                     )
                     var qwertyKeys = createBopomofoPYKeys(keys[0])
@@ -601,10 +600,10 @@ class KeyboardLoaderUtil private constructor() {
         return SoftKeyboard(rows)
     }
 
-    private fun createT9Keys(chars: Array<String>): Array<SoftKey> {
+    private fun createT9SymbolKeys(chars: Array<String>): Array<SoftKey> {
         val softKeys = mutableListOf<SoftKey>()
         for(char in chars){
-            softKeys.add(SoftKey(0, char, "").apply {
+            softKeys.add(SoftKey(label = char).apply {
                 widthF = 0.21f
             })
         }
@@ -616,7 +615,7 @@ class KeyboardLoaderUtil private constructor() {
         val keyPreset =  if(mSkbValue == 0x7000) getKeyPreset("strokeKeyPreset") else getKeyPreset("t9PYKeyPreset")
         for(code in codes){
             val labels = keyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1)?: "").apply {
+            softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1)?: "").apply {
                 widthF = 0.21f
             })
         }
@@ -628,7 +627,7 @@ class KeyboardLoaderUtil private constructor() {
         val keyPreset = getKeyPreset("t9NumberKeyPreset")
         for(code in codes){
             val labels = keyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "").apply {
+            softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "").apply {
                 widthF = 0.21f
             })
         }
@@ -650,7 +649,7 @@ class KeyboardLoaderUtil private constructor() {
         else if(numberLine)getKeyPreset("qwertyPYKeyPreset") else getKeyPreset("qwertyPYKeyNumberPreset")
         for(code in codes){
             val labels = keyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", keyMnemonicPreset[code] ?: "").apply {
+            softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "", keyMnemonic = keyMnemonicPreset[code] ?: "").apply {
                 widthF = 0.099f
             })
         }
@@ -662,7 +661,7 @@ class KeyboardLoaderUtil private constructor() {
         val keyPreset = getKeyPreset("qwertyBopomofoKeyPreset")
         for(code in codes){
             val labels = keyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", "").apply {
+            softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "").apply {
                 widthF = if (skbStyleMode == SkbStyleMode.Google)0.099f else 0.09f
                 heightF = 0.2f
             })
@@ -675,7 +674,7 @@ class KeyboardLoaderUtil private constructor() {
         val keyPreset = if(numberLine)getKeyPreset("qwertyKeyPreset") else getKeyPreset("qwertyKeyNumberPreset")
         for(code in codes){
             val labels = keyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", labels?.getOrNull(2) ?: "").apply {
+            softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "", keyMnemonic = labels?.getOrNull(2) ?: "").apply {
                 widthF = 0.099f
             })
         }
@@ -685,7 +684,7 @@ class KeyboardLoaderUtil private constructor() {
     private fun createHandwritingKey(code: Int): SoftKey {
         val keyPreset = if(numberLine)getKeyPreset("qwertyPYKeyPreset") else getKeyPreset("qwertyPYKeyNumberPreset")
         val labels = keyPreset[code]
-        return SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "").apply {
+        return SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "").apply {
             widthF = 0.18f
         }
     }
@@ -693,7 +692,7 @@ class KeyboardLoaderUtil private constructor() {
     private fun createNumberLineKeys(codes: Array<Int>): Array<SoftKey> {
         val softKeys = mutableListOf<SoftKey>()
         for(code in codes) {
-            val softKey = SoftKey(code.toString()).apply {
+            val softKey = SoftKey(label = code.toString()).apply {
                 widthF = 0.099f
                 heightF = 0.2f
             }
@@ -707,7 +706,7 @@ class KeyboardLoaderUtil private constructor() {
         val keyPreset = if(numberLine)getKeyPreset("lx17PYKeyPreset") else getKeyPreset("lx17PYKeyNumberPreset")
         for(code in codes){
             val labels = keyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "", labels?.getOrNull(1) ?: "", lx17MnemonicPreset[code] ?: "").apply {
+            softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "", keyMnemonic= lx17MnemonicPreset[code] ?: "").apply {
                 widthF = 0.165f
             })
         }
@@ -719,7 +718,7 @@ class KeyboardLoaderUtil private constructor() {
         val keyPreset = getKeyPreset("textEditKeyPreset")
         for(code in codes){
             val labels = keyPreset[code]
-            softKeys.add(SoftKey(code, labels?.getOrNull(0) ?: "").apply {
+            softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "").apply {
                 widthF = 0.25f
             })
         }

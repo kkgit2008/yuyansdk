@@ -202,7 +202,7 @@ class CandidatesContainer(context: Context, inputView: InputView) : BaseContaine
             if (isPrefixs) {
                 inputView.selectPrefix(position)
             } else {
-                val softKey = SoftKey( mSideSymbolsPinyin.map { it.symbolValue }[position])
+                val softKey = SoftKey(label = mSideSymbolsPinyin.map { it.symbolValue }[position])
                 DevicesUtils.tryPlayKeyDown(softKey)
                 DevicesUtils.tryVibrate(this)
                 inputView.responseKeyEvent(softKey)

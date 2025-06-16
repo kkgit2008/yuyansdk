@@ -26,7 +26,7 @@ import kotlin.math.max
 import kotlin.math.min
 import androidx.core.graphics.createBitmap
 import androidx.core.graphics.withSave
-import com.yuyan.imemodule.application.CustomConstant
+import com.yuyan.imemodule.entity.keyboard.KeyType
 import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
 
 /**
@@ -195,39 +195,9 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             bg.setColor(mActiveTheme.keyPressHighlightColor)
             bg.draw(canvas)
         } else if (isKeyBorder) {
-            val background = when (softKey.keyCode) {
-                InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 -> {
-                    if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.keyBackgroundColor
-                    else if(skbStyleMode == SkbStyleMode.Google) mActiveTheme.functionKeyBackgroundColor
-                    else mActiveTheme.keyBackgroundColor
-                }
-                KeyEvent.KEYCODE_ENTER -> {
-                    if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.functionKeyBackgroundColor
-                    else mActiveTheme.accentKeyBackgroundColor
-                }
-                InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2->{
-                    if(skbStyleMode == SkbStyleMode.Samsung) mActiveTheme.functionKeyBackgroundColor
-                    else mActiveTheme.keyBackgroundColor
-                }
-                InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13->{
-                    if(skbStyleMode == SkbStyleMode.Google) mActiveTheme.functionKeyBackgroundColor
-                    else mActiveTheme.keyBackgroundColor
-                }
-                InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1,
-                InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3,
-                InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
-                InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8,
-                InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9,
-                InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12,
-                KeyEvent.KEYCODE_CLEAR,KeyEvent.KEYCODE_DEL,7 ->  {
-                    if(skbStyleMode == SkbStyleMode.Samsung || skbStyleMode == SkbStyleMode.Google) mActiveTheme.functionKeyBackgroundColor
-                    else mActiveTheme.keyBackgroundColor
-                }
-                0 -> {
-                    if(skbStyleMode == SkbStyleMode.Samsung && DecodingInfo.getCurrentRimeSchema() == CustomConstant.SCHEMA_ZH_T9) mActiveTheme.functionKeyBackgroundColor
-                    else mActiveTheme.keyBackgroundColor
-                }
-                else ->  mActiveTheme.keyBackgroundColor
+            val background = when (softKey.keyType) {
+                KeyType.Function -> mActiveTheme.functionKeyBackgroundColor
+                else  -> mActiveTheme.keyBackgroundColor
             }
             bg.setColor(background)
             bg.draw(canvas)
@@ -258,10 +228,10 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             mPaint.setTypeface(if(skbStyleMode == SkbStyleMode.Google)Typeface.DEFAULT_BOLD else Typeface.DEFAULT)
             if(skbStyleMode == SkbStyleMode.Samsung)mPaint.alpha = 128
             mPaint.textSize = mNormalKeyTextSizeSmall.toFloat()
-            val x = when(prefs.skbStyleMode.getValue()){
-                SkbStyleMode.Yuyan -> softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
-                SkbStyleMode.Samsung -> softKey.mLeft + softKey.width() - mPaint.measureText(keyLabelSmall) * 2.8f
-                SkbStyleMode.Google -> softKey.mLeft + softKey.width() - mPaint.measureText(keyLabelSmall) * 2.8f
+            val x = softKey.mLeft + when(prefs.skbStyleMode.getValue()){
+                SkbStyleMode.Yuyan -> (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
+                SkbStyleMode.Samsung -> softKey.width() - mPaint.measureText(keyLabelSmall) * 2.8f
+                SkbStyleMode.Google -> softKey.width() - mPaint.measureText(keyLabelSmall) * 2.8f
             }
             val y = softKey.mTop + weightHeigth * 1.1f
             canvas.drawText(keyLabelSmall, x, y, mPaint)

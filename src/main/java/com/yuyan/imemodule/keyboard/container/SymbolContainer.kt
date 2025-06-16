@@ -168,7 +168,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
 
     private fun onItemClickOperate(value: String) {
         val result = value.replace("[ \\r]".toRegex(), "")
-        val softKey = SoftKey(result)
+        val softKey = SoftKey(label = result)
         DevicesUtils.tryPlayKeyDown(softKey)
         DevicesUtils.tryVibrate(this)
         if (mShowType == SymbolMode.Symbol) {  // 非表情键盘
@@ -188,7 +188,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
                 if(emojions?.isNotEmpty() == true) {
                     CoroutineScope(Dispatchers.Main).launch {
                         emojions[Random.nextInt(emojions.size)].forEach {
-                            inputView.responseKeyEvent(SoftKey(it))
+                            inputView.responseKeyEvent(SoftKey(label = it))
                             inputView.performEditorAction(EditorInfo.IME_ACTION_SEND)
                             delay(100)
                         }

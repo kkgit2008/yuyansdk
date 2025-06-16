@@ -8,7 +8,7 @@ import java.util.Objects
 /**
  * 可以变换状态的按键。See [com.yuyan.imemodule.entity.keyboard.ToggleState] 按键状态
  */
-class SoftKeyToggle(code: Int) : SoftKey() {
+class SoftKeyToggle(code: Int) : SoftKey(code = code) {
     private var mToggleStates: List<ToggleState>? = null
 
     init {
