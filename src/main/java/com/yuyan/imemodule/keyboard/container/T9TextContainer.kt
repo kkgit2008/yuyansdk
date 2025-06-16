@@ -125,7 +125,7 @@ open class T9TextContainer(context: Context?, inputView: InputView) : InputBaseC
                 val symbol = mSideSymbolsPinyin.map { it.symbolValue }[position]
                 val softKey = SoftKey(label = symbol)
                 // 播放按键声音和震动
-                DevicesUtils.tryPlayKeyDown(softKey)
+                DevicesUtils.tryPlayKeyDown()
                 DevicesUtils.tryVibrate(this)
                 inputView.responseKeyEvent(softKey)
             } else {

@@ -82,7 +82,7 @@ class PopupComponent private constructor(){
     }
 
     fun showKeyboardMenu(mCurrentKey: SoftKey, bounds: Rect, distanceY: Float) {
-        val key = when(mCurrentKey.keyCode) {
+        val key = when(mCurrentKey.code) {
             InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2 ->  Pair(PopupMenuMode.SwitchIME, "🌐")
             InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 ->  Pair(PopupMenuMode.EMOJI, "😆")
             InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1 -> {
@@ -95,7 +95,7 @@ class PopupComponent private constructor(){
             else ->  Pair(PopupMenuMode.Enter,  "↩️ 换行")
         }
         showingEntryUi?.setText("") ?: showPopup("", bounds)
-        reallyMenuKeyboard(key, bounds, mCurrentKey.keyCode != KeyEvent.KEYCODE_DEL)
+        reallyMenuKeyboard(key, bounds, mCurrentKey.code != KeyEvent.KEYCODE_DEL)
     }
 
     fun onGestureEvent(distanceX: Float) {

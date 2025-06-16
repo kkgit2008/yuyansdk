@@ -95,7 +95,7 @@ class NumberContainer(context: Context?, inputView: InputView) : InputBaseContai
             val symbol = mSideSymbolsNumber.map { it.symbolValue }[position]
             val softKey = SoftKey(label = symbol)
             // 播放按键声音和震动
-            DevicesUtils.tryPlayKeyDown(softKey)
+            DevicesUtils.tryPlayKeyDown()
             DevicesUtils.tryVibrate(this)
             inputView.responseKeyEvent(softKey)
         }

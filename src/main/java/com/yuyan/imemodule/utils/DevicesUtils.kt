@@ -54,15 +54,13 @@ object DevicesUtils {
      * 播放按键按下的声音
      */
 	@JvmStatic
-	fun tryPlayKeyDown(softKey: SoftKey? = null) {
+	fun tryPlayKeyDown(code: Int = 0) {
         var soundEffect = SoundEffect.Standard
-        if (softKey != null) {
-            soundEffect = when (softKey.keyCode) {
-                KeyEvent.KEYCODE_DEL -> SoundEffect.Delete
-                KeyEvent.KEYCODE_SPACE -> SoundEffect.SpaceBar
-                KeyEvent.KEYCODE_ENTER -> SoundEffect.Return
-                else -> SoundEffect.Standard
-            }
+        soundEffect = when (code) {
+            KeyEvent.KEYCODE_DEL -> SoundEffect.Delete
+            KeyEvent.KEYCODE_SPACE -> SoundEffect.SpaceBar
+            KeyEvent.KEYCODE_ENTER -> SoundEffect.Return
+            else -> SoundEffect.Standard
         }
         soundEffect(soundEffect)
     }

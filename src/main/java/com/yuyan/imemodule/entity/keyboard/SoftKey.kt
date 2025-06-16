@@ -9,12 +9,7 @@ import java.util.Objects
 /**
  * 按键的属性
  */
-open class SoftKey {
-    var keyCode = 0
-    var stateId = 0
-    private var mkeyLabel: String = ""
-    private var mKeyLabelSmall: String = ""
-    var keyMnemonic: String? = null
+open class SoftKey(var code: Int = 0, var label: String = "", var labelSmall: String = "", var keyMnemonic: String = ""){
 
     /** 键盘上下左右位置百分比 ，mLeft = (int) (mLeftF * skbWidth);  */
     var mLeftF = -1f
@@ -28,15 +23,9 @@ open class SoftKey {
     var mTop = 0
     var mBottom = 0
 
+    var stateId = 0
     var pressed = false
     var keyType = KeyType.Normal
-
-    constructor(code: Int = 0, label: String = "", labelSmall: String = "", keyMnemonic: String = "") {
-        keyCode = code
-        mkeyLabel = label
-        mKeyLabelSmall = labelSmall
-        this.keyMnemonic = keyMnemonic
-    }
 
     fun onPressed() {
         pressed = true
@@ -66,35 +55,36 @@ open class SoftKey {
     }
 
     open val keyIcon: Drawable?
-        get() = keyIconRecords[Objects.hash(keyCode, stateId)]
+        get() = keyIconRecords[Objects.hash(code, stateId)]
 
     open val keyLabel: String
-        get() =  mkeyLabel
+        get() =  label
 
     fun getmKeyLabelSmall(): String {
-        return mKeyLabelSmall
+        return labelSmall
     }
 
     fun getkeyLabel(): String {
-        return mkeyLabel
+        return label
     }
 
     open fun changeCase(upperCase: Boolean) {
-        mkeyLabel = if (upperCase) mkeyLabel.uppercase() else mkeyLabel.lowercase()
+        label = if (upperCase) label.uppercase() else label.lowercase()
     }
 
     val isKeyCodeKey: Boolean
-        get() = keyCode > 0
+        get() = code > 0
 
     val isUserDefKey: Boolean
-        get() = keyCode < 0
+        get() = code < 0
 
     val isUniStrKey: Boolean
-        get() = keyCode == 0
+        get() = code == 0
 
     fun repeatable(): Boolean {
-        return keyCode == KeyEvent.KEYCODE_DEL || keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9
-                || keyCode in KeyEvent.KEYCODE_DPAD_UP .. KeyEvent.KEYCODE_DPAD_RIGHT
+        return code == KeyEvent.KEYCODE_DEL
+                || code == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9
+                || code in KeyEvent.KEYCODE_DPAD_UP .. KeyEvent.KEYCODE_DPAD_RIGHT
     }
 
     fun width(): Int {

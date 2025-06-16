@@ -11,10 +11,6 @@ import java.util.Objects
 class SoftKeyToggle(code: Int) : SoftKey(code = code) {
     private var mToggleStates: List<ToggleState>? = null
 
-    init {
-        super.keyCode = code
-    }
-
     fun setToggleStates(toggleStates: List<ToggleState>?) {
         mToggleStates = toggleStates
     }
@@ -34,9 +30,10 @@ class SoftKeyToggle(code: Int) : SoftKey(code = code) {
         get() {
             val state = toggleState
             return if (null != state) {
-                keyIconRecords[Objects.hash(keyCode, stateId)]
+                keyIconRecords[Objects.hash(code, stateId)]
             } else super.keyIcon
         }
+
     override val keyLabel: String
         get() {
             val state = toggleState
@@ -52,13 +49,8 @@ class SoftKeyToggle(code: Int) : SoftKey(code = code) {
     }
 
     private val toggleState: ToggleState?
-        /**
-         * 判断当前的ToggleState的mIdAndFlags &
-         * KEYMASK_TOGGLE_STATE是否与stateId时相等的，如果不是就移动到下一个ToggleState再找
-         * ，直到与stateId时相等或者没有下一个ToggleState为止。
-         */
+
         get() {
-            val stateId = super.stateId
             for (state in mToggleStates!!) {
                 if (state.stateId == stateId) {
                     return state

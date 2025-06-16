@@ -275,7 +275,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      */
     var isT94Number = false
     override fun responseKeyEvent(sKey: SoftKey) {
-        val keyCode = sKey.keyCode
+        val keyCode = sKey.code
         if (sKey.isKeyCodeKey) {  // 系统的keycode,单独处理
             mImeState = ImeState.STATE_INPUT
             val keyEvent = KeyEvent(0, 0, KeyEvent.ACTION_UP, keyCode, 0, 0, 0, 0, KeyEvent.FLAG_SOFT_KEYBOARD)

@@ -126,7 +126,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
                     // 播放按键声音和震动
-                    DevicesUtils.tryPlayKeyDown(SoftKey(KeyEvent.KEYCODE_DEL))
+                    DevicesUtils.tryPlayKeyDown(KeyEvent.KEYCODE_DEL)
                     DevicesUtils.tryVibrate(this)
                 }
                 MotionEvent.ACTION_UP -> {
@@ -139,7 +139,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
                     // 播放按键声音和震动
-                    DevicesUtils.tryPlayKeyDown(SoftKey(KeyEvent.KEYCODE_DEL))
+                    DevicesUtils.tryPlayKeyDown(KeyEvent.KEYCODE_DEL)
                     DevicesUtils.tryVibrate(this)
                     if(isLockSymbol) {
                         mHandler?.sendEmptyMessageDelayed(MSG_REPEAT, REPEAT_START_DELAY)
@@ -169,7 +169,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
     private fun onItemClickOperate(value: String) {
         val result = value.replace("[ \\r]".toRegex(), "")
         val softKey = SoftKey(label = result)
-        DevicesUtils.tryPlayKeyDown(softKey)
+        DevicesUtils.tryPlayKeyDown()
         DevicesUtils.tryVibrate(this)
         if (mShowType == SymbolMode.Symbol) {  // 非表情键盘
             DataBaseKT.instance.usedSymbolDao().insert(UsedSymbol(symbol = result))

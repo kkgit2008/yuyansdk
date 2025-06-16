@@ -184,14 +184,14 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         bg.cornerRadius = keyRadius.toFloat() // 设置圆角半径
         bg.setBounds(softKey.mLeft + keyXMargin, softKey.mTop + keyYMargin, softKey.mRight - keyXMargin, softKey.mBottom - keyYMargin)
         if(skbStyleMode == SkbStyleMode.Google){
-            if(softKey.keyCode == KeyEvent.KEYCODE_ENTER || softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5) {
+            if(softKey.code == KeyEvent.KEYCODE_ENTER || softKey.code == InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5) {
                 bg.setColor(mActiveTheme.accentKeyBackgroundColor)
                 val bgHeight = softKey.height() - 2 * keyYMargin
                 bg.cornerRadius = bgHeight/2f
                 bg.draw(canvas)
             }
         }
-        if (softKey.pressed || (mService?.hasSelection == true && softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE)) {
+        if (softKey.pressed || (mService?.hasSelection == true && softKey.code == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE)) {
             bg.setColor(mActiveTheme.keyPressHighlightColor)
             bg.draw(canvas)
         } else if (isKeyBorder) {
@@ -201,7 +201,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             }
             bg.setColor(background)
             bg.draw(canvas)
-        } else if(softKey.keyCode == KeyEvent.KEYCODE_ENTER) {
+        } else if(softKey.code == KeyEvent.KEYCODE_ENTER) {
                bg.setColor(mActiveTheme.accentKeyBackgroundColor)
                bg.shape = GradientDrawable.OVAL
                val bgWidth = softKey.width() - 2 * keyXMargin
@@ -219,7 +219,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         } else softKey.keyLabel
         val keyLabelSmall = softKey.getmKeyLabelSmall()
         val keyMnemonic = softKey.keyMnemonic
-        val keyIcon = if(skbStyleMode == SkbStyleMode.Google && softKey.keyCode == 62) null
+        val keyIcon = if(skbStyleMode == SkbStyleMode.Google && softKey.code == 62) null
         else softKey.keyIcon
         val weightHeigth = softKey.height() / 4f
         val textColor = mActiveTheme.keyTextColor
@@ -247,7 +247,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             val marginRight = softKey.width() - intrinsicWidth - marginLeft
             val marginTop = (softKey.height() - intrinsicHeight) / 2
             val marginBottom = softKey.height() - intrinsicHeight - marginTop
-            if(skbStyleMode == SkbStyleMode.Google && softKey.keyCode == KeyEvent.KEYCODE_ENTER){
+            if(skbStyleMode == SkbStyleMode.Google && softKey.code == KeyEvent.KEYCODE_ENTER){
                 keyIcon.setTint(Color.WHITE)
             } else {
                 keyIcon.setTint(mActiveTheme.keyTextColor)

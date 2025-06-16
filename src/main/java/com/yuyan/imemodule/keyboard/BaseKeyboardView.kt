@@ -99,7 +99,7 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
         if(mCurrentKey != null) {
             val softKey = mCurrentKey!!
             val keyboardSymbol = ThemeManager.prefs.keyboardSymbol.getValue()
-            if (softKey.getkeyLabel().isNotBlank() && softKey.keyCode != InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 ) {
+            if (softKey.getkeyLabel().isNotBlank() && softKey.code != InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 ) {
                 val keyLabel = if (InputModeSwitcherManager.isEnglishLower || (InputModeSwitcherManager.isEnglishUpperCase && !DecodingInfo.isCandidatesListEmpty))
                     softKey.keyLabel.lowercase()  else softKey.keyLabel
                 val designPreset = setOf("，", "。", ",", ".")
@@ -107,11 +107,11 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
                 val bounds = Rect(softKey.mLeft, softKey.mTop, softKey.mRight, softKey.mBottom)
                 popupComponent.showKeyboard(keyLabel, smallLabel, bounds)
                 mLongPressKey = true
-            } else if (softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2 ||
-                softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 ||
-                    softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1 ||
-                softKey.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9 ||
-                softKey.keyCode == KeyEvent.KEYCODE_DEL || softKey.keyCode == KeyEvent.KEYCODE_ENTER){
+            } else if (softKey.code == InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2 ||
+                softKey.code == InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 ||
+                    softKey.code == InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1 ||
+                softKey.code == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9 ||
+                softKey.code == KeyEvent.KEYCODE_DEL || softKey.code == KeyEvent.KEYCODE_ENTER){
                 val bounds = Rect(softKey.mLeft, softKey.mTop, softKey.mRight, softKey.mBottom)
                 popupComponent.showKeyboardMenu(softKey, bounds, currentDistanceY)
                 mLongPressKey = true
@@ -142,7 +142,7 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
                 result = onModifiedTouchEvent(me)
                 val keyIndex = getKeyIndices(x.toInt(), y.toInt())
                 if(keyIndex != null) {
-                    DevicesUtils.tryPlayKeyDown(keyIndex)
+                    DevicesUtils.tryPlayKeyDown(keyIndex.code)
                     DevicesUtils.tryVibrate(this)
                 }
                 showPreview(keyIndex)
@@ -220,8 +220,8 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
             KeyboardSymbolSlideUpMod.SHORT -> 3;KeyboardSymbolSlideUpMod.MEDIUM -> 2;else -> 1
         }
         if (!isVertical && relDiffX > 10) {  // 左右滑动
-            val isSwipeKey = mCurrentKey?.keyCode == KeyEvent.KEYCODE_SPACE || mCurrentKey?.keyCode == KeyEvent.KEYCODE_0
-            if(mCurrentKey?.keyCode == KeyEvent.KEYCODE_DEL && distanceX > 20){// 左滑删除
+            val isSwipeKey = mCurrentKey?.code == KeyEvent.KEYCODE_SPACE || mCurrentKey?.code == KeyEvent.KEYCODE_0
+            if(mCurrentKey?.code == KeyEvent.KEYCODE_DEL && distanceX > 20){// 左滑删除
                 removeMessages()
                 mAbortKey = true
                 mService?.responseKeyEvent(SoftKey(KeyEvent.KEYCODE_CLEAR))
@@ -260,7 +260,7 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
     private fun repeatKey(): Boolean {
         if (mCurrentKey != null && mCurrentKey!!.repeatable()) {
             mService?.responseKeyEvent(
-                if(mCurrentKey!!.keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9){
+                if(mCurrentKey!!.code == InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9){
                     SoftKey(if(currentDistanceX.absoluteValue >= currentDistanceY.absoluteValue){
                         if(currentDistanceX > 0)  KeyEvent.KEYCODE_DPAD_LEFT else KeyEvent.KEYCODE_DPAD_RIGHT
                     } else{
