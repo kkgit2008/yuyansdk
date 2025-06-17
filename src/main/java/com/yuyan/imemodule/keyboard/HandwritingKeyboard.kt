@@ -5,8 +5,6 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
-import android.graphics.Path
-import android.graphics.RectF
 import android.view.MotionEvent
 import androidx.core.graphics.createBitmap
 import com.yuyan.imemodule.data.theme.Theme
@@ -20,7 +18,6 @@ import com.yuyan.inputmethod.core.HandWriting
 import java.util.LinkedList
 import kotlin.math.ceil
 import kotlin.math.max
-import kotlin.math.min
 import kotlin.math.roundToInt
 import kotlin.math.sqrt
 
@@ -28,20 +25,15 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
 
     private val mPointsCache: MutableList<TimedPoint> = ArrayList<TimedPoint>()
     private val mControlTimedPointsCached = ControlTimedPoints()
-    private val mBezierCached = Bezier()
     private var mLastUpTime: Long = 0 //记录上次手写抬手时间，与本次按下时间对比。
     private val mSBPoint: MutableList<Short?> = LinkedList()
     private var mPoints: MutableList<TimedPoint> =  ArrayList<TimedPoint>()
-    private var mLastTouchX = 0f
-    private var mLastTouchY = 0f
     private var mLastVelocity = 0f
     private var mLastWidth = 0f
-    private val mRect: RectF
-    private var mMaxWidth: Int
-    private var mMinWidth: Int
+    private var mMaxWidth: Int = convertDpToPx(12f)
+    private var mMinWidth: Int = mMaxWidth/2
     private var mVelocityFilterWeight = 0.7f
     private val mPaint = Paint()
-    private val mPath = Path()
     private var mSignatureBitmap: Bitmap? = null
     private var mSignatureBitmapCanvas: Canvas? = null
     private val times = 1200L - getInstance().handwriting.handWritingSpeed.getValue()  // 默认1.3s
@@ -52,10 +44,6 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
         mPaint.setStyle(Paint.Style.STROKE)
         mPaint.setStrokeCap(Paint.Cap.ROUND)
         mPaint.setStrokeJoin(Paint.Join.ROUND)
-        val paintWidthMax = getInstance().handwriting.handWritingWidth.getValue() * 4 / 10f
-        mMaxWidth = convertDpToPx(paintWidthMax)
-        mMinWidth = convertDpToPx(paintWidthMax/2f)
-        mRect = RectF()
         clear()
     }
 
@@ -64,12 +52,10 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
         mPaint.setColor(mActiveTheme.keyTextColor)
     }
 
-
     fun clear() {
         mPoints.clear()
         mLastVelocity = 0f
         mLastWidth = mMinWidth.toFloat()
-        mPath.reset()
         if (mSignatureBitmap != null) {
             mSignatureBitmap = null
             ensureSignatureBitmap()
@@ -92,12 +78,11 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
         mSBPoint.add(me.y.toInt().toShort())
         when (me.action) {
             MotionEvent.ACTION_DOWN -> {
+                val paintWidthMax = getInstance().handwriting.handWritingWidth.getValue() * 4 / 10f
+                mMaxWidth = convertDpToPx(paintWidthMax)
+                mMinWidth = convertDpToPx(paintWidthMax/2f)
                 parent.requestDisallowInterceptTouchEvent(true)
                 mPoints.clear()
-                mPath.moveTo(eventX, eventY)
-                mLastTouchX = eventX
-                mLastTouchY = eventY
-                resetDirtyRect(eventX, eventY)
                 addPoint(getNewPoint(eventX, eventY))
                 if (mLastUpTime != 0L && System.currentTimeMillis() - mLastUpTime > times) {
                     val key = SoftKey()
@@ -106,15 +91,11 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
                     clear()
                 }
             }
-
             MotionEvent.ACTION_MOVE -> {
-                resetDirtyRect(eventX, eventY)
                 addPoint(getNewPoint(eventX, eventY))
                 updatePathDelayed()
             }
-
             MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                resetDirtyRect(eventX, eventY)
                 addPoint(getNewPoint(eventX, eventY))
                 parent.requestDisallowInterceptTouchEvent(true)
                 mLastUpTime = System.currentTimeMillis()
@@ -138,12 +119,7 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
 
     private fun getNewPoint(x: Float, y: Float): TimedPoint? {
         val mCacheSize = mPointsCache.size
-        val timedPoint: TimedPoint
-        if (mCacheSize == 0) {
-            timedPoint = TimedPoint()
-        } else {
-            timedPoint = mPointsCache.removeAt(mCacheSize - 1)
-        }
+        val timedPoint = if (mCacheSize == 0) TimedPoint() else  mPointsCache.removeAt(mCacheSize - 1)
         return timedPoint.set(x, y)
     }
 
@@ -161,10 +137,10 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
             tmp = calculateCurveControlPoints(mPoints[1], mPoints[2], mPoints[3])
             val c3 = tmp.c1!!
             recyclePoint(tmp.c2)
-            val curve = mBezierCached.set(mPoints[1], c2, c3, mPoints[2])
+            val curve = Bezier(mPoints[1], c2, c3, mPoints[2])
             val startPoint = curve.startPoint
             val endPoint = curve.endPoint
-            var velocity = endPoint!!.velocityFrom(startPoint!!)
+            var velocity = endPoint.velocityFrom(startPoint)
             velocity = if (velocity.isNaN()) 0.0f else velocity
             velocity = (mVelocityFilterWeight * velocity + (1 - mVelocityFilterWeight) * mLastVelocity)
             val newWidth = strokeWidth(velocity)
@@ -193,20 +169,18 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
             val u = 1 - t
             val uu = u * u
             val uuu = uu * u
-            var x = uuu * curve.startPoint!!.x
-            x += 3 * uu * t * curve.control1!!.x
-            x += 3 * u * tt * curve.control2!!.x
-            x += ttt * curve.endPoint!!.x
-            var y = uuu * curve.startPoint!!.y
-            y += 3 * uu * t * curve.control1!!.y
-            y += 3 * u * tt * curve.control2!!.y
-            y += ttt * curve.endPoint!!.y
+            var x = uuu * curve.startPoint.x
+            x += 3 * uu * t * curve.control1.x
+            x += 3 * u * tt * curve.control2.x
+            x += ttt * curve.endPoint.x
+            var y = uuu * curve.startPoint.y
+            y += 3 * uu * t * curve.control1.y
+            y += 3 * u * tt * curve.control2.y
+            y += ttt * curve.endPoint.y
             mPaint.setStrokeWidth(startWidth + ttt * widthDelta)
             mSignatureBitmapCanvas!!.drawPoint(x, y, mPaint)
-            expandDirtyRect(x, y)
             i++
         }
-
         mPaint.setStrokeWidth(originalWidth)
     }
 
@@ -239,29 +213,9 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
         return max((mMaxWidth / (velocity + 1)).toDouble(), mMinWidth.toDouble()).toFloat()
     }
 
-    private fun expandDirtyRect(historicalX: Float, historicalY: Float) {
-        if (historicalX < mRect.left) {
-            mRect.left = historicalX
-        } else if (historicalX > mRect.right) {
-            mRect.right = historicalX
-        }
-        if (historicalY < mRect.top) {
-            mRect.top = historicalY
-        } else if (historicalY > mRect.bottom) {
-            mRect.bottom = historicalY
-        }
-    }
-
-    private fun resetDirtyRect(eventX: Float, eventY: Float) {
-        mRect.left = min(mLastTouchX.toDouble(), eventX.toDouble()).toFloat()
-        mRect.right = max(mLastTouchX.toDouble(), eventX.toDouble()).toFloat()
-        mRect.top = min(mLastTouchY.toDouble(), eventY.toDouble()).toFloat()
-        mRect.bottom = max(mLastTouchY.toDouble(), eventY.toDouble()).toFloat()
-    }
-
     private fun ensureSignatureBitmap() {
         if (mSignatureBitmap == null) {
-            mSignatureBitmap = createBitmap(getWidth(), getHeight())
+            mSignatureBitmap = createBitmap(width, height)
             mSignatureBitmapCanvas = Canvas(mSignatureBitmap!!)
         }
     }
@@ -292,5 +246,4 @@ class HandwritingKeyboard(context: Context?) : TextKeyboard(context) {
     var runnable = Runnable {
         clear()
     }
-
 }

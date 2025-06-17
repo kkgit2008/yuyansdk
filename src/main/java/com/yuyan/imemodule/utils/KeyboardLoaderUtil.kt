@@ -10,6 +10,7 @@ import com.yuyan.imemodule.entity.keyboard.ToggleState
 import com.yuyan.imemodule.keyboard.KeyPreset
 import com.yuyan.imemodule.keyboard.KeyPresetGoogle
 import com.yuyan.imemodule.keyboard.KeyPresetSamsung
+import com.yuyan.imemodule.keyboard.KeyboardData
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
 import com.yuyan.imemodule.prefs.AppPrefs
 import com.yuyan.imemodule.prefs.behavior.DoublePinyinSchemaMode
@@ -69,18 +70,7 @@ class KeyboardLoaderUtil private constructor() {
                         arrayOf(29, 47, 32, 34, 35, 36, 38, 39, 40),
                         arrayOf(74, 54, 52, 31, 50, 30, 42, 41, KeyEvent.KEYCODE_DEL),)
                     else -> {
-                        if(skbStyleMode == SkbStyleMode.Google){
-                            arrayListOf(
-                                arrayOf(45, 51, 33, 46, 48, 53, 49, 37, 43, 44),
-                                arrayOf(29, 47, 32, 34, 35, 36, 38, 39, 40),
-                                arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1, 54, 52, 31, 50, 30, 42, 41, KeyEvent.KEYCODE_DEL),)
-                        } else {
-                            arrayListOf(
-                                arrayOf(45, 51, 33, 46, 48, 53, 49, 37, 43, 44),
-                                arrayOf(29, 47, 32, 34, 35, 36, 38, 39, 40),
-                                arrayOf(75, 54, 52, 31, 50, 30, 42, 41, KeyEvent.KEYCODE_DEL),
-                            )
-                        }
+                        KeyboardData.layoutQwertyCn[skbStyleMode]!!
                     }
                 }
                 if (numberLine && skbStyleMode == SkbStyleMode.Samsung) {

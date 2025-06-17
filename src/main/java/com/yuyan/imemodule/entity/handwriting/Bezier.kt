@@ -2,19 +2,7 @@ package com.yuyan.imemodule.entity.handwriting
 
 import kotlin.math.sqrt
 
-class Bezier {
-    var startPoint: TimedPoint? = null
-    var control1: TimedPoint? = null
-    var control2: TimedPoint? = null
-    var endPoint: TimedPoint? = null
-
-    fun set(startPoint: TimedPoint, control1: TimedPoint, control2: TimedPoint, endPoint: TimedPoint): Bezier {
-        this.startPoint = startPoint
-        this.control1 = control1
-        this.control2 = control2
-        this.endPoint = endPoint
-        return this
-    }
+class Bezier(var startPoint: TimedPoint, var control1: TimedPoint, var control2: TimedPoint, var endPoint: TimedPoint) {
 
     fun length(): Float {
         val steps = 10
@@ -29,12 +17,12 @@ class Bezier {
         for (i in 0..steps) {
             val t = i.toFloat() / steps
             cx = point(
-                t, this.startPoint!!.x, this.control1!!.x,
-                this.control2!!.x, this.endPoint!!.x
+                t, this.startPoint.x, this.control1.x,
+                this.control2.x, this.endPoint.x
             )
             cy = point(
-                t, this.startPoint!!.y, this.control1!!.y,
-                this.control2!!.y, this.endPoint!!.y
+                t, this.startPoint.y, this.control1.y,
+                this.control2.y, this.endPoint.y
             )
             if (i > 0) {
                 xDiff = cx - px
