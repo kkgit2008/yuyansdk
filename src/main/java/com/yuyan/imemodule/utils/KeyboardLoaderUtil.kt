@@ -533,8 +533,7 @@ class KeyboardLoaderUtil private constructor() {
             else -> emptyMap()
         }
         val softKeys = mutableListOf<SoftKey>()
-        val keyPreset = if(rimeValue == CustomConstant.SCHEMA_ZH_CANGJIE5) getKeyPreset("qwertyCangjieKeyPreset")
-        else if(numberLine)getKeyPreset("qwertyPYKeyPreset") else getKeyPreset("qwertyPYKeyNumberPreset")
+        val keyPreset = if(numberLine)getKeyPreset("qwertyPYKeyPreset") else getKeyPreset("qwertyPYKeyNumberPreset")
         for(code in codes){
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "", keyMnemonic = keyMnemonicPreset[code] ?: "").apply {

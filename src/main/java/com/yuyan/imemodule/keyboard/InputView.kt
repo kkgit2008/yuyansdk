@@ -477,7 +477,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      */
     private fun processInput(event: KeyEvent): Boolean {
         val keyCode = event.keyCode
-        val keyChar = event.keyCode
+        val keyChar = event.unicodeChar
         val lable = keyChar.toChar().toString()
         if (keyCode == KeyEvent.KEYCODE_DEL) {
             if (DecodingInfo.isFinish || DecodingInfo.isAssociate) {

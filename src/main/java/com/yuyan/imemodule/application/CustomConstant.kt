@@ -13,8 +13,6 @@ object CustomConstant {
     const val SCHEMA_ZH_HANDWRITING = "handwriting" // 手写输入
     const val SCHEMA_ZH_DOUBLE_FLYPY = "double_pinyin_" // 小鹤双拼
     const val SCHEMA_ZH_DOUBLE_LX17 = "double_pinyin_ls17" // 乱序17双拼
-    const val SCHEMA_ZH_CANGJIE5 = "cangjie5" // 仓颉拼音
-    const val SCHEMA_ZH_BOPOMOFO = "bopomofo" // 注音拼音
     const val SCHEMA_ZH_STROKE = "stroke" // 五笔画
     const val CURRENT_RIME_DICT_DATA_VERSIOM = 20250606
     const val YUYAN_IME_REPO = "https://github.com/gurecn/YuyanIme"
