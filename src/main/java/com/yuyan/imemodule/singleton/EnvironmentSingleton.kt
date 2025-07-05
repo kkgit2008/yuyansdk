@@ -74,7 +74,7 @@ class EnvironmentSingleton private constructor() {
             heightForCandidates = (screenHeightVertical * candidatesHeightRatio).toInt()
         }
         skbHeight = (screenHeightVertical * keyboardHeightRatio).toInt()
-        heightForComposingView = (heightForCandidates*0.5f).toInt()
+        heightForComposingView = (heightForCandidates*0.3f).toInt()
         heightForFullDisplayBar = (heightForCandidates*0.7f).toInt()
         heightForKeyboardMove = (heightForCandidates*0.2f).toInt()
         keyTextSize = (skbHeight * 0.06f).toInt()

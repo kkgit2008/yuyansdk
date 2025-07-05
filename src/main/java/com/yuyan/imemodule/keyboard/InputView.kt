@@ -41,7 +41,6 @@ import com.yuyan.imemodule.utils.DevicesUtils
 import com.yuyan.imemodule.utils.KeyboardLoaderUtil
 import com.yuyan.imemodule.utils.StringUtils
 import com.yuyan.imemodule.view.CandidatesBar
-import com.yuyan.imemodule.view.ComposingView
 import com.yuyan.imemodule.view.EditPhrasesView
 import com.yuyan.imemodule.view.FullDisplayKeyboardBar
 import com.yuyan.imemodule.keyboard.container.CandidatesContainer
@@ -59,7 +58,6 @@ import kotlin.math.absoluteValue
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.graphics.scale
 import androidx.core.view.postDelayed
-import com.yuyan.imemodule.application.CustomConstant
 
 /**
  * 输入法主界面。
@@ -76,7 +74,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
     private var service: ImeService
     private var mImeState = ImeState.STATE_IDLE // 当前的输入法状态
     private var mChoiceNotifier = ChoiceNotifier()
-    private var mComposingView: ComposingView // 组成字符串的View，用于显示输入的拼音。
     var mSkbRoot: RelativeLayout
     var mSkbCandidatesBarView: CandidatesBar //候选词栏根View
     private var mHoderLayoutLeft: LinearLayout
@@ -103,11 +100,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         mAddPhrasesLayout = EditPhrasesView(context)
         KeyboardManager.instance.setData(mSkbRoot.findViewById(R.id.skb_input_keyboard_view), this)
         mLlKeyboardBottomHolder =  mSkbRoot.findViewById(R.id.iv_keyboard_holder)
-        mComposingView = ComposingView(context)
-        addView(mComposingView,  LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT).apply {
-            addRule(ABOVE, mSkbRoot.id)
-            addRule(ALIGN_LEFT, mSkbRoot.id)
-        })
         val root = PopupComponent.get().root
         val viewParent = root.parent
         if (viewParent != null) {
@@ -251,7 +243,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         val keyTextColor = ThemeManager.activeTheme.keyTextColor
         val backgrounde = ThemeManager.activeTheme.backgroundDrawable(ThemeManager.prefs.keyBorder.getValue())
         mSkbRoot.background = if(backgrounde is BitmapDrawable) backgrounde.bitmap.scale(EnvironmentSingleton.instance.skbWidth, EnvironmentSingleton.instance.inputAreaHeight).toDrawable(context.resources) else backgrounde
-        mComposingView.updateTheme(ThemeManager.activeTheme)
         mSkbCandidatesBarView.updateTheme(keyTextColor)
         if(::mOnehandHoderLayout.isInitialized) {
             (mOnehandHoderLayout[0] as ImageButton).drawable?.setTint(keyTextColor)
@@ -278,7 +269,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      * 响应软键盘按键的处理函数。在软键盘集装箱SkbContainer中responseKeyEvent（）的调用。
      * 软键盘集装箱SkbContainer的responseKeyEvent（）在自身类中调用。
      */
-    var isT94Number = false
     override fun responseKeyEvent(sKey: SoftKey) {
         val keyCode = sKey.code
         if (sKey.isKeyCodeKey) {  // 系统的keycode,单独处理
@@ -518,7 +508,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      */
     fun resetToIdleState() {
         resetCandidateWindow()
-        mComposingView.setDecodingInfo()
         if(hasSelectionAll) hasSelectionAll = false
         mImeState = ImeState.STATE_IDLE
     }
@@ -528,7 +517,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      */
     private fun resetToPredictState() {
         resetCandidateWindow()
-        mComposingView.setDecodingInfo()
         mImeState = ImeState.STATE_PREDICT
     }
 
@@ -579,7 +567,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      */
     fun updateCandidateBar() {
         mSkbCandidatesBarView.showCandidates()
-        mComposingView.setDecodingInfo()
     }
 
     /**
