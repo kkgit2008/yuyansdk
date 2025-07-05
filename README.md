@@ -95,6 +95,28 @@ git clone git@github.com:gurecn/yuyansdk.git
 | - | - |
 | ![深色主题](./images/dark.jpg) | ![设置菜单](./images/setting.jpg) |
 
+## 授权声明
+[本项目(yuyansdk)](https://github.com/gurecn/yuyansdk)承诺，依据 [GPL-3.0 许可证](./LICENSE)条款**永久面向开源社区、个人用户免费、无广告开源，不获取输入数据**。为保障项目持续性，采用**双授权模式**：
+* **GNU General Public License v3.0 (GPL-3.0):**
+  *  依据 [GPL-3.0 许可证](./LICENSE)条款向社区开源及个人研究、使用。
+  *  在遵守 GPL-3.0 许可证全部条款（包括不限于：开源修改后的代码、注明版权等）的前提下，自由地使用、研究、修改本项目的源代码；
+  *   分发本项目的原始或修改后的版本（需遵守 [GPL-3.0 许可证](./LICENSE)）；
+  *   **重要提示：** 若您将本项目的代码（或其修改版本）集成到您自己的项目中，则您的整个项目**必须**依据 GPL-3.0 许可证约定的义务开源。
+* **商业授权 (Commercial License):**
+  *   若您有以下一项或多项需求，您需要购买商业授权：
+      * 将本项目（或其部分）集成到您的**专有/闭源软件**中；
+      * 您需要在企业内部或商业推广使用的同时**不希望/无法遵守 GPL-3.0 的开源义务**
+      * 您需要**技术支持或定制开发服务**。
+  *   商业授权提供更灵活的使用条款，免除 GPL-3.0 的开源要求、提供法律保障和技术支持；
+  *   专属技术支持或定制开发服务。 
+
+  感谢您对本项目的支持。
+
+## 联系作者：
+访问我的资源: <a href="https://github.com/gurecn">https://github.com/gurecn</a>
+
+给我发送邮箱：[gurecn@163.com](mailto:gurecn@163.com)
+
 ## 鸣谢：
 感谢以下优秀的开源社区贡献：
 - [RIME](http://rime.im)
@@ -102,12 +124,3 @@ git clone git@github.com:gurecn/yuyansdk.git
 - [小企鹅输入法](https://github.com/fcitx5-android/fcitx5-android)
 - [雾凇拼音](https://github.com/iDvel/rime-ice)
 - [白霜拼音](https://github.com/gaboolic/rime-frost)
-
-## 联系作者：
-访问我的资源: <a href="https://github.com/gurecn">https://github.com/gurecn</a>
-
-给我发送邮箱：[gurecn@163.com](mailto:gurecn@163.com)
-
-
-
-
