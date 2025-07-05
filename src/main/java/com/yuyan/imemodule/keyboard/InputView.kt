@@ -84,6 +84,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
     private lateinit var mOnehandHoderLayout: LinearLayout
     var mAddPhrasesLayout: EditPhrasesView
     private var mLlKeyboardBottomHolder: LinearLayout
+    private var mInputKeyboardContainer: RelativeLayout
     private lateinit var mRightPaddingKey: ManagedPreference.PInt
     private lateinit var mBottomPaddingKey: ManagedPreference.PInt
     private var mFullDisplayKeyboardBar:FullDisplayKeyboardBar? = null
@@ -98,6 +99,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         mSkbCandidatesBarView = mSkbRoot.findViewById(R.id.candidates_bar)
         mHoderLayoutLeft = mSkbRoot.findViewById(R.id.ll_skb_holder_layout_left)
         mHoderLayoutRight = mSkbRoot.findViewById(R.id.ll_skb_holder_layout_right)
+        mInputKeyboardContainer = mSkbRoot.findViewById(R.id.ll_input_keyboard_container)
         mAddPhrasesLayout = EditPhrasesView(context)
         KeyboardManager.instance.setData(mSkbRoot.findViewById(R.id.skb_input_keyboard_view), this)
         mLlKeyboardBottomHolder =  mSkbRoot.findViewById(R.id.iv_keyboard_holder)
@@ -150,6 +152,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         }
         mLlKeyboardBottomHolder.removeAllViews()
         mLlKeyboardBottomHolder.layoutParams.width = EnvironmentSingleton.instance.skbWidth
+        mInputKeyboardContainer.layoutParams.width = EnvironmentSingleton.instance.inputAreaWidth
         if(EnvironmentSingleton.instance.keyboardModeFloat){
             mBottomPaddingKey = (if(EnvironmentSingleton.instance.isLandscape) getInstance().internal.keyboardBottomPaddingLandscapeFloat
                 else getInstance().internal.keyboardBottomPaddingFloat)
