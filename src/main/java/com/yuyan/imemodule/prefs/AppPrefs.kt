@@ -114,7 +114,7 @@ class AppPrefs(private val sharedPreferences: SharedPreferences) {
         val candidateTextSize = int(
             R.string.candidate_size_input_setting,
             "candidate_size",
-            50,
+            55,
             25,
             100,
             "%",

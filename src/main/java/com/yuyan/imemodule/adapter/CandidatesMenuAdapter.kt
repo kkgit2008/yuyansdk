@@ -32,7 +32,7 @@ import splitties.views.padding
 class CandidatesMenuAdapter(context: Context?) : RecyclerView.Adapter<CandidatesMenuAdapter.SymbolHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var mOnItemClickListener: OnRecyclerItemClickListener? = null
-    private val itemHeight: Int = (instance.heightForCandidatesArea * 0.8f).toInt()
+    private var itemHeight: Int = (instance.heightForCandidatesArea * 0.8f).toInt()
     private var mMenuPadding: Int = (instance.heightForCandidatesArea * 0.05f).toInt()
     var items: List<SkbFunItem> = emptyList()
         set(value) {
@@ -48,10 +48,6 @@ class CandidatesMenuAdapter(context: Context?) : RecyclerView.Adapter<Candidates
         var entranceIconImageView: ImageView? = null
         init {
             entranceIconImageView = itemView.findViewById(R.id.candidates_menu_item)
-            entranceIconImageView?.padding = mMenuPadding
-            val layoutParams = itemView.layoutParams
-            layoutParams.width = itemHeight
-            layoutParams.height = itemHeight
         }
     }
 
@@ -63,6 +59,10 @@ class CandidatesMenuAdapter(context: Context?) : RecyclerView.Adapter<Candidates
 
     override fun onBindViewHolder(holder: SymbolHolder, position: Int) {
         val item = items[position]
+        holder.entranceIconImageView?.padding = mMenuPadding
+        val layoutParams = holder.entranceIconImageView?.layoutParams
+        layoutParams?.width = itemHeight
+        layoutParams?.height = itemHeight
         holder.entranceIconImageView?.setImageResource(item.funImgRecource)
         val color = if (isSettingsMenuSelect(item)) activeTheme.accentKeyBackgroundColor else activeTheme.keyTextColor
         holder.entranceIconImageView?.getDrawable()?.setTint(color)
@@ -123,6 +123,8 @@ class CandidatesMenuAdapter(context: Context?) : RecyclerView.Adapter<Candidates
     }
 
     fun notifyChanged() {
+        itemHeight = (instance.heightForCandidatesArea * 0.8f).toInt()
+        mMenuPadding = (instance.heightForCandidatesArea * 0.05f).toInt()
         notifyDataSetChanged()
     }
 }

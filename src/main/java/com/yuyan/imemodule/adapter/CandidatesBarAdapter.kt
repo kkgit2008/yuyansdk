@@ -37,6 +37,7 @@ class CandidatesBarAdapter(context: Context?) :
     override fun onBindViewHolder(holder: SymbolHolder, position: Int) {
         if(DecodingInfo.isCandidatesListEmpty) return
         holder.textView.text = DecodingInfo.candidates[position].text
+        holder.textView.textSize = instance.candidateTextSize
         holder.textView.setTextColor(if(mActiveCandNo-1 == position) activeTheme.accentKeyBackgroundColor else activeTheme.keyTextColor)
         if (mOnItemClickListener != null) {
             holder.textView.setOnClickListener { view: View? ->
@@ -59,10 +60,8 @@ class CandidatesBarAdapter(context: Context?) :
 
     inner class SymbolHolder(view: View) : RecyclerView.ViewHolder(view) {
         var textView: EmojiTextView = view.findViewById(R.id.gv_candidates_bar_item)
-
         init {
             textView.setTextColor(activeTheme.keyTextColor)
-            textView.textSize = instance.candidateTextSize
         }
     }
 }
