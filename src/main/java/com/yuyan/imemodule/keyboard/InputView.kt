@@ -603,7 +603,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
             if (level == 0) {
                 onSettingsMenuClick(SkbMenuMode.CandidatesMore)
             } else {
-                KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
+                KeyboardManager.instance.switchKeyboard()
                 (KeyboardManager.instance.currentContainer as? T9TextContainer)?.updateSymbolListView()
             }
         }
@@ -614,7 +614,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
 
         override fun onClickClearCandidate() {
             if(mImeState != ImeState.STATE_IDLE) resetToIdleState()
-            KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
+            KeyboardManager.instance.switchKeyboard()
         }
 
         override fun onClickClearClipBoard() {
@@ -827,46 +827,5 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 }
             }
         }
-    }
-
-    /**
-     * 切换键盘接口
-     */
-    private fun keyboardChange(mode: SkbMenuMode) {
-        val keyboardValue: Int
-        val value = when (mode) {
-            SkbMenuMode.Pinyin26Jian -> {
-                keyboardValue = 0x1000
-                CustomConstant.SCHEMA_ZH_QWERTY
-            }
-            SkbMenuMode.PinyinHandWriting -> {
-                keyboardValue = 0x3000
-                CustomConstant.SCHEMA_ZH_HANDWRITING
-            }
-            SkbMenuMode.PinyinLx17 -> {
-                keyboardValue = 0x6000
-                CustomConstant.SCHEMA_ZH_DOUBLE_LX17
-            }
-            SkbMenuMode.PinyinStroke -> {
-                keyboardValue = 0x7000
-                CustomConstant.SCHEMA_ZH_STROKE
-            }
-            SkbMenuMode.Pinyin26Double -> {
-                keyboardValue = 0x1000
-                CustomConstant.SCHEMA_ZH_DOUBLE_FLYPY + getInstance().input.doublePYSchemaMode.getValue()
-            }
-            else ->{
-                keyboardValue = 0x2000
-                CustomConstant.SCHEMA_ZH_T9
-            }
-        }
-        val inputMode = keyboardValue or InputModeSwitcherManager.MASK_LANGUAGE_CN or InputModeSwitcherManager.MASK_CASE_UPPER
-        getInstance().internal.inputMethodPinyinMode.setValue(inputMode)
-        getInstance().internal.pinyinModeRime.setValue(value)
-        KeyboardLoaderUtil.instance.clearKeyboardMap()
-        KeyboardManager.instance.clearKeyboard()
-        InputModeSwitcherManager.saveInputMode(inputMode)
-        resetToIdleState()
-        KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
     }
 }

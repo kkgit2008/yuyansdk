@@ -175,7 +175,7 @@ class SymbolContainer(context: Context, inputView: InputView) : BaseContainer(co
             DataBaseKT.instance.usedSymbolDao().insert(UsedSymbol(symbol = result))
             val num = max(DataBaseKT.instance.usedSymbolDao().getCount("symbol") - 50, 0)
             DataBaseKT.instance.usedSymbolDao().deleteOldest("symbol", num)
-            if(!isLockSymbol) KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
+            if(!isLockSymbol) KeyboardManager.instance.switchKeyboard()
             inputView.responseKeyEvent(softKey)
         } else {  //表情、颜文字
             if(!YuyanEmojiCompat.isWeChatInput || mVPSymbolsView.currentItem != 1 ) {

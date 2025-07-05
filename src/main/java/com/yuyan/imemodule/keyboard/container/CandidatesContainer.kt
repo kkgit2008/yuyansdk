@@ -147,7 +147,7 @@ class CandidatesContainer(context: Context, inputView: InputView) : BaseContaine
                 MotionEvent.ACTION_UP -> {
                     inputView.responseKeyEvent(SoftKey(KeyEvent.KEYCODE_DEL))
                     if(DecodingInfo.isFinish) {
-                        KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
+                        KeyboardManager.instance.switchKeyboard()
                         (KeyboardManager.instance.currentContainer as? T9TextContainer)?.updateSymbolListView()
                     }
                 }
