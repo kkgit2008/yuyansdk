@@ -26,7 +26,7 @@ object KeyboardData {
             arrayOf(11, 12, 13, InputModeSwitcherManager.USER_DEF_KEYCODE_CURSOR_DIRECTION_9),
             arrayOf(14, 15, 16, InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1)),
         SkbStyleMode.Samsung to arrayListOf(
-            arrayOf(75, 9, 10, KeyEvent.KEYCODE_DEL),
+            arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_SYMBOL_12, 75, 9, 10, KeyEvent.KEYCODE_DEL),
             arrayOf(11, 12, 13, KeyEvent.KEYCODE_CLEAR),
             arrayOf(14, 15, 16, 7)),
         SkbStyleMode.Yuyan to arrayListOf(
@@ -75,24 +75,6 @@ object KeyboardData {
             arrayOf(36, 47, 54, 30, 52, 41),
             arrayOf(40, 32, 53, 51, 38, 42),
             arrayOf(31, 45, 35, 34, 48, 67)),
-    )
-
-    val layoutBopomofoCn: Map<SkbStyleMode, ArrayList<Array<Int>>> = linkedMapOf(
-        SkbStyleMode.Google to arrayListOf(
-            arrayOf('b'.code,'d'.code, '3'.code, '4'.code,  'Z'.code, '2'.code,'5'.code, 'a'.code, 'A'.code, 'M'.code),
-            arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code),
-            arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code),
-            arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code)),
-        SkbStyleMode.Samsung to arrayListOf(
-            arrayOf('b'.code, 'd'.code, '3'.code, '4'.code, 'Z'.code, '2'.code, '5'.code, 'a'.code, 'A'.code, 'M'.code, 'R'.code),
-            arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code),
-            arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code),
-            arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code, KeyEvent.KEYCODE_DEL)),
-        SkbStyleMode.Yuyan to arrayListOf(
-            arrayOf('b'.code, 'd'.code, '3'.code, '4'.code, 'Z'.code, '2'.code, '5'.code, 'a'.code, 'A'.code, 'M'.code, 'R'.code),
-            arrayOf('p'.code, 't'.code, 'g'.code, 'j'.code, 'D'.code, 'z'.code, 'i'.code, 'o'.code, 'I'.code, 'N'.code),
-            arrayOf('m'.code, 'n'.code, 'k'.code, 'q'.code, 'S'.code, 'c'.code, 'u'.code, 'e'.code, 'O'.code, 'K'.code),
-            arrayOf('f'.code, 'l'.code, 'h'.code, 'x'.code, 'r'.code, 's'.code, 'v'.code, 'E'.code, 'U'.code, 'G'.code, KeyEvent.KEYCODE_DEL)),
     )
 
     val layoutQwertyEn: Map<SkbStyleMode, ArrayList<Array<Int>>> = linkedMapOf(

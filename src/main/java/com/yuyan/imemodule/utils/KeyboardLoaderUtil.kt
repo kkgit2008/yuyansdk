@@ -271,34 +271,10 @@ class KeyboardLoaderUtil private constructor() {
                 rows.add(keyBeans)
                 keyBeans = LinkedList()
                 editKeys = createTextEditKeys(keys[3])
-                editKeys[0].widthF = 0.375f
-                editKeys[1].widthF = 0.375f
+                editKeys[0].widthF = 0.33f
+                editKeys[1].widthF = 0.33f
+                editKeys[2].widthF = 0.33f
                 keyBeans.addAll(editKeys)
-                rows.add(keyBeans)
-                keyBeans = lastRows(skbValue)
-                rows.add(keyBeans)
-            }
-            0x9000 -> {  // 9000  注音键盘
-                var keyBeans = mutableListOf<SoftKey>()
-                val keys =  KeyboardData.layoutBopomofoCn[skbStyleMode]!!
-                var qwertyKeys = createBopomofoPYKeys(keys[0])
-                keyBeans.addAll(qwertyKeys)
-                rows.add(keyBeans)
-                keyBeans = LinkedList()
-                qwertyKeys = createBopomofoPYKeys(keys[1])
-                if(skbStyleMode != SkbStyleMode.Google)qwertyKeys.first().apply { mLeftF = 0.06f }
-                keyBeans.addAll(qwertyKeys)
-                rows.add(keyBeans)
-                keyBeans = LinkedList()
-                qwertyKeys = createBopomofoPYKeys(keys[2])
-                if(skbStyleMode != SkbStyleMode.Google)qwertyKeys.first().apply { mLeftF = 0.06f }
-                keyBeans.addAll(qwertyKeys)
-                rows.add(keyBeans)
-                keyBeans = LinkedList()
-                qwertyKeys = createBopomofoPYKeys(keys[3])
-                keyBeans.addAll(qwertyKeys)
-                rows.add(keyBeans)
-                keyBeans = lastRows(skbValue)
                 rows.add(keyBeans)
             }
         }
@@ -358,19 +334,6 @@ class KeyboardLoaderUtil private constructor() {
                         InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
                 } else {
                     createLX17Keys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
-                            InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
-                }
-            }
-            0x9000 -> {
-                softKeyToggle.heightF = 0.2f
-                if(skbStyleMode == SkbStyleMode.Google){
-                    createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
-                        KeyEvent.KEYCODE_SPACE, 'R'.code, KeyEvent.KEYCODE_DEL))
-                } else if (skbStyleMode == SkbStyleMode.Samsung) {
-                    createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2,
-                        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5))
-                } else {
-                    createBopomofoPYKeys(arrayOf(InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3, InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5,
                             InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13, KeyEvent.KEYCODE_SPACE, InputModeSwitcherManager.USER_DEF_KEYCODE_LANG_2))
                 }
             }
@@ -543,19 +506,6 @@ class KeyboardLoaderUtil private constructor() {
         return softKeys.toTypedArray()
     }
 
-    private fun createBopomofoPYKeys(codes: Array<Int>): Array<SoftKey> {
-        val softKeys = mutableListOf<SoftKey>()
-        val keyPreset = getKeyPreset("qwertyBopomofoKeyPreset")
-        for(code in codes){
-            val labels = keyPreset[code]
-            softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "", labelSmall = labels?.getOrNull(1) ?: "").apply {
-                widthF = if (skbStyleMode == SkbStyleMode.Google)0.099f else 0.09f
-                heightF = 0.2f
-            })
-        }
-        return softKeys.toTypedArray()
-    }
-
     private fun createQwertyKeys(codes: Array<Int>): Array<SoftKey> {
         val softKeys = mutableListOf<SoftKey>()
         val keyPreset = if(numberLine)getKeyPreset("qwertyKeyPreset") else getKeyPreset("qwertyKeyNumberPreset")
@@ -606,7 +556,7 @@ class KeyboardLoaderUtil private constructor() {
         for(code in codes){
             val labels = keyPreset[code]
             softKeys.add(SoftKey(code = code, label = labels?.getOrNull(0) ?: "").apply {
-                widthF = 0.25f
+                widthF = 0.2475f
             })
         }
         return softKeys.toTypedArray()

@@ -183,19 +183,12 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         bg.shape = GradientDrawable.RECTANGLE
         bg.cornerRadius = keyRadius.toFloat() // 设置圆角半径
         bg.setBounds(softKey.mLeft + keyXMargin, softKey.mTop + keyYMargin, softKey.mRight - keyXMargin, softKey.mBottom - keyYMargin)
-        if(skbStyleMode == SkbStyleMode.Google){
-            if(softKey.code == KeyEvent.KEYCODE_ENTER || softKey.code == InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5) {
-                bg.setColor(mActiveTheme.accentKeyBackgroundColor)
-                val bgHeight = softKey.height() - 2 * keyYMargin
-                bg.cornerRadius = bgHeight/2f
-                bg.draw(canvas)
-            }
-        }
         if (softKey.pressed || (mService?.hasSelection == true && softKey.code == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE)) {
             bg.setColor(mActiveTheme.keyPressHighlightColor)
             bg.draw(canvas)
         } else if (isKeyBorder) {
             val background = when (softKey.keyType) {
+                KeyType.AccentKey -> mActiveTheme.accentKeyBackgroundColor
                 KeyType.Function -> mActiveTheme.functionKeyBackgroundColor
                 else  -> mActiveTheme.keyBackgroundColor
             }
@@ -204,9 +197,9 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         } else if(softKey.code == KeyEvent.KEYCODE_ENTER) {
                bg.setColor(mActiveTheme.accentKeyBackgroundColor)
                bg.shape = GradientDrawable.OVAL
-               val bgWidth = softKey.width() - 2 * keyXMargin
-               val bgHeight = softKey.height() - 2 * keyYMargin
-               val radius = min(bgWidth, bgHeight)*2/3
+               val bgWidth = softKey.width() -  keyXMargin
+               val bgHeight = softKey.height() - keyYMargin
+               val radius = min(bgWidth, bgHeight)*3/4
                val keyMarginX = (bgWidth - radius)/2
                val keyMarginY = (bgHeight - radius)/2
                 bg.setBounds(softKey.mLeft + keyMarginX, softKey.mTop + keyMarginY, softKey.mRight - keyMarginX, softKey.mBottom - keyMarginY)
@@ -247,11 +240,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             val marginRight = softKey.width() - intrinsicWidth - marginLeft
             val marginTop = (softKey.height() - intrinsicHeight) / 2
             val marginBottom = softKey.height() - intrinsicHeight - marginTop
-            if(skbStyleMode == SkbStyleMode.Google && softKey.code == KeyEvent.KEYCODE_ENTER){
-                keyIcon.setTint(Color.WHITE)
-            } else {
-                keyIcon.setTint(mActiveTheme.keyTextColor)
-            }
+            keyIcon.setTint(mActiveTheme.keyTextColor)
             keyIcon.setBounds(softKey.mLeft + marginLeft, softKey.mTop + marginTop, softKey.mRight - marginRight, softKey.mBottom - marginBottom)
             keyIcon.draw(canvas)
         } else if (!TextUtils.isEmpty(keyLabel)) { //Label位于中间

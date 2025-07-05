@@ -156,99 +156,6 @@ object KeyPresetGoogle{
         InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
     )
 
-    val qwertyCangjieKeyPreset: Map<Int, Array<String>> = hashMapOf(
-        45 to arrayOf("手", "q"),
-        51 to arrayOf("田", "w"),
-        33 to arrayOf("水", "e"),
-        46 to arrayOf("口", "r"),
-        48 to arrayOf("廿", "t"),
-        53 to arrayOf("卜", "y"),
-        49 to arrayOf("山", "u"),
-        37 to arrayOf("戈", "i"),
-        43 to arrayOf("人", "o"),
-        44 to arrayOf("心", "p"),
-        29 to arrayOf("日", "a"),
-        47 to arrayOf("尸", "s"),
-        32 to arrayOf("木", "d"),
-        34 to arrayOf("火", "f"),
-        35 to arrayOf("土", "g"),
-        36 to arrayOf("竹", "h"),
-        38 to arrayOf("十", "j"),
-        39 to arrayOf("大", "k"),
-        40 to arrayOf("中", "l"),
-        74 to arrayOf( ":"),
-        75 to arrayOf("'词"),
-        54 to arrayOf("符", "z"),
-        52 to arrayOf("難", "x"),
-        31 to arrayOf("金", "c"),
-        50 to arrayOf("女", "v"),
-        30 to arrayOf("月", "b"),
-        42 to arrayOf("弓", "n"),
-        41 to arrayOf("一", "m"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13 to arrayOf("，"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 to arrayOf("。"),
-        62 to arrayOf("倉頡"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
-    )
-
-    val qwertyBopomofoKeyPreset: Map<Int, Array<String>> = hashMapOf(
-        'b'.code to arrayOf("ㄅ", "1"),
-        'd'.code to arrayOf("ㄉ", "2"),
-        '3'.code to arrayOf("ˇ", "3"),
-        '4'.code to arrayOf("ˋ", "4"),
-        'Z'.code to arrayOf("ㄓ", "5"),
-        '2'.code to arrayOf("ˊ", "6"),
-        '5'.code to arrayOf("˙", "7"),
-        'a'.code to arrayOf("ㄚ", "8"),
-        'A'.code to arrayOf("ㄞ", "9"),
-        'M'.code to arrayOf("ㄢ", "0"),
-        'R'.code to arrayOf("ㄦ"),
-
-        'p'.code to arrayOf("ㄆ", "q"),
-        't'.code to arrayOf("ㄊ", "w"),
-        'g'.code to arrayOf("ㄍ", "e"),
-        'j'.code to arrayOf("ㄐ", "r"),
-        'D'.code to arrayOf("ㄔ", "t"),
-        'z'.code to arrayOf("ㄗ", "y"),
-        'i'.code to arrayOf("ㄧ", "u"),
-        'o'.code to arrayOf("ㄛ", "i"),
-        'I'.code to arrayOf("ㄟ", "o"),
-        'N'.code to arrayOf("ㄣ", "p"),
-
-        'm'.code to arrayOf("ㄇ", "a"),
-        'n'.code to arrayOf("ㄋ", "s"),
-        'k'.code to arrayOf("ㄎ", "d"),
-        'q'.code to arrayOf("ㄑ", "f"),
-        'S'.code to arrayOf("ㄕ", "g"),
-        'c'.code to arrayOf("ㄘ", "h"),
-        'u'.code to arrayOf("ㄨ", "j"),
-        'e'.code to arrayOf("ㄜ", "k"),
-        'O'.code to arrayOf("ㄠ", "l"),
-        'K'.code to arrayOf("ㄤ", ":"),
-
-        'f'.code to arrayOf("ㄈ", "z"),
-        'l'.code to arrayOf("ㄌ", "x"),
-        'h'.code to arrayOf("ㄏ", "c"),
-        'x'.code to arrayOf("ㄒ", "v"),
-        'r'.code to arrayOf("ㄖ", "b"),
-        's'.code to arrayOf("ㄙ", "n"),
-        'v'.code to arrayOf("ㄩ", "m"),
-        'E'.code to arrayOf("ㄝ", "..."),
-        'U'.code to arrayOf("ㄡ", "!"),
-        'G'.code to arrayOf("ㄥ", "?"),
-        '1'.code to arrayOf("ˉ", " "),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_COMMA_13 to arrayOf("，", "。"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_LEFT_PERIOD_14 to arrayOf("。"),
-        62 to arrayOf("注音"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_SYMBOL_3 to arrayOf("符号"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5 to arrayOf("?123"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 to arrayOf("表情"),
-        InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_8 to  arrayOf("，"),
-    )
-
     val lx17PYKeyPreset: Map<Int, Array<String>> = hashMapOf(
         36 to arrayOf( "HP", "-"),
         47 to arrayOf("Sh", "/"),
@@ -389,10 +296,6 @@ object KeyPresetGoogle{
             qwertyPYKeyPreset
         } else if (key == "qwertyPYKeyNumberPreset") {
             qwertyPYKeyNumberPreset
-        } else if (key == "qwertyCangjieKeyPreset") {
-            qwertyCangjieKeyPreset
-        } else if (key == "qwertyBopomofoKeyPreset") {
-            qwertyBopomofoKeyPreset
         } else if (key == "lx17PYKeyPreset") {
             lx17PYKeyPreset
         } else if (key == "lx17PYKeyNumberPreset") {
