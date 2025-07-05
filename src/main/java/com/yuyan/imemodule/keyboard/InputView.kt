@@ -275,8 +275,9 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      * 响应软键盘按键的处理函数。在软键盘集装箱SkbContainer中responseKeyEvent（）的调用。
      * 软键盘集装箱SkbContainer的responseKeyEvent（）在自身类中调用。
      */
+    var isT94Number = false
     override fun responseKeyEvent(sKey: SoftKey) {
-        val keyCode = sKey.keyCode
+        val keyCode = sKey.code
         if (sKey.isKeyCodeKey) {  // 系统的keycode,单独处理
             mImeState = ImeState.STATE_INPUT
             val keyEvent = KeyEvent(0, 0, KeyEvent.ACTION_UP, keyCode, 0, 0, 0, 0, KeyEvent.FLAG_SOFT_KEYBOARD)
@@ -291,19 +292,27 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 (KeyboardManager.instance.currentContainer as? SymbolContainer)?.setSymbolsView()
             } else  if (InputModeSwitcherManager.USER_DEF_KEYCODE_EMOJI_4 == keyCode) {  // 点击表情按钮
                 onSettingsMenuClick(SkbMenuMode.Emojicon)
+            } else  if (InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1 == keyCode) {
+                if(InputModeSwitcherManager.isChineseT9){
+                    InputModeSwitcherManager.switchModeForUserKey(InputModeSwitcherManager.USER_DEF_KEYCODE_NUMBER_5)
+                } else  if(InputModeSwitcherManager.isNumberSkb){
+                    InputModeSwitcherManager.switchModeForUserKey(InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6)
+                } else {
+                    InputModeSwitcherManager.switchModeForUserKey(keyCode)
+                }
             } else if ( keyCode in InputModeSwitcherManager.USER_DEF_KEYCODE_RETURN_6 .. InputModeSwitcherManager.USER_DEF_KEYCODE_SHIFT_1) {
                 InputModeSwitcherManager.switchModeForUserKey(keyCode)
             } else if ( keyCode in InputModeSwitcherManager.USER_DEF_KEYCODE_PASTE .. InputModeSwitcherManager.USER_DEF_KEYCODE_CUT) {
-                commitTestEditMenu(textEditMenuPreset[keyCode])
+                commitTextEditMenu(KeyPreset.textEditMenuPreset[keyCode])
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_MOVE_START) {
                 service.setSelection(0, if(hasSelection) selEnd else 0)
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_MOVE_END) {
                 if(hasSelection) {
                     val start =  selStart
-                    commitTestEditMenu(textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
+                    commitTextEditMenu(KeyPreset.textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
                     this.postDelayed(50) { service.setSelection(start, selEnd) }
                 } else {
-                    commitTestEditMenu(textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
+                    commitTextEditMenu(KeyPreset.textEditMenuPreset[InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL])
                     service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
                 }
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_MODE) {
@@ -312,7 +321,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
             } else if ( keyCode == InputModeSwitcherManager.USER_DEF_KEYCODE_SELECT_ALL) {
                 hasSelectionAll = !hasSelectionAll
                 if(!hasSelectionAll) service.sendCombinationKeyEvents(KeyEvent.KEYCODE_DPAD_RIGHT)
-                else commitTestEditMenu(textEditMenuPreset[keyCode])
+                else commitTextEditMenu(KeyPreset.textEditMenuPreset[keyCode])
             }else if(sKey.keyLabel.isNotBlank()){
                 if(SymbolPreset.containsKey(sKey.keyLabel))commitPairSymbol(sKey.keyLabel)
                 else commitText(sKey.keyLabel)
@@ -342,6 +351,9 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 else commitText(result.second)
             }
             PopupMenuMode.SwitchIME -> InputMethodUtil.showPicker()
+            PopupMenuMode.EMOJI -> {
+                onSettingsMenuClick(SkbMenuMode.Emojicon)
+            }
             PopupMenuMode.EnglishCell -> {
                 getInstance().input.abcSearchEnglishCell.setValue(!getInstance().input.abcSearchEnglishCell.getValue())
                 KeyboardManager.instance.switchKeyboard()
@@ -476,7 +488,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 updateCandidate()
             }
             return true
-        } else if (Character.isLetterOrDigit(keyChar) || keyCode == KeyEvent.KEYCODE_APOSTROPHE || keyCode == KeyEvent.KEYCODE_SEMICOLON){
+        } else if ((Character.isLetterOrDigit(keyChar) && keyCode != KeyEvent.KEYCODE_0) || keyCode == KeyEvent.KEYCODE_APOSTROPHE || keyCode == KeyEvent.KEYCODE_SEMICOLON){
             DecodingInfo.inputAction(event)
             updateCandidate()
             return true
@@ -712,8 +724,15 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
     /**
      * 发送成对符号给编辑框
      */
-    private fun commitTestEditMenu(id:Int?) {
-        if(id != null)service.commitTestEditMenu(id)
+    private fun commitTextEditMenu(id:Int?) {
+        if(id != null)service.commitTextEditMenu(id)
+    }
+
+    /**
+     * 发送指令给编辑框
+     */
+    fun performEditorAction(editorAction:Int) {
+        service.performEditorAction(editorAction)
     }
 
 
@@ -808,5 +827,54 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 }
             }
         }
+    }
+
+    /**
+     * 切换键盘接口
+     */
+    private fun keyboardChange(mode: SkbMenuMode) {
+        val keyboardValue: Int
+        val value = when (mode) {
+            SkbMenuMode.Pinyin26Jian -> {
+                keyboardValue = 0x1000
+                CustomConstant.SCHEMA_ZH_QWERTY
+            }
+            SkbMenuMode.PinyinHandWriting -> {
+                keyboardValue = 0x3000
+                CustomConstant.SCHEMA_ZH_HANDWRITING
+            }
+            SkbMenuMode.PinyinLx17 -> {
+                keyboardValue = 0x6000
+                CustomConstant.SCHEMA_ZH_DOUBLE_LX17
+            }
+            SkbMenuMode.PinyinStroke -> {
+                keyboardValue = 0x7000
+                CustomConstant.SCHEMA_ZH_STROKE
+            }
+            SkbMenuMode.Pinyin26Double -> {
+                keyboardValue = 0x1000
+                CustomConstant.SCHEMA_ZH_DOUBLE_FLYPY + getInstance().input.doublePYSchemaMode.getValue()
+            }
+            SkbMenuMode.PinyinCangjie -> {
+                keyboardValue = 0x1000
+                CustomConstant.SCHEMA_ZH_CANGJIE5
+            }
+            SkbMenuMode.PinyinBopomofo -> {
+                keyboardValue = 0x9000
+                CustomConstant.SCHEMA_ZH_BOPOMOFO
+            }
+            else ->{
+                keyboardValue = 0x2000
+                CustomConstant.SCHEMA_ZH_T9
+            }
+        }
+        val inputMode = keyboardValue or InputModeSwitcherManager.MASK_LANGUAGE_CN or InputModeSwitcherManager.MASK_CASE_UPPER
+        getInstance().internal.inputMethodPinyinMode.setValue(inputMode)
+        getInstance().internal.pinyinModeRime.setValue(value)
+        KeyboardLoaderUtil.instance.clearKeyboardMap()
+        KeyboardManager.instance.clearKeyboard()
+        InputModeSwitcherManager.saveInputMode(inputMode)
+        resetToIdleState()
+        KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
     }
 }

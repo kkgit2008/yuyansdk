@@ -217,8 +217,12 @@ class ImeService : InputMethodService() {
         return currentInputConnection.getTextBeforeCursor(length, 0).toString()
     }
 
-    fun commitTestEditMenu(id:Int) {
+    fun commitTextEditMenu(id:Int) {
         currentInputConnection.performContextMenuAction(id)
+    }
+
+    fun performEditorAction(editorAction:Int) {
+        currentInputConnection.performEditorAction(editorAction)
     }
 
     fun deleteSurroundingText(length:Int) {

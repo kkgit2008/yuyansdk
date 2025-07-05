@@ -140,7 +140,7 @@ class CandidatesContainer(context: Context, inputView: InputView) : BaseContaine
             when (motionEvent.action) {
                 MotionEvent.ACTION_DOWN -> {
                     // 播放按键声音和震动
-                    DevicesUtils.tryPlayKeyDown(SoftKey(KeyEvent.KEYCODE_DEL))
+                    DevicesUtils.tryPlayKeyDown(KeyEvent.KEYCODE_DEL)
                     DevicesUtils.tryVibrate(this)
                 }
                 MotionEvent.ACTION_MOVE -> { }
@@ -202,8 +202,8 @@ class CandidatesContainer(context: Context, inputView: InputView) : BaseContaine
             if (isPrefixs) {
                 inputView.selectPrefix(position)
             } else {
-                val softKey = SoftKey( mSideSymbolsPinyin.map { it.symbolValue }[position])
-                DevicesUtils.tryPlayKeyDown(softKey)
+                val softKey = SoftKey(label = mSideSymbolsPinyin.map { it.symbolValue }[position])
+                DevicesUtils.tryPlayKeyDown()
                 DevicesUtils.tryVibrate(this)
                 inputView.responseKeyEvent(softKey)
             }
