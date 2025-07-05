@@ -23,14 +23,17 @@ import com.yuyan.imemodule.keyboard.KeyboardManager
 import com.yuyan.imemodule.keyboard.container.ClipBoardContainer
 import com.yuyan.imemodule.keyboard.container.SymbolContainer
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
+import com.yuyan.imemodule.singleton.EnvironmentSingleton.Companion.instance
+import splitties.views.padding
 
 /**
  * 候选词界面适配器
  */
 class CandidatesMenuAdapter(context: Context?) : RecyclerView.Adapter<CandidatesMenuAdapter.SymbolHolder>() {
-    private val inflater: LayoutInflater
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var mOnItemClickListener: OnRecyclerItemClickListener? = null
-    private val itemHeight: Int
+    private val itemHeight: Int = (instance.heightForCandidates * 0.7f).toInt()
+    private var mMenuPadding: Int = (instance.heightForCandidates * 0.05f).toInt()
     var items: List<SkbFunItem> = emptyList()
         set(value) {
             val diffResult = DiffUtil.calculateDiff(MyDiffCallback(field, value))
@@ -41,15 +44,11 @@ class CandidatesMenuAdapter(context: Context?) : RecyclerView.Adapter<Candidates
         mOnItemClickListener = mOnItemClickLitener
     }
 
-    init {
-        inflater = LayoutInflater.from(context)
-        itemHeight = (EnvironmentSingleton.instance.heightForCandidates * 0.6f).toInt()
-    }
-
     inner class SymbolHolder(view: View) : RecyclerView.ViewHolder(view) {
         var entranceIconImageView: ImageView? = null
         init {
             entranceIconImageView = itemView.findViewById(R.id.candidates_menu_item)
+            entranceIconImageView?.padding = mMenuPadding
             val layoutParams = itemView.layoutParams
             layoutParams.width = itemHeight
             layoutParams.height = itemHeight
