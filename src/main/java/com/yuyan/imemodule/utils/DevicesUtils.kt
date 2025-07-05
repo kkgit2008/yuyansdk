@@ -4,7 +4,6 @@ import android.util.TypedValue
 import android.view.KeyEvent
 import android.view.View
 import com.yuyan.imemodule.application.Launcher
-import com.yuyan.imemodule.entity.keyboard.SoftKey
 import com.yuyan.imemodule.prefs.InputFeedbacks.SoundEffect
 import com.yuyan.imemodule.prefs.InputFeedbacks.hapticFeedback
 import com.yuyan.imemodule.prefs.InputFeedbacks.soundEffect
@@ -25,6 +24,12 @@ object DevicesUtils {
     fun dip2px(dpValue: Int): Int {
         val scale = Launcher.instance.context.resources.displayMetrics.density
         return (dpValue * scale + 0.5f).toInt()
+    }
+
+    @JvmStatic
+    fun px2sp(px: Int): Float {
+        val scale = Launcher.instance.context.resources.displayMetrics.density
+        return px / (scale + 0.5f)
     }
 
     /**

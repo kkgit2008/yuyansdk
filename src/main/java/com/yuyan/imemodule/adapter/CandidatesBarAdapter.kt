@@ -11,7 +11,6 @@ import com.yuyan.imemodule.callback.OnRecyclerItemClickListener
 import com.yuyan.imemodule.data.theme.ThemeManager.activeTheme
 import com.yuyan.imemodule.service.DecodingInfo
 import com.yuyan.imemodule.singleton.EnvironmentSingleton.Companion.instance
-import com.yuyan.imemodule.utils.DevicesUtils
 
 /**
  * 候选词界面适配器
@@ -63,7 +62,7 @@ class CandidatesBarAdapter(context: Context?) :
 
         init {
             textView.setTextColor(activeTheme.keyTextColor)
-            textView.textSize = DevicesUtils.px2dip(instance.candidateTextSize)
+            textView.textSize = instance.candidateTextSize
         }
     }
 }

@@ -17,7 +17,7 @@ import com.yuyan.imemodule.prefs.AppPrefs
 import com.yuyan.imemodule.prefs.behavior.HalfWidthSymbolsMode
 import com.yuyan.imemodule.prefs.behavior.SymbolMode
 import com.yuyan.imemodule.singleton.EnvironmentSingleton
-import com.yuyan.imemodule.utils.DevicesUtils
+import com.yuyan.imemodule.singleton.EnvironmentSingleton.Companion.instance
 import com.yuyan.imemodule.utils.StringUtils
 
 /**
@@ -61,7 +61,7 @@ class SymbolAdapter(context: Context?, val viewType: SymbolMode, private val pag
         var tVSdb: TextView
         init {
             textView.setTextColor(activeTheme.keyTextColor)
-            textView.textSize = DevicesUtils.px2dip(EnvironmentSingleton.instance.candidateTextSize) * if(viewType != SymbolMode.Emojicon)1f else 0.9f
+            textView.textSize = instance.candidateTextSize * if(viewType != SymbolMode.Emojicon)1f else 0.9f
             tVSdb = view.findViewById(R.id.tv_sdb_symbols_item)
             tVSdb.setTextColor(activeTheme.keyTextColor)
             if(viewType == SymbolMode.Emojicon && pagerIndex == 1 && YuyanEmojiCompat.isWeChatInput){
@@ -73,18 +73,6 @@ class SymbolAdapter(context: Context?, val viewType: SymbolMode, private val pag
                val paddingTop =  view.dp(10)
                 textView.setPadding(paddingStart, paddingTop, paddingStart, paddingTop)
                 view.setBackgroundResource(R.drawable.shape_emojicon_background)
-//            } else if(viewType == SymbolMode.Emojicon){
-//                (view.layoutParams as FlexboxLayoutManager.LayoutParams) .apply {
-//                    minWidth = (EnvironmentSingleton.instance.skbWidth - view.dp(18)) / 8
-//                    setMargins(view.dp(2))
-//                }
-//                val paddingStart =  view.dp(1)
-//                val paddingTop =  view.dp(6)
-//                textView.setPadding(paddingStart, paddingTop, paddingStart, paddingTop)
-//            } else {
-//                val paddingStart =  view.dp(5)
-//                val paddingTop =  view.dp(10)
-//                textView.setPadding(paddingStart, paddingTop, paddingStart, paddingTop)
             }
 
         }

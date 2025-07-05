@@ -5,6 +5,7 @@
     android:theme="@style/Theme.AppTheme"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:includeFontPadding="false"
     android:textSize="20sp"
     android:singleLine="true"
     android:gravity="center"

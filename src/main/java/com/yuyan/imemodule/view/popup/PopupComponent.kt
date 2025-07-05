@@ -63,7 +63,7 @@ class PopupComponent private constructor(){
         } else EnvironmentSingleton.instance.heightForKeyboardMove
         root.apply {
             add(popup.root, lParams(bounds.width(), bounds.height()) {
-                bottomMargin = EnvironmentSingleton.instance.inputAreaHeight + EnvironmentSingleton.instance.heightForComposingView + bottomPadding - bounds.bottom
+                bottomMargin = EnvironmentSingleton.instance.inputAreaHeight + bottomPadding - bounds.bottom
                 leftMargin = bounds.left
             })
         }
@@ -111,7 +111,7 @@ class PopupComponent private constructor(){
         } else EnvironmentSingleton.instance.heightForKeyboardMove
         root.apply {
             add(keyboardUi.root, lParams {
-                bottomMargin = EnvironmentSingleton.instance.inputAreaHeight + EnvironmentSingleton.instance.heightForComposingView  + bottomPadding - bounds.bottom
+                bottomMargin = EnvironmentSingleton.instance.inputAreaHeight + bottomPadding - bounds.bottom
                 leftMargin = bounds.left + keyboardUi.offsetX
             })
         }
@@ -128,7 +128,7 @@ class PopupComponent private constructor(){
         } else EnvironmentSingleton.instance.heightForKeyboardMove
         root.apply {
             add(keyboardUi.root, lParams {
-                bottomMargin = EnvironmentSingleton.instance.inputAreaHeight + EnvironmentSingleton.instance.heightForComposingView  + bottomPadding - bounds.bottom
+                bottomMargin = EnvironmentSingleton.instance.inputAreaHeight + bottomPadding - bounds.bottom
                 leftMargin = bounds.left + keyboardUi.offsetX
             })
         }

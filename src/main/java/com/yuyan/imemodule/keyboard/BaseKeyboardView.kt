@@ -216,7 +216,7 @@ open class BaseKeyboardView(mContext: Context?) : View(mContext) {
         val relDiffX = abs(currentX - lastEventX)
         val relDiffY = abs(currentY - lastEventY)
         val isVertical = relDiffX * 1.5 < relDiffY  //横向、竖向滑动距离接近时，优先触发左右滑动
-        val symbolSlideUp = EnvironmentSingleton.instance.heightForCandidates / when(ThemeManager.prefs.symbolSlideUpMod.getValue()){
+        val symbolSlideUp = EnvironmentSingleton.instance.heightForCandidatesArea / when(ThemeManager.prefs.symbolSlideUpMod.getValue()){
             KeyboardSymbolSlideUpMod.SHORT -> 3;KeyboardSymbolSlideUpMod.MEDIUM -> 2;else -> 1
         }
         if (!isVertical && relDiffX > 10) {  // 左右滑动

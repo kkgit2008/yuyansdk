@@ -32,8 +32,8 @@ import splitties.views.padding
 class CandidatesMenuAdapter(context: Context?) : RecyclerView.Adapter<CandidatesMenuAdapter.SymbolHolder>() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var mOnItemClickListener: OnRecyclerItemClickListener? = null
-    private val itemHeight: Int = (instance.heightForCandidates * 0.7f).toInt()
-    private var mMenuPadding: Int = (instance.heightForCandidates * 0.05f).toInt()
+    private val itemHeight: Int = (instance.heightForCandidatesArea * 0.8f).toInt()
+    private var mMenuPadding: Int = (instance.heightForCandidatesArea * 0.05f).toInt()
     var items: List<SkbFunItem> = emptyList()
         set(value) {
             val diffResult = DiffUtil.calculateDiff(MyDiffCallback(field, value))

@@ -10,29 +10,18 @@ import com.yuyan.imemodule.R
 import com.yuyan.imemodule.callback.OnRecyclerItemClickListener
 import com.yuyan.imemodule.data.theme.ThemeManager.activeTheme
 import com.yuyan.imemodule.service.DecodingInfo
-import com.yuyan.imemodule.singleton.EnvironmentSingleton
-import com.yuyan.imemodule.utils.DevicesUtils
+import com.yuyan.imemodule.singleton.EnvironmentSingleton.Companion.instance
 
 /**
  * 候选词界面适配器
  */
 class CandidatesAdapter(context: Context?) :
     RecyclerView.Adapter<CandidatesAdapter.SymbolHolder>() {
-    private var mCandidateTextSize = 0
-    private val inflater: LayoutInflater
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
     private val textColor: Int = activeTheme.keyTextColor
     private var mOnItemClickListener: OnRecyclerItemClickListener? = null
     fun setOnItemClickLitener(mOnItemClickLitener: OnRecyclerItemClickListener?) {
         mOnItemClickListener = mOnItemClickLitener
-    }
-
-    private fun updateCandidateTextSize() {
-        mCandidateTextSize = EnvironmentSingleton.instance.candidateTextSize
-    }
-
-    init {
-        inflater = LayoutInflater.from(context)
-        updateCandidateTextSize()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SymbolHolder {
@@ -56,7 +45,7 @@ class CandidatesAdapter(context: Context?) :
 
         init {
             textView.setTextColor(textColor)
-            textView.textSize = DevicesUtils.px2dip(mCandidateTextSize)
+            textView.textSize = instance.candidateTextSize
         }
     }
 }
