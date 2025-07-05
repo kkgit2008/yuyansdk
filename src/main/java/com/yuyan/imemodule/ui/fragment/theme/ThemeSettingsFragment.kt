@@ -1,14 +1,10 @@
 package com.yuyan.imemodule.ui.fragment.theme
 
-import android.content.ComponentName
-import android.content.pm.PackageManager
-import com.yuyan.imemodule.application.ImeSdkApplication
 import com.yuyan.imemodule.data.theme.ThemeManager
 import com.yuyan.imemodule.keyboard.KeyboardManager
 import com.yuyan.imemodule.prefs.AppPrefs
 import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
 import com.yuyan.imemodule.singleton.EnvironmentSingleton
-import com.yuyan.imemodule.ui.activity.LauncherActivity
 import com.yuyan.imemodule.ui.fragment.base.ManagedPreferenceFragment
 import com.yuyan.imemodule.utils.KeyboardLoaderUtil
 import com.yuyan.imemodule.view.preference.ManagedPreference

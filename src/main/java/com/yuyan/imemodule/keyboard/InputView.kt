@@ -477,7 +477,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      */
     private fun processInput(event: KeyEvent): Boolean {
         val keyCode = event.keyCode
-        val keyChar = if(CustomConstant.SCHEMA_ZH_BOPOMOFO == DecodingInfo.getCurrentRimeSchema()) keyCode else event.unicodeChar
+        val keyChar = event.keyCode
         val lable = keyChar.toChar().toString()
         if (keyCode == KeyEvent.KEYCODE_DEL) {
             if (DecodingInfo.isFinish || DecodingInfo.isAssociate) {
@@ -854,14 +854,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
             SkbMenuMode.Pinyin26Double -> {
                 keyboardValue = 0x1000
                 CustomConstant.SCHEMA_ZH_DOUBLE_FLYPY + getInstance().input.doublePYSchemaMode.getValue()
-            }
-            SkbMenuMode.PinyinCangjie -> {
-                keyboardValue = 0x1000
-                CustomConstant.SCHEMA_ZH_CANGJIE5
-            }
-            SkbMenuMode.PinyinBopomofo -> {
-                keyboardValue = 0x9000
-                CustomConstant.SCHEMA_ZH_BOPOMOFO
             }
             else ->{
                 keyboardValue = 0x2000
