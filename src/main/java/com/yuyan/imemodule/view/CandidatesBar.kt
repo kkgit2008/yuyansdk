@@ -148,13 +148,7 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
                 gravity = Gravity.CENTER_VERTICAL
             }
             mIvMenuSetting = ImageView(context).apply {
-                setImageResource(
-                    when (ThemeManager.prefs.skbStyleMode.getValue()) {
-                        SkbStyleMode.Samsung -> R.drawable.sdk_level_candidates_menu_left_samsung
-                        SkbStyleMode.Google -> R.drawable.sdk_level_candidates_menu_left_google
-                        else -> R.drawable.sdk_level_candidates_menu_left
-                    }
-                )
+                setImageResource(R.drawable.sdk_level_candidates_menu_left)
                 isClickable = true
                 isEnabled = true
                 setOnClickListener { mCvListener.onClickMenu(SkbMenuMode.SettingsMenu) }
@@ -367,11 +361,7 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
     fun updateTheme(textColor: Int) {
         initMenuView()
         initCandidateView()
-        mIvMenuSetting.setImageResource(when(ThemeManager.prefs.skbStyleMode.getValue()){
-                SkbStyleMode.Samsung -> R.drawable.sdk_level_candidates_menu_left_samsung
-                SkbStyleMode.Google -> R.drawable.sdk_level_candidates_menu_left_google
-                else -> R.drawable.sdk_level_candidates_menu_left
-            })
+        mIvMenuSetting.setImageResource(R.drawable.sdk_level_candidates_menu_left)
         mComposingView.setTextColor(textColor)
         mRightArrowBtn.drawable.setTint(textColor)
         mMenuRightArrowBtn.drawable.setTint(textColor)
