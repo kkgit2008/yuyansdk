@@ -212,8 +212,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         } else softKey.keyLabel
         val keyLabelSmall = softKey.getmKeyLabelSmall()
         val keyMnemonic = softKey.keyMnemonic
-        val keyIcon = if(skbStyleMode == SkbStyleMode.Google && softKey.code == 62) null
-        else softKey.keyIcon
+        val keyIcon = if(skbStyleMode == SkbStyleMode.Google && softKey.code == 62) null else softKey.keyIcon
         val weightHeigth = softKey.height() / 4f
         val textColor = mActiveTheme.keyTextColor
         if (keyboardSymbol && !TextUtils.isEmpty(keyLabelSmall)) {
@@ -259,7 +258,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
             mPaint.textSize = mNormalKeyTextSizeSmall.toFloat()
             val x = softKey.mLeft + (softKey.width() - mPaint.measureText(keyMnemonic)) / 2.0f
             val y = softKey.mTop + weightHeigth * 3 + weightHeigth / 2.0f
-            canvas.drawText(keyMnemonic!!, x, y, mPaint)
+            canvas.drawText(keyMnemonic, x, y, mPaint)
         }
     }
 

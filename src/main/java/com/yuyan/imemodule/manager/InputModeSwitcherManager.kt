@@ -132,6 +132,12 @@ object InputModeSwitcherManager {
 
     /**
      * A kind of soft keyboard layout. An input mode should be anded with
+     * [.MASK_SKB_LAYOUT] to get its soft keyboard layout. 指明笔画键盘
+     */
+    const val MASK_SKB_LAYOUT_STROKE = 0x7000
+
+    /**
+     * A kind of soft keyboard layout. An input mode should be anded with
      * [.MASK_SKB_LAYOUT] to get its soft keyboard layout. 指明文本编辑键盘
      */
     const val MASK_SKB_LAYOUT_TEXTEDIT= 0x8000
