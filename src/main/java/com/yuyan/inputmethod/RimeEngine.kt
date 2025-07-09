@@ -201,16 +201,21 @@ object RimeEngine {
             }
         }
         val rimeSchema = Rime.getCurrentRimeSchema()
-        pinyins = if (rimeSchema == CustomConstant.SCHEMA_ZH_T9) {
+        pinyins = when (rimeSchema) {
+            CustomConstant.SCHEMA_ZH_T9 -> {
                 var count = compositionText.count { it in '1'..'9' }
                 val remainT9Keys = ArrayList<InputKey>(count)
                 keyRecordStack.forEachReversed { inputKey ->
                     if (inputKey is InputKey.T9Key) {
-                        if (count-- > 0) remainT9Keys.add(inputKey)
+                        inputKey.consumed = count-- <= 0
+                        if (!inputKey.consumed) {
+                            remainT9Keys.add(inputKey)
+                        }
                     }
                 }
                 T9PinYinUtils.t9KeyToPinyin(remainT9Keys.joinToString("").reversed())
-            } else if (rimeSchema == CustomConstant.SCHEMA_ZH_DOUBLE_LX17) {
+            }
+            CustomConstant.SCHEMA_ZH_DOUBLE_LX17 -> {
                 var count = compositionText.count { it in 'a'..'z' }
                 val keys = ArrayList<InputKey>(count)
                 keyRecordStack.forEachReversed { inputKey ->
@@ -219,9 +224,11 @@ object RimeEngine {
                     }
                 }
                 LX17PinYinUtils.lx17KeyToPinyin(keys.joinToString("").reversed())
-            } else {
+            }
+            else -> {
                 emptyArray()
             }
+        }
         showComposition = composition
         preCommitText = ""
         return null
