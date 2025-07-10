@@ -24,7 +24,6 @@ engine:
   translators:
     - punct_translator
     - echo_translator
-    - reverse_lookup_translator
     - table_translator
 menu:
   page_size: 9
@@ -35,12 +34,6 @@ punctuator:
 recognizer:
   patterns:
     punct: "^/([0-9]|10|[A-Za-z]*?)$"
-reverse_lookup:
-  comment_format:
-    - "xlit/hspnz/⼀⼁⼃⼂⼄/"
-  dictionary: stroke
-  prefix: "`"
-  suffix: "'"
 schema:
   name: "笔画输入"
   schema_id: stroke
