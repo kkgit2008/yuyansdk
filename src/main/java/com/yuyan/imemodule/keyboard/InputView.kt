@@ -797,8 +797,12 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
 
     private var selStart = 0
     private var selEnd = 0
-    fun onUpdateSelection(oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int) {
-        selStart = newSelStart; selEnd = newSelEnd
+    private var oldCandidatesEnd = 0
+    fun onUpdateSelection(oldSelStart: Int, oldSelEnd: Int, newSelStart: Int, newSelEnd: Int, candidatesEnd: Int) {
+        if(oldCandidatesEnd == candidatesEnd && InputModeSwitcherManager.isEnglish && !DecodingInfo.isCandidatesListEmpty && !DecodingInfo.isAssociate){
+            service.finishComposingText()
+            resetToPredictState()
+        }
         if(oldSelStart != oldSelEnd || newSelStart != newSelEnd)return
         if ((chinesePrediction && InputModeSwitcherManager.isChinese && mImeState != ImeState.STATE_IDLE) || InputModeSwitcherManager.isNumberSkb) {
             val textBeforeCursor = service.getTextBeforeCursor(100)
@@ -817,5 +821,6 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 }
             }
         }
+        selStart = newSelStart; selEnd = newSelEnd;oldCandidatesEnd = candidatesEnd
     }
 }
