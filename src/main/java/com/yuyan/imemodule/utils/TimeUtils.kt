@@ -1,6 +1,7 @@
 package com.yuyan.imemodule.utils
 
 import android.os.Build
+import com.yuyan.imemodule.BuildConfig
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalTime
@@ -9,14 +10,43 @@ import java.util.Date
 import java.util.Locale
 import kotlin.math.abs
 
+// 解析日期时可能抛出的异常
+import java.text.ParseException
+
 /**
  * 时间工具类
  */
 object TimeUtils {
+    @JvmField
+    val DEFAULT_DATE_FORMATTER = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
 
     fun iso8601UTCDateTime(timeMillis: Long? = null): String {
         return SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.ROOT).format(timeMillis?.let { Date(it) } ?: Date())
     }
+
+    // 系统时间与版本构建相差天数
+    fun getBuildDiffDays(): Int {
+        val buildTimeStr = BuildConfig.AppBuildTime
+        if (buildTimeStr.isNullOrBlank()) {
+            return 0 // 构建时间为空时返回默认值
+        }
+ 
+        return try {
+            val starDay = DEFAULT_DATE_FORMATTER.parse(buildTimeStr)        
+            val endDay = Date()  // 当前时间
+ 
+            if (starDay != null) {
+                // 计算时间差并取绝对值，确保结果非负
+                val dayNum = endDay.time - starDay.time
+                (abs(dayNum) / (24 * 60 * 60 * 1000)).toInt()  // 可直接用 kotlin.math.abs
+            } else {
+                0
+            }
+        } catch (e: ParseException) {
+            e.printStackTrace()
+            0 // 解析异常时返回默认值
+        }
+    } 
 
     fun getData(day:String = ""):List<String> {
         val data = mutableListOf<String>()
