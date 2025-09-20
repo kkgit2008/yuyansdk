@@ -21,7 +21,7 @@ object TimeUtils {
     val DEFAULT_DATE_FORMATTER = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ROOT)
 
     fun iso8601UTCDateTime(timeMillis: Long? = null): String {
-        return SimpleDateFormat("yyyy-MM-dd_HH:mm:ss", Locale.ROOT).format(timeMillis?.let { Date(it) } ?: Date())
+        return SimpleDateFormat("yyyyMMdd_HHmmss", Locale.ROOT).format(timeMillis?.let { Date(it) } ?: Date())
     }
 
     // 系统时间与版本构建相差天数
