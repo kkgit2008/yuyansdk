@@ -224,18 +224,6 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
         mLlContainer.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, menuHeight,0f)
         mRVContainerMenu.layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, menuHeight, 1f)
         mCandidatesMenuAdapter.notifyChanged()  // 点击下拉菜单后，需要刷新菜单栏
-        
-        // 立即刷新“切换键盘”图标形态与颜色
-//         mIvMenuSetting.drawable.setLevel(
-//             if (KeyboardManager.instance.currentContainer !is InputBaseContainer) 1 else 0
-//         )
-//         mIvMenuSetting.drawable.setTint(
-//             if (KeyboardManager.instance.currentContainer !is InputBaseContainer)
-//                 ThemeManager.activeTheme.accentKeyBackgroundColor
-//             else
-//                 ThemeManager.activeTheme.keyTextColor
-//         )
-        
     }
 
     private fun onClickMenu(skbMenuMode: SkbMenuMode, view: View?) {
@@ -300,7 +288,7 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
      */
     fun showEmoji() {
         showViewVisibility(mCandidatesMenuContainer)
-        mCandidatesMenuAdapter.items = listOf(menuSkbFunsPreset[SkbMenuMode.Emoticon]!!,menuSkbFunsPreset[SkbMenuMode.Emojicon]!!)
+        mCandidatesMenuAdapter.items = listOf(menuSkbFunsPreset[SkbMenuMode.Emojicon]!!,menuSkbFunsPreset[SkbMenuMode.Emoticon]!!)
         activeCandNo = 0
         mCandidatesAdapter.activeCandidates(activeCandNo)
         mCandidatesAdapter.notifyChanged()
