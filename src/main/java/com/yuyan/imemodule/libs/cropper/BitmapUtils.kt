@@ -244,10 +244,10 @@ internal object BitmapUtils {
       matrix,
       true,
     )
-    if (result == bitmap && bitmap.config != null) {
+    //if (result == bitmap && bitmap.config != null) {
       // corner case when all bitmap is selected, no worth optimizing for it
       result = bitmap.copy(bitmap.config!!, false)
-    }
+    //}
     // rotating by 0, 90, 180 or 270 degrees doesn't require extra cropping
     if (degreesRotated % 90 != 0) {
       // extra crop because non-rectangular crop cannot be done directly on the image without
