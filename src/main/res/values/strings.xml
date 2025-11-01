@@ -30,6 +30,7 @@
     <string name="chinese_association_date">中文联想显示时间</string>
     <string name="EnglishInput">英文输入</string>
     <string name="engish_full_keyboard">数字行</string>
+    <string name="lx17_with_left_prefix">乱序17键盘显示拼音选择</string>
     <string name="space_auto">英文单词自动追加空格</string>
     <string name="emoji_setting">表情输入</string>
     <string name="emoji_input">候选词中显示Emoji表情</string>
@@ -86,6 +87,8 @@
     <string name="clipboard_suggestion_timeout">剪贴板提示超时</string>
     <string name="source_code">源代码</string>
     <string name="privacy_policy">隐私政策</string>
+    <string name="privacy_policy_sure">同意</string>
+    <string name="privacy_policy_cancel">拒绝</string>
     <string name="license">开放许可</string>
     <string name="github_repo">GitHub 仓库</string>
     <string name="reset">重置</string>

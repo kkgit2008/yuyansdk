@@ -217,13 +217,13 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         val textColor = mActiveTheme.keyTextColor
         if (keyboardSymbol && !TextUtils.isEmpty(keyLabelSmall)) {
             mPaint.color = textColor
-            mPaint.setTypeface(if(skbStyleMode == SkbStyleMode.Google)Typeface.DEFAULT_BOLD else Typeface.DEFAULT)
+            mPaint.setTypeface(Typeface.DEFAULT)
             if(skbStyleMode == SkbStyleMode.Samsung)mPaint.alpha = 128
             mPaint.textSize = mNormalKeyTextSizeSmall.toFloat()
-            val x = softKey.mLeft + when(prefs.skbStyleMode.getValue()){
-                SkbStyleMode.Yuyan -> (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
-                SkbStyleMode.Samsung -> softKey.width() - mPaint.measureText(keyLabelSmall) * 2.8f
-                SkbStyleMode.Google -> softKey.width() - mPaint.measureText(keyLabelSmall) * 2.8f
+            val x = when(prefs.skbStyleMode.getValue()){
+                SkbStyleMode.Yuyan -> softKey.mLeft + (softKey.width() - mPaint.measureText(keyLabelSmall)) / 2.0f
+                SkbStyleMode.Samsung -> softKey.mRight - mPaint.measureText(keyLabelSmall) - keyXMargin * 2
+                SkbStyleMode.Google -> softKey.mRight - mPaint.measureText(keyLabelSmall) - keyXMargin * 2
             }
             val y = softKey.mTop + weightHeigth * 1.1f
             canvas.drawText(keyLabelSmall, x, y, mPaint)
@@ -255,7 +255,7 @@ open class TextKeyboard(context: Context?) : BaseKeyboardView(context){
         if (keyboardMnemonic && !TextUtils.isEmpty(keyMnemonic)) {  //助记符位于中下方
             mPaint.color = textColor
             mPaint.typeface = Typeface.DEFAULT
-            mPaint.textSize = mNormalKeyTextSizeSmall.toFloat()
+            mPaint.textSize = mNormalKeyTextSizeSmall.toFloat() * 0.7f
             val x = softKey.mLeft + (softKey.width() - mPaint.measureText(keyMnemonic)) / 2.0f
             val y = softKey.mTop + weightHeigth * 3 + weightHeigth / 2.0f
             canvas.drawText(keyMnemonic, x, y, mPaint)

@@ -2,6 +2,8 @@ package com.yuyan.imemodule.view
 
 import android.content.Context
 import android.util.AttributeSet
+import android.util.TypedValue
+import android.view.ContextThemeWrapper
 import android.view.Gravity
 import android.view.KeyEvent
 import android.view.View
@@ -34,7 +36,6 @@ import com.yuyan.imemodule.keyboard.container.CandidatesContainer
 import com.yuyan.imemodule.keyboard.container.ClipBoardContainer
 import com.yuyan.imemodule.keyboard.container.InputBaseContainer
 import com.yuyan.imemodule.manager.layout.CustomLinearLayoutManager
-import com.yuyan.imemodule.prefs.behavior.SkbStyleMode
 import splitties.dimensions.dp
 
 /**
@@ -136,7 +137,7 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
             candidatesData.addView(mRVCandidates, LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, candidatesHeight, 1f))
             candidatesData.addView(mRightArrowBtn)
         }
-        mComposingView.textSize = instance.composingTextSize
+        mComposingView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, instance.composingTextSize)
         mCandidatesAdapter.notifyChanged()
     }
 
@@ -228,7 +229,8 @@ class CandidatesBar(context: Context?, attrs: AttributeSet?) : RelativeLayout(co
 
     private fun onClickMenu(skbMenuMode: SkbMenuMode, view: View?) {
         if(skbMenuMode == SkbMenuMode.ClearClipBoard){
-            val popupMenu = PopupMenu(context, view).apply {
+            val contextWrapper = ContextThemeWrapper(context, R.style.Theme_AppTheme)
+            val popupMenu = PopupMenu(contextWrapper, view).apply {
                 menuInflater.inflate(R.menu.clear_clipboard, menu)
                 setOnMenuItemClickListener { menuItem ->
                     when (menuItem.itemId) {

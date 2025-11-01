@@ -47,6 +47,8 @@ class AppPrefs(private val sharedPreferences: SharedPreferences) {
 
         val soundOnKeyPress = int("key_press_vibration_amplitude",0)     //按键音量
         val vibrationAmplitude = int("key_press_sound_volume", 0)     //触感强度
+
+        val privacyPolicySure = bool("privacy_policy_sure", false) //是否同意隐私政策
     }
 
     inner class Input : ManagedPreferenceCategory(R.string.setting_ime_input, sharedPreferences) {
@@ -140,6 +142,8 @@ class AppPrefs(private val sharedPreferences: SharedPreferences) {
 
 
         val abcNumberLine = switch(R.string.engish_full_keyboard, "keyboard_abc_number_line_enable", false)
+
+        val lx17WithLeftPrefix = switch(R.string.lx17_with_left_prefix, "lx17_with_left_prefix_enable", true)
 
         val keyboardDoubleInputKey = switch(R.string.keyboard_double_input_key, "keyboard_double_input_pinyin_enable", true)
 

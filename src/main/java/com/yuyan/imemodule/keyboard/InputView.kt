@@ -17,17 +17,26 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
+import androidx.core.graphics.drawable.toDrawable
+import androidx.core.graphics.scale
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.get
+import androidx.core.view.postDelayed
 import com.yuyan.imemodule.R
+import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.callback.CandidateViewListener
 import com.yuyan.imemodule.callback.IResponseKeyEvent
 import com.yuyan.imemodule.data.emojicon.EmojiconData.SymbolPreset
 import com.yuyan.imemodule.data.theme.ThemeManager
 import com.yuyan.imemodule.database.DataBaseKT
+import com.yuyan.imemodule.database.entry.Phrase
 import com.yuyan.imemodule.entity.keyboard.SoftKey
+import com.yuyan.imemodule.keyboard.container.CandidatesContainer
+import com.yuyan.imemodule.keyboard.container.ClipBoardContainer
+import com.yuyan.imemodule.keyboard.container.SymbolContainer
+import com.yuyan.imemodule.keyboard.container.T9TextContainer
 import com.yuyan.imemodule.manager.InputModeSwitcherManager
 import com.yuyan.imemodule.prefs.AppPrefs.Companion.getInstance
 import com.yuyan.imemodule.prefs.behavior.KeyboardOneHandedMod
@@ -36,28 +45,22 @@ import com.yuyan.imemodule.prefs.behavior.SkbMenuMode
 import com.yuyan.imemodule.service.DecodingInfo
 import com.yuyan.imemodule.service.ImeService
 import com.yuyan.imemodule.singleton.EnvironmentSingleton
-import com.yuyan.imemodule.utils.InputMethodUtil
 import com.yuyan.imemodule.utils.DevicesUtils
+import com.yuyan.imemodule.utils.InputMethodUtil
 import com.yuyan.imemodule.utils.KeyboardLoaderUtil
 import com.yuyan.imemodule.utils.StringUtils
 import com.yuyan.imemodule.view.CandidatesBar
 import com.yuyan.imemodule.view.EditPhrasesView
 import com.yuyan.imemodule.view.FullDisplayKeyboardBar
-import com.yuyan.imemodule.keyboard.container.CandidatesContainer
-import com.yuyan.imemodule.keyboard.container.ClipBoardContainer
-import com.yuyan.imemodule.keyboard.container.SymbolContainer
-import com.yuyan.imemodule.keyboard.container.T9TextContainer
 import com.yuyan.imemodule.view.popup.PopupComponent
 import com.yuyan.imemodule.view.preference.ManagedPreference
 import com.yuyan.imemodule.view.widget.LifecycleRelativeLayout
 import com.yuyan.inputmethod.CustomEngine
 import com.yuyan.inputmethod.core.CandidateListItem
+import com.yuyan.inputmethod.core.Kernel
 import splitties.views.bottomPadding
 import splitties.views.rightPadding
 import kotlin.math.absoluteValue
-import androidx.core.graphics.drawable.toDrawable
-import androidx.core.graphics.scale
-import androidx.core.view.postDelayed
 
 /**
  * 输入法主界面。
@@ -189,6 +192,8 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
     private var initialTouchY = 0f
     private var rightPaddingValue = 0  // 右侧边距
     private var bottomPaddingValue = 0  // 底部边距
+    private var mSkbRootHeight = 0  // 键盘高度
+    private var mSkbRootWidth = 0  // 键盘宽度
     private fun onMoveKeyboardEvent(event: MotionEvent?): Boolean {
         when (event?.action) {
             MotionEvent.ACTION_DOWN -> {
@@ -196,6 +201,8 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 rightPaddingValue = mRightPaddingKey.getValue()
                 initialTouchX = event.rawX
                 initialTouchY = event.rawY
+                mSkbRootHeight = mSkbRoot.height
+                mSkbRootWidth = mSkbRoot.width
                 return true
             }
             MotionEvent.ACTION_MOVE -> {
@@ -204,8 +211,8 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 if(dx.absoluteValue > 10) {
                     rightPaddingValue -= dx.toInt()
                     rightPaddingValue = if(rightPaddingValue < 0) 0
-                    else if(rightPaddingValue > EnvironmentSingleton.instance.mScreenWidth - mSkbRoot.width) {
-                        EnvironmentSingleton.instance.mScreenWidth - mSkbRoot.width
+                    else if(rightPaddingValue > this.width - mSkbRootWidth) {
+                        this.width - mSkbRootWidth
                     } else rightPaddingValue
                     initialTouchX = event.rawX
                     if(EnvironmentSingleton.instance.keyboardModeFloat) {
@@ -217,8 +224,8 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
                 if(dy.absoluteValue > 10 ) {
                     bottomPaddingValue -= dy.toInt()
                     bottomPaddingValue = if(bottomPaddingValue < 0) 0
-                    else if(bottomPaddingValue > EnvironmentSingleton.instance.mScreenHeight - mSkbRoot.height) {
-                        EnvironmentSingleton.instance.mScreenHeight - mSkbRoot.height
+                    else if(bottomPaddingValue > this.height - mSkbRootHeight) {
+                        this.height - mSkbRootHeight
                     } else bottomPaddingValue
                     initialTouchY = event.rawY
                     if(EnvironmentSingleton.instance.keyboardModeFloat) {
@@ -273,7 +280,10 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         val keyCode = sKey.code
         if (sKey.isKeyCodeKey) {  // 系统的keycode,单独处理
             mImeState = ImeState.STATE_INPUT
-            val keyEvent = KeyEvent(0, 0, KeyEvent.ACTION_UP, keyCode, 0, 0, 0, 0, KeyEvent.FLAG_SOFT_KEYBOARD)
+            val rimeSchema = Kernel.getCurrentRimeSchema()
+            val metaState = if(rimeSchema in  listOf(CustomConstant.SCHEMA_ZH_T9, CustomConstant.SCHEMA_ZH_STROKE,
+                    CustomConstant.SCHEMA_ZH_DOUBLE_LX17))KeyEvent.META_CAPS_LOCK_ON else 0
+            val keyEvent = KeyEvent(0, 0, KeyEvent.ACTION_UP, keyCode, 0, metaState, 0, 0, KeyEvent.FLAG_SOFT_KEYBOARD)
             processKey(keyEvent)
         } else if (sKey.isUserDefKey || sKey.isUniStrKey) { // 是用户定义的keycode
             if (!DecodingInfo.isAssociate && !DecodingInfo.isCandidatesListEmpty) {
@@ -331,7 +341,7 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
      * 软键盘集装箱SkbContainer的responseKeyEvent（）在自身类中调用。
      */
     override fun responseLongKeyEvent(result:Pair<PopupMenuMode, String>) {
-        if (!DecodingInfo.isAssociate && !DecodingInfo.isCandidatesListEmpty) {
+        if (result.first != PopupMenuMode.None && !DecodingInfo.isAssociate && !DecodingInfo.isCandidatesListEmpty) {
             if(InputModeSwitcherManager.isChinese) {
                 chooseAndUpdate()
             } else if(InputModeSwitcherManager.isEnglish){
@@ -613,14 +623,16 @@ class InputView(context: Context, service: ImeService) : LifecycleRelativeLayout
         }
     }
 
-    fun onSettingsMenuClick(skbMenuMode: SkbMenuMode, extra:String = "") {
+    fun onSettingsMenuClick(skbMenuMode: SkbMenuMode, extra:Phrase? = null) {
         when (skbMenuMode) {
             SkbMenuMode.AddPhrases -> {
                 isAddPhrases = true
-                DataBaseKT.instance.phraseDao().deleteByContent(extra)
                 KeyboardManager.instance.switchKeyboard(InputModeSwitcherManager.skbImeLayout)
                 initView(context)
-                mAddPhrasesLayout.setExtraData(extra)
+                if(extra != null) {
+                    DataBaseKT.instance.phraseDao().deleteByContent(extra.content)
+                    mAddPhrasesLayout.setExtraData(extra)
+                }
             }
             else ->onSettingsMenuClick(this, skbMenuMode)
         }

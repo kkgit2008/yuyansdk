@@ -48,7 +48,7 @@ object RimeEngine {
         val keyCode = event.keyCode
         val keyChar = if(keyCode == KeyEvent.KEYCODE_APOSTROPHE) if(isFinish()) '/'.code else '\''.code
             else event.unicodeChar
-        if (keyRecordStack.pushKey(keyCode))Rime.processKey(keyChar, event.action)
+        if (keyRecordStack.pushKey(event))Rime.processKey(keyChar, event.action)
         updateCandidatesOrCommitText()
     }
 
@@ -87,7 +87,7 @@ object RimeEngine {
 
     fun selectPinyin(index: Int) {
         val pinyinKey = keyRecordStack.pushPinyinSelectAction(pinyins[index]) ?: return
-        Rime.replaceKey(pinyinKey.posInInput, pinyinKey.pinyinLength, pinyinKey.inputKeys())
+        Rime.replaceKey(pinyinKey.posInInput, pinyinKey.t9Keys().length, pinyinKey.pinyin())
         updateCandidatesOrCommitText()
     }
 
@@ -203,27 +203,10 @@ object RimeEngine {
         val rimeSchema = Rime.getCurrentRimeSchema()
         pinyins = when (rimeSchema) {
             CustomConstant.SCHEMA_ZH_T9 -> {
-                var count = compositionText.count { it in '1'..'9' }
-                val remainT9Keys = ArrayList<InputKey>(count)
-                keyRecordStack.forEachReversed { inputKey ->
-                    if (inputKey is InputKey.T9Key) {
-                        inputKey.consumed = count-- <= 0
-                        if (!inputKey.consumed) {
-                            remainT9Keys.add(inputKey)
-                        }
-                    }
-                }
-                T9PinYinUtils.t9KeyToPinyin(remainT9Keys.joinToString("").reversed())
+                T9PinYinUtils.t9KeyToPinyin(compositionText.filter { it.isUpperCase() })
             }
             CustomConstant.SCHEMA_ZH_DOUBLE_LX17 -> {
-                var count = compositionText.count { it in 'a'..'z' }
-                val keys = ArrayList<InputKey>(count)
-                keyRecordStack.forEachReversed { inputKey ->
-                    if (inputKey is InputKey.QwertKey) {
-                        if (count-- > 0) keys.add(inputKey)
-                    }
-                }
-                LX17PinYinUtils.lx17KeyToPinyin(keys.joinToString("").reversed())
+                LX17PinYinUtils.lx17KeyToPinyin(compositionText.filter { it.isUpperCase() })
             }
             else -> {
                 emptyArray()

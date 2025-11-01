@@ -3,6 +3,7 @@ package com.yuyan.imemodule.ui.activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
@@ -18,6 +19,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.yuyan.imemodule.R
 import com.yuyan.imemodule.application.CustomConstant
 import com.yuyan.imemodule.databinding.ActivitySettingsBinding
+import com.yuyan.imemodule.prefs.AppPrefs
 import com.yuyan.imemodule.ui.setup.SetupActivity
 import com.yuyan.imemodule.utils.AppUtil
 import com.yuyan.imemodule.utils.startActivity
@@ -48,8 +50,8 @@ open class SettingsActivity : AppCompatActivity() {
         setSupportActionBar(binding.toolbar)
 
         val appBarConfiguration = AppBarConfiguration(
-            // always show back icon regardless of `navController.currentDestination`
-            topLevelDestinationIds = setOf()
+            // 设置不显示返回箭头的界面
+            topLevelDestinationIds = setOf(R.id.privacyPolicyFragment)
         )
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment?
         navController = navHostFragment!!.navController
@@ -76,11 +78,10 @@ open class SettingsActivity : AppCompatActivity() {
                 else -> viewModel.enableToolbarShadow()
             }
         }
-
-    }
-
-    override fun onStart() {
-        super.onStart()
+        if(!AppPrefs.getInstance().internal.privacyPolicySure.getValue()){
+            navController.navigate(R.id.action_settingsFragment_to_privacyPolicyFragment)
+            return
+        }
         if (SetupActivity.shouldShowUp()) {
             startActivity<SetupActivity>()
         } else {
@@ -102,6 +103,21 @@ open class SettingsActivity : AppCompatActivity() {
                         val uri = Uri.parse("${CustomConstant.YUYAN_IME_REPO}/releases/latest")
                         startActivity(Intent(Intent.ACTION_VIEW, uri))
                     }.show()
+            }
+        }
+    }
+
+    fun onclick(view: View) {
+        when (view.id){
+            R.id.privacy_policy_sure -> {
+                navController.navigateUp()
+                AppPrefs.getInstance().internal.privacyPolicySure.setValue(true)
+                if (SetupActivity.shouldShowUp()) {
+                    startActivity<SetupActivity>()
+                }
+            }
+            R.id.privacy_policy_cancel ->{
+                navController.navigateUp()
             }
         }
     }
